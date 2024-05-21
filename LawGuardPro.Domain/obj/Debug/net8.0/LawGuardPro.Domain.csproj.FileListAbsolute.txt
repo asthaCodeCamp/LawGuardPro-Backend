@@ -1,0 +1,11 @@
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\bin\Debug\net8.0\LawGuardPro.Domain.deps.json
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\bin\Debug\net8.0\LawGuardPro.Domain.dll
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\bin\Debug\net8.0\LawGuardPro.Domain.pdb
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\obj\Debug\net8.0\LawGuardPro.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\obj\Debug\net8.0\LawGuardPro.Domain.AssemblyInfoInputs.cache
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\obj\Debug\net8.0\LawGuardPro.Domain.AssemblyInfo.cs
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\obj\Debug\net8.0\LawGuardPro.Domain.csproj.CoreCompileInputs.cache
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\obj\Debug\net8.0\LawGuardPro.Domain.dll
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\obj\Debug\net8.0\refint\LawGuardPro.Domain.dll
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\obj\Debug\net8.0\LawGuardPro.Domain.pdb
+C:\Users\USER\source\repos\LawGuardPro\LawGuardPro.Domain\obj\Debug\net8.0\ref\LawGuardPro.Domain.dll

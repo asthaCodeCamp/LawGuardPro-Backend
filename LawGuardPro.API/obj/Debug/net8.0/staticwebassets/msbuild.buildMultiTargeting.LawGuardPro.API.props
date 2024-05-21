@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\LawGuardPro.API.props" />
+</Project>
