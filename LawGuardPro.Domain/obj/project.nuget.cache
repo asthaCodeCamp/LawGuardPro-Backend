@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dTYyU2O/3ToG80z/tSM3jp/zhl/NpSYPM73BoSoFOaxLclyEBW9TXtkZ0z2TDadKvqAIY/lyOpo2xl8RPql3vQ==",
+  "dgSpecHash": "uV1OWELlQfShZyz+MiG2r/kNFDGoM6YfZTRLXf2jIzHvqKzYyAVs4cj7sBVpkAVkViaDNXLw46by03JQiE186A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\USER\\source\\repos\\LawGuardPro\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj",
+  "projectFilePath": "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
