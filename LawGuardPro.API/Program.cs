@@ -1,4 +1,7 @@
 
+using LawGuardPro.Infrastructure;
+using Microsoft.Extensions.Configuration;
+
 namespace LawGuardPro.API
 {
     public class Program
@@ -15,7 +18,8 @@ namespace LawGuardPro.API
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
-
+            var configuration = builder.Configuration;
+            DependencyInjection_infra.Register(builder.Services, builder.Environment, configuration);
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
