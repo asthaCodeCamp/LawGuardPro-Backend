@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Application\\LawGuardPro.Application.csproj": {}
+    "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Application\\LawGuardPro.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Application\\LawGuardPro.Application.csproj": {
+    "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Application\\LawGuardPro.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Application\\LawGuardPro.Application.csproj",
+        "projectUniqueName": "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Application\\LawGuardPro.Application.csproj",
         "projectName": "LawGuardPro.Application",
-        "projectPath": "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Application\\LawGuardPro.Application.csproj",
+        "projectPath": "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Application\\LawGuardPro.Application.csproj",
         "packagesPath": "C:\\Users\\ashik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Application\\obj\\",
+        "outputPath": "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ashik\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj": {
-                "projectPath": "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj"
+              "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj": {
+                "projectPath": "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj"
               }
             }
           }
@@ -68,12 +68,12 @@
         }
       }
     },
-    "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj": {
+    "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj",
         "projectName": "LawGuardPro.Domain",
-        "projectPath": "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj",
+        "projectPath": "C:\\Users\\ashik\\source\\repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\LawGuardPro.Domain.csproj",
         "packagesPath": "C:\\Users\\ashik\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\ashik\\Source\\Repos\\LawGuardPro-Backend\\LawGuardPro.Domain\\obj\\",
         "projectStyle": "PackageReference",
