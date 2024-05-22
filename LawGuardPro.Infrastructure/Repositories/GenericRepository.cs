@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace LawGuardPro.Infrastructure.Repositories;
 
-namespace LawGuardPro.Infrastructure.Repositories
+internal class GenericRepository
 {
-    internal class GenericRepository
-    {
-    }
 }
