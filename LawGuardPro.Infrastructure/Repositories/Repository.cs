@@ -1,4 +1,5 @@
 ﻿using LawGuardPro.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawGuardPro.Infrastructure.Repositories;
 
@@ -11,23 +12,28 @@ public class Repository<T> : IRepository<T> where T : class
         _context = context;
     }
     
-    public async Task AddAsync(T model)
+    public async Task AddAsync(T entity)
     {
-        await _context.AddAsync(model);
+       // await _context.AddAsync(entity);
+        _context.Set<T>().Add(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<bool> DeleteAsync(T model)
+    public async Task DeleteAsync(T entity)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().Remove(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public IEnumerable<T> FindAllCaseAsync()
+
+    public async Task<IEnumerable<T>> FindAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Set<T>().ToListAsync();
     }
 
-    public Task<bool> UpdateAsync(T model)
+    public async Task UpdateAsync(T entity)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().Update(entity);
+        await _context.SaveChangesAsync();
     }
 }
