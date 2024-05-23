@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LawGuardPro.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0455db0bd09805256bbd2086e76439e3a47d6fd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b2480be1639b555a753a83dbf23ed5a3d8217be")]
 [assembly: System.Reflection.AssemblyProductAttribute("LawGuardPro.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LawGuardPro.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
