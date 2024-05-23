@@ -1,4 +1,7 @@
 using LawGuardPro.Infrastructure;
+using LawGuardPro.Infrastructure.Identity;
+using LawGuardPro.Infrastructure.Persistence.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +29,9 @@ namespace LawGuardPro.API
             var app = builder.Build();
             var configuration = builder.Configuration;
             DependencyInjection_infra.Register(builder.Services, builder.Environment, configuration);
+            var app = builder.Build();
+            
+           
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
