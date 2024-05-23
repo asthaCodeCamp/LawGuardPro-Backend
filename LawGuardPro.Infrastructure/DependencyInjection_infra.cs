@@ -18,7 +18,7 @@ namespace LawGuardPro.Infrastructure
 
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                  options.UseNpgsql(configuration.GetConnectionString("EfPostgresDb")));
+                  options.UseNpgsql(configuration.GetConnectionString("DefaultSQLConnection")));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             return services;
         }
