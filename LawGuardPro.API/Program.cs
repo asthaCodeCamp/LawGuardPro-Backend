@@ -1,7 +1,12 @@
 
 using LawGuardPro.Infrastructure;
+using LawGuardPro.Infrastructure.Identity;
+using LawGuardPro.Infrastructure.Persistence.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 namespace LawGuardPro.API
 {
     public class Program
@@ -16,10 +21,12 @@ namespace LawGuardPro.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
+            builder.Services.AddScoped<IIdentityService, IdentityService>();
             var configuration = builder.Configuration;
             DependencyInjection_infra.Register(builder.Services, builder.Environment, configuration);
+            var app = builder.Build();
+            
+           
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
