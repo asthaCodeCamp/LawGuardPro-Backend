@@ -11,6 +11,7 @@ using LawGuardPro.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using LawGuardPro.Infrastructure.Persistence.Context;
+
 namespace LawGuardPro.Infrastructure
 {
     public class DependencyInjection_infra
@@ -21,7 +22,7 @@ namespace LawGuardPro.Infrastructure
 
             services.AddDbContext<ApplicationDbContext>(options =>
                   options.UseNpgsql(configuration.GetConnectionString("DefaultSQLConnection")));
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddAutoMapper(typeof(MappingConfig));
             return services;

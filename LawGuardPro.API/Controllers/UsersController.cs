@@ -1,6 +1,6 @@
 ﻿using LawGuardPro.API.Models;
 using LawGuardPro.Application.DTO;
-using LawGuardPro.Infrastructure.Repositories;
+using LawGuardPro.Infrastructure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,17 +11,17 @@ namespace LawGuardPro.API.Controllers
     public class UsersController : ControllerBase
     {
 
-        private readonly IUserRepository _userRepo;
+        private readonly IIdentityService _userService;
         protected APIResponse _response;
-        public UsersController(IUserRepository userRepo)
+        public UsersController(IIdentityService userService)
         {
-            _userRepo = userRepo;
+            _userService = userService;
             this._response = new();
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
         {
-            bool ifUserNameUnique = _userRepo.IsUniqueUser(model.Email);
+            bool ifUserNameUnique = _userService.IsUniqueUser(model.Email);
             if (!ifUserNameUnique)
             {
                 _response.IsSuccess = false;
@@ -29,7 +29,7 @@ namespace LawGuardPro.API.Controllers
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 return BadRequest(_response);
             }
-            var user = await _userRepo.Register(model);
+            var user = await _userService.Register(model);
             if (user == null)
             {
                 _response.IsSuccess = false;

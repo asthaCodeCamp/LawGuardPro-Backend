@@ -10,29 +10,30 @@ using System.Threading.Tasks;
 using LawGuardPro.Domain.Entities;
 using AutoMapper;
 
-namespace LawGuardPro.Infrastructure.Repositories
+namespace LawGuardPro.Infrastructure.Identity
 {
-    public class UserRepository: IUserRepository
+    public class IdentityService : IIdentityService
     {
-        private readonly ApplicationDbContext _db;
         private string secretKey;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
-        public UserRepository(ApplicationDbContext db, IConfiguration configuration,
+
+        public IdentityService(
+            ApplicationDbContext db, IConfiguration configuration,
             UserManager<ApplicationUser> userManager, IMapper mapper,
             RoleManager<IdentityRole> roleManager)
         {
-            _db = db;
             secretKey = configuration.GetValue<string>("Jwt:Key");
             _userManager = userManager;
             _mapper = mapper;
             _roleManager = roleManager;
         }
-        public bool IsUniqueUser(string Email)
+        public bool IsUniqueUser(string email)
         {
-            // var user = _db.LocalUsers.FirstOrDefault(x => x.UserName == username);
-            var user = _db.ApplicationUsers.FirstOrDefault(x => x.Email == Email);
+            var user = _userManager.FindByEmailAsync(email);
+           
             if (user == null)
             {
                 return true;
