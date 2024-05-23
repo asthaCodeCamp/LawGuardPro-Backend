@@ -1,5 +1,8 @@
 
 using LawGuardPro.Infrastructure;
+using LawGuardPro.Infrastructure.Persistence.Context;
+using LawGuardPro.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 
 namespace LawGuardPro.API
@@ -16,6 +19,8 @@ namespace LawGuardPro.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            
 
             var app = builder.Build();
             var configuration = builder.Configuration;
