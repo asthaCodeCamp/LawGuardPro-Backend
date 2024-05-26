@@ -1,6 +1,8 @@
 ﻿using LawGuardPro.API.Models;
 using LawGuardPro.Application.DTO;
-using LawGuardPro.Infrastructure.Identity;
+using LawGuardPro.Application.Feature.Identity.Commands;
+using LawGuardPro.Application.Feature.Identity.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,26 +13,21 @@ namespace LawGuardPro.API.Controllers
     public class UsersController : ControllerBase
     {
 
-        private readonly IIdentityService _userService;
+        private readonly ISender _sender;
         protected APIResponse _response;
-        public UsersController(IIdentityService userService)
+
+        public UsersController(ISender sender)
         {
-            _userService = userService;
+            _sender = sender;
             this._response = new();
         }
+
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
+        public async Task<IActionResult> Register([FromBody] UserRegistrationCommand model)
         {
-            bool ifUserNameUnique = _userService.IsUniqueUser(model.Email);
-            if (!ifUserNameUnique)
-            {
-                _response.IsSuccess = false;
-                _response.ErrorMessages.Add("UserName already exists!");
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                return BadRequest(_response);
-            }
-            var user = await _userService.Register(model);
-            if (user == null)
+            var result = await _sender.Send(model);
+
+            if (result == null)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages.Add("Error while registering!");
@@ -41,6 +38,25 @@ namespace LawGuardPro.API.Controllers
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginCommand model)
+        {
+            //var loginResponse = await _userRepo.Login(model);
+            var result = await _sender.Send(model);
+            if (result == null)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages.Add("UserName or password is incorrect");
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                return BadRequest(_response);
+            }
+            _response.IsSuccess = true;
+            _response.Result = result;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+
         }
     }
 }
