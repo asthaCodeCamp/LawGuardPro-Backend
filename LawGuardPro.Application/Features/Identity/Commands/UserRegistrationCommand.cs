@@ -2,12 +2,13 @@
 using MediatR;
 using System.Net;
 using System.Reflection;
-using LawGuardPro.Application.Feature.Identity.Interfaces;
 using AutoMapper;
+using LawGuardPro.Application.Common;
+using LawGuardPro.Application.Features.Identity.Interfaces;
 
-namespace LawGuardPro.Application.Feature.Identity.Commands;
+namespace LawGuardPro.Application.Features.Identity.Commands;
 
-public class UserRegistrationCommand : IRequest<UserDTO>
+public class UserRegistrationCommand : IRequest<Result<UserDTO>>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -17,7 +18,7 @@ public class UserRegistrationCommand : IRequest<UserDTO>
     public string CountryResidency { get; set; } = string.Empty;
 }
 
-public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, UserDTO>
+public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, Result<UserDTO>>
 {
     private readonly IIdentityService _identityService;
     private readonly IMapper _mapper;
@@ -30,14 +31,17 @@ public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCo
         _identityService = identityService;
     }
 
-    public async Task<UserDTO> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UserDTO>> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
     {
         bool isUserNameUnique = await _identityService.IsUniqueUser(request.Email);
 
-        if (!isUserNameUnique) throw new NotImplementedException();
+        if (!isUserNameUnique)
+        {
+            return Result<UserDTO>.Failure(new List<Error>() { new Error() { Message = "user already exists", Code = "409 Conflict" } });
+        }
 
-        var user = await _identityService.Register(_mapper.Map<RegistrationRequestDTO>(request));
-        return user;
+        return await _identityService.Register(_mapper.Map<RegistrationRequestDTO>(request));
+
     }
 }
 

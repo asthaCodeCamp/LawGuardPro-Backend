@@ -6,10 +6,10 @@ using LawGuardPro.Infrastructure.Identity;
 using LawGuardPro.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using LawGuardPro.Infrastructure.Persistence.Context;
-using LawGuardPro.Application.Feature.Identity.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LawGuardPro.Application.Features.Identity.Interfaces;
 
 namespace LawGuardPro.Infrastructure;
 
