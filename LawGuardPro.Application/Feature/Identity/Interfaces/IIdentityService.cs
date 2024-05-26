@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LawGuardPro.Infrastructure.Identity
+namespace LawGuardPro.Application.Feature.Identity.Interfaces
 {
     public interface IIdentityService
     {
-        bool IsUniqueUser(string email);
-        //Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
-
+        Task<bool> IsUniqueUser(string email);
+        Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
+        
         Task<UserDTO> Register(RegistrationRequestDTO registration);
     }
 }
