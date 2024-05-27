@@ -26,7 +26,6 @@ namespace LawGuardPro.API
 
             builder.Services.AddApplicationServices();
 
-            var app = builder.Build();
             var configuration = builder.Configuration;
             DependencyInjection_infra.Register(builder.Services, builder.Environment, configuration);
             var app = builder.Build();
