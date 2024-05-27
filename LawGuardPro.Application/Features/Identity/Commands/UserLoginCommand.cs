@@ -7,6 +7,7 @@ using LawGuardPro.Application.Common;
 using LawGuardPro.Application.Features.Identity.Interfaces;
 
 namespace LawGuardPro.Application.Features.Identity.Commands;
+
 public class UserLoginCommand : IRequest<Result<LoginResponseDTO>>
 {
     public string UserName { get; set; } = string.Empty;

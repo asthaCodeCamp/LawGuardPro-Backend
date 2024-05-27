@@ -14,5 +14,7 @@ namespace LawGuardPro.Application.Features.Identity.Interfaces
         Task<Result<LoginResponseDTO>> Login(LoginRequestDTO loginRequestDTO);
 
         Task<Result<UserDTO>> Register(RegistrationRequestDTO registration);
+
+        Task<Result<UserDTO>> UpdateUserInfo(UserUpdateDTO userUpdateDto);
     }
 }

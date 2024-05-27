@@ -117,4 +117,34 @@ public class IdentityService : IIdentityService
         return Result<LoginResponseDTO>.Success(loginResponseDTO);
     }
 
+    public async Task<Result<UserDTO>> UpdateUserInfo(UserUpdateDTO userUpdateDto)
+    {
+        if (userUpdateDto == null)
+        {
+            return Result<UserDTO>.Failure(new List<Error> { new Error() { Message = "Invalid user data.", Code = "" } });
+           
+        }
+
+        var user = await _userManager.FindByEmailAsync(userUpdateDto.Email);
+
+        if (user == null)
+        {
+            var errorMessage = $"User with email '{userUpdateDto.Email}' not found.";
+            return Result<UserDTO>.Failure(new List<Error> { new Error() { Message = errorMessage, Code = "UserNotFound" } });
+        }
+
+        user.FirstName = userUpdateDto.FirstName;
+        user.LastName = userUpdateDto.LastName;
+        user.PhoneNumber = userUpdateDto.PhoneNumber;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) {
+            var errors = result.Errors.Select(error => new Error { Message = error.Description, Code = error.Code }).ToList();
+            return Result<UserDTO>.Failure(errors);
+        }
+
+        var userDto = _mapper.Map<UserDTO>(user);
+        return Result<UserDTO>.Success(userDto);
+    }
+
 }

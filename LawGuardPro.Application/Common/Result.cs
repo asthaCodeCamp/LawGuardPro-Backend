@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LawGuardPro.Application.Common;
 
@@ -31,14 +27,14 @@ public class Result : IResult
         }
         return false;
     }
+
     public static Result Success(int statusCode) { 
         return new Result(statusCode, new List<Error>());
     }
+
     public static Result Failure(int statusCode,  List<Error> errors) { 
            return new Result(statusCode, errors); 
     } 
-    
-   
 }
 
 public interface IResult<T> 
@@ -50,14 +46,16 @@ public interface IResult<T>
 
 public class Result<T> : IResult<T>
 {
-    public T Data { get; }
+    public T? Data { get; }
     public int StatusCode { get; }
     public List<Error> Errors { get; }
-    protected Result(int statusCode, T data, List<Error> errors) {
+
+    protected Result(int statusCode, T? data, List<Error> errors) {
         Data = data;
         StatusCode = statusCode;
         Errors = errors;
     }
+
     public bool IsSuccess()
     {
         if (StatusCode >= 200 || StatusCode <= 300)
@@ -66,13 +64,14 @@ public class Result<T> : IResult<T>
         }
         return false;
     }
+
     public static Result<T> Success(T data) {
         
         return new Result<T> (StatusCodes.Status200OK, data, new List<Error>());
     }
-    public new static Result<T> Failure(List<Error> errors)
+
+    public static Result<T> Failure(List<Error> errors)
     {
         return new Result<T>(StatusCodes.Status400BadRequest, default, errors);
     }
 }
-
