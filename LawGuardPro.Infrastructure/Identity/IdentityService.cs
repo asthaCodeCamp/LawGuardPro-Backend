@@ -3,12 +3,16 @@ using LawGuardPro.Application.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http.HttpResults;
-using LawGuardPro.Application.Feature.Identity.Interfaces;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
+using LawGuardPro.Application.Common;
+using System.Net;
+using Microsoft.AspNetCore.Http;
+using LawGuardPro.Application.Features.Identity.Interfaces;
+
 
 
 
@@ -38,9 +42,9 @@ public class IdentityService : IIdentityService
         return user == null ? true : false;
     }
 
-    public async Task<UserDTO> Register(RegistrationRequestDTO registrationRequestDTO)
+    public async Task<Result<UserDTO>> Register(RegistrationRequestDTO registrationRequestDTO)
     {
-        ApplicationUser user = new()
+        var user = new ApplicationUser
         {
             UserName = registrationRequestDTO.Email,
             FirstName = registrationRequestDTO.FirstName,
@@ -48,22 +52,30 @@ public class IdentityService : IIdentityService
             Email = registrationRequestDTO.Email,
             NormalizedEmail = registrationRequestDTO.Email.ToUpper(),
             PhoneNumber = registrationRequestDTO.PhoneNumber,
-            CountryResidency = registrationRequestDTO.CountryResidency,
+            CountryResidency = registrationRequestDTO.CountryResidency
         };
 
         var result = await _userManager.CreateAsync(user, registrationRequestDTO.Password);
-        if (!result.Succeeded) throw new Exception();
+       
+        if (!result.Succeeded)
+        {
+
+            var errors = result.Errors.Select(error => new Error { Message = error.Description, Code = error.Code }).ToList();
+            return Result<UserDTO>.Failure( errors);
+        }
 
         if (!await _roleManager.RoleExistsAsync("user"))
         {
             await _roleManager.CreateAsync(new IdentityRole("user"));
             await _userManager.AddToRoleAsync(user, "user");
         }
-
-        return _mapper.Map<UserDTO>(user);
+        await _userManager.AddToRoleAsync(user, "user");
+        var userDto = _mapper.Map<UserDTO>(user);
+        return Result<UserDTO>.Success(userDto);
     }
 
-    public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
+
+    public async Task<Result<LoginResponseDTO>> Login(LoginRequestDTO loginRequestDTO)
     {
         var user = await _userManager.FindByEmailAsync(loginRequestDTO.UserName);
 
@@ -71,14 +83,11 @@ public class IdentityService : IIdentityService
 
         if (user == null || isValid == false)
         {
-            return new LoginResponseDTO()
-            {
-                Token = "",
-                User = null
-            };
+            
+            return Result<LoginResponseDTO>.Failure(new List<Error> { new Error() { Message = "Invalid username or password", Code = "InvalidCredentials" } });
         }
 
-        //var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _userManager.GetRolesAsync(user);
         //if the user is found generate JWT token
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(secretKey);//convert the secretKey from string to bytes
@@ -87,7 +96,7 @@ public class IdentityService : IIdentityService
 
             Subject = new ClaimsIdentity(new Claim[] {
                    new Claim( ClaimTypes.Name, user.Id.ToString()),
-                   new Claim(ClaimTypes.Role, "user")  // roles.FirstOrDefault()
+                   new Claim(ClaimTypes.Role, roles.FirstOrDefault())  
 
                 }),
             Expires = DateTime.UtcNow.AddDays(7),
@@ -102,10 +111,10 @@ public class IdentityService : IIdentityService
         {
             Token = tokenHandler.WriteToken(token),//serialized  the token 
             User = _mapper.Map<UserDTO>(user),
-            Role = "user" // roles.FirstOrDefault()
+            Role = roles.FirstOrDefault()
         };
 
-        return loginResponseDTO;
+        return Result<LoginResponseDTO>.Success(loginResponseDTO);
     }
 
 }
