@@ -27,7 +27,7 @@ public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, Result<
 
     public async Task<Result<LoginResponseDTO>> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
-        return await _identityService.Login(_mapper.Map<LoginRequestDTO>(request));
+        return await _identityService.LoginAsync(_mapper.Map<LoginRequestDTO>(request));
 
     }
 }

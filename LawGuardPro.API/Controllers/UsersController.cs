@@ -4,16 +4,14 @@ using LawGuardPro.Application.Features.Identity.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.JsonPatch;
 using LawGuardPro.Application.Features.Settings.Profiles;
 
 namespace LawGuardPro.API.Controllers;
 
-[Route("api/UsersAuth")]
+[Route("api/usersauth")]
 [ApiController]
 public class UsersController : ControllerBase
 {
-
     private readonly ISender _sender;
     public UsersController(ISender sender)
     {
@@ -40,15 +38,11 @@ public class UsersController : ControllerBase
     [HttpPatch("UpdateUserInfo")]
     public async Task<IActionResult> UpdateUserInfo(ProfileEditCommand model)
     {
-
         if (model == null){
             return BadRequest("Invalid user data.");
         }
         var result = await _sender.Send(model);
         if (!result.IsSuccess()) return StatusCode(result.StatusCode, result);
-
-
-
         return Ok(result);
     }
 }
