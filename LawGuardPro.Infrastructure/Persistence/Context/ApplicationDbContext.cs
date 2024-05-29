@@ -8,8 +8,7 @@ namespace LawGuardPro.Infrastructure.Persistence.Context;
 
 public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
 {
-    public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
-    {
+   
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Case> Cases { get; set; }
         public DbSet<Lawyer> Lawyers { get; set; }
@@ -29,5 +28,4 @@ public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
                 .HasForeignKey(c => c.LawyerId);
         }
     }
-}
 
