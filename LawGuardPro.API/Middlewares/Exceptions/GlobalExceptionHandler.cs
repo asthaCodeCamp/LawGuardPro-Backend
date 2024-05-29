@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Diagnostics;
 using LawGuardPro.Exceptions.Domain;
 
 namespace LawGuardPro.API.Middlewares.Exceptions;
-
 public class GlobalExceptionHandler : IExceptionHandler
 {
     private readonly ILogger<GlobalExceptionHandler> _logger;

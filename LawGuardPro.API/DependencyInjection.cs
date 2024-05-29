@@ -1,14 +1,11 @@
 ﻿using LawGuardPro.API.Middlewares.Exceptions;
-using LawGuardPro.API.Middlewares.Exceptions;
 using Microsoft.OpenApi.Models;
-using System.Runtime.CompilerServices;
 
 namespace LawGuardPro.Api;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApi(
-        this IServiceCollection services)
+    public static IServiceCollection AddApi(this IServiceCollection services)
     {
         services.AddSwaggerGen(opt =>
         {
@@ -24,19 +21,19 @@ public static class DependencyInjection
             });
 
             opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
                 {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{}
-                    }
-                });
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
         });
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
