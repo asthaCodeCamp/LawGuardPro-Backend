@@ -7,6 +7,7 @@ using LawGuardPro.Application.Common;
 using LawGuardPro.Application.Features.Identity.Interfaces;
 
 namespace LawGuardPro.Application.Features.Identity.Commands;
+
 public class UserLoginCommand : IRequest<Result<LoginResponseDTO>>
 {
     public string UserName { get; set; } = string.Empty;
@@ -26,7 +27,7 @@ public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, Result<
 
     public async Task<Result<LoginResponseDTO>> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
-        return await _identityService.Login(_mapper.Map<LoginRequestDTO>(request));
+        return await _identityService.LoginAsync(_mapper.Map<LoginRequestDTO>(request));
 
     }
 }

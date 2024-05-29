@@ -1,15 +1,18 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+﻿using LawGuardPro.Application.Features.Identity.Interfaces;
+using LawGuardPro.Domain.Entities;
 using LawGuardPro.Infrastructure.Identity;
-using LawGuardPro.Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
 using LawGuardPro.Infrastructure.Persistence.Context;
+using LawGuardPro.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using LawGuardPro.Application.Features.Identity.Interfaces;
+using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Domain.Entities;
 
 namespace LawGuardPro.Infrastructure;
 
