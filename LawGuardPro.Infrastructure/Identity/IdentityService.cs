@@ -12,6 +12,7 @@ using LawGuardPro.Application.Common;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using LawGuardPro.Application.Features.Identity.Interfaces;
+using LawGuardPro.Domain.Entities;
 
 
 
