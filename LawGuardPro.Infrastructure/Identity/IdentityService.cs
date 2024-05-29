@@ -9,7 +9,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using LawGuardPro.Application.Features.Identity.Interfaces;
 
-
 namespace LawGuardPro.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
@@ -30,6 +29,7 @@ public class IdentityService : IIdentityService
         _userManager = userManager;
         _roleManager = roleManager;
     }
+
     public async Task<bool> IsUniqueUser(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -66,7 +66,6 @@ public class IdentityService : IIdentityService
         var userDto = _mapper.Map<UserDTO>(user);
         return Result<UserDTO>.Success(userDto);
     }
-
 
     public async Task<Result<LoginResponseDTO>> LoginAsync(LoginRequestDTO loginRequestDTO)
     {
@@ -113,7 +112,6 @@ public class IdentityService : IIdentityService
         {
             return Result<UserDTO>.Failure(new List<Error> { new Error() { Message = $"User with email '{userUpdateDto.Email}' not found.", Code = "UserNotFound" } });
         }
-
         user.FirstName = userUpdateDto.FirstName;
         user.LastName = userUpdateDto.LastName;
         user.PhoneNumber = userUpdateDto.PhoneNumber;
@@ -125,5 +123,4 @@ public class IdentityService : IIdentityService
         var userDto = _mapper.Map<UserDTO>(user);
         return Result<UserDTO>.Success(userDto);
     }
-
 }

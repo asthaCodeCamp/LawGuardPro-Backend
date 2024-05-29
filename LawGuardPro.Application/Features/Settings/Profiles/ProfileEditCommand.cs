@@ -24,6 +24,7 @@ public class ProfileEditCommandHandler : IRequestHandler<ProfileEditCommand, Res
         _mapper = mapper;
         _identityService = identityService;
     }
+
     public async Task<Result<UserDTO>> Handle(ProfileEditCommand request, CancellationToken cancellationToken)
     {
         return await _identityService.UpdateUserInfoAsync(_mapper.Map<UserUpdateDTO>(request));

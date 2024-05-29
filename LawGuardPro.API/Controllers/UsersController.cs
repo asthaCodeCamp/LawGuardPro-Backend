@@ -13,6 +13,7 @@ namespace LawGuardPro.API.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly ISender _sender;
+
     public UsersController(ISender sender)
     {
         _sender = sender;   
@@ -35,6 +36,7 @@ public class UsersController : ControllerBase
         
         return Ok(result);
     }
+
     [HttpPatch("UpdateUserInfo")]
     public async Task<IActionResult> UpdateUserInfo(ProfileEditCommand model)
     {
