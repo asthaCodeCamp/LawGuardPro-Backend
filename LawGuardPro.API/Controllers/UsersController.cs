@@ -1,10 +1,7 @@
-﻿using LawGuardPro.Application.DTO;
-using LawGuardPro.Application.Features.Identity.Interfaces;
-using LawGuardPro.Application.Features.Identity.Commands;
+﻿using LawGuardPro.Application.Features.Identity.Commands;
+using LawGuardPro.Application.Features.Settings.Profiles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using LawGuardPro.Application.Features.Settings.Profiles;
 
 namespace LawGuardPro.API.Controllers;
 
