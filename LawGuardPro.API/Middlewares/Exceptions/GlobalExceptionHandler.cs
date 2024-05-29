@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace LawGuardPro.Application.Common.Exceptions;
+namespace LawGuardPro.API.Middlewares.Exceptions;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {

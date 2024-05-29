@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace LawGuardPro.Application.DTO;
 
-namespace LawGuardPro.Application.DTO
+public  class RegistrationRequestDTO
 {
-    public  class RegistrationRequestDTO
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email {  get; set; }   
-        public string PhoneNumber { get; set; }
-        public string Password { get; set; }
-        public string CountryResidency { get; set; }
-    }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email {  get; set; }   
+    public string PhoneNumber { get; set; }
+    public string Password { get; set; }
+    public string CountryResidency { get; set; }
 }

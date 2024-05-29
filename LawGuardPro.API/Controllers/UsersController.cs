@@ -1,46 +1,40 @@
-﻿using LawGuardPro.API.Models;
-using LawGuardPro.Application.DTO;
-using LawGuardPro.Infrastructure.Identity;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using LawGuardPro.Application.Features.Identity.Commands;
 
-namespace LawGuardPro.API.Controllers
+namespace LawGuardPro.API.Controllers;
+
+[Route("api/UsersAuth")]
+[ApiController]
+public class UsersController : ControllerBase
 {
-    [Route("api/UsersAuth")]
-    [ApiController]
-    public class UsersController : ControllerBase
+
+    private readonly ISender _sender;
+    public UsersController(ISender sender)
     {
+        _sender = sender;   
+    }
 
-        private readonly IIdentityService _userService;
-        protected APIResponse _response;
-        public UsersController(IIdentityService userService)
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] UserRegistrationCommand model)
+    {
+        var result = await _sender.Send(model);
+        if (!result.IsSuccess())
         {
-            _userService = userService;
-            this._response = new();
+            return BadRequest(result);
         }
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
-        {
-            bool ifUserNameUnique = _userService.IsUniqueUser(model.Email);
-            if (!ifUserNameUnique)
-            {
-                _response.IsSuccess = false;
-                _response.ErrorMessages.Add("UserName already exists!");
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                return BadRequest(_response);
-            }
-            var user = await _userService.Register(model);
-            if (user == null)
-            {
-                _response.IsSuccess = false;
-                _response.ErrorMessages.Add("Error while registering!");
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                return BadRequest(_response);
-            }
+        return Ok(result);
+    }
 
-            _response.IsSuccess = true;
-            _response.StatusCode = HttpStatusCode.OK;
-            return Ok(_response);
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] UserLoginCommand model)
+    {
+        var result = await _sender.Send(model);
+        if (!result.IsSuccess())
+        {
+            return StatusCode(result.StatusCode, result);
         }
+
+        return Ok(result);
     }
 }
