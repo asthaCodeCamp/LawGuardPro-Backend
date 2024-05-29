@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LawGuardPro.Infrastructure.Persistence.Context
 {
-    public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<ApplicationUser> DbSet { get; set; }

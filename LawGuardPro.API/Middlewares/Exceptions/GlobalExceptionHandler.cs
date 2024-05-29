@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using LawGuardPro.Application.Common;
 using Microsoft.AspNetCore.Diagnostics;
+using LawGuardPro.Exceptions.Domain;
 
 namespace LawGuardPro.API.Middlewares.Exceptions
 {

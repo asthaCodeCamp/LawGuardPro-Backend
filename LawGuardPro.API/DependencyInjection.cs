@@ -1,4 +1,5 @@
 ﻿using LawGuardPro.API.Middlewares.Exceptions;
+using LawGuardPro.API.Middlewares.Exceptions;
 using Microsoft.OpenApi.Models;
 using System.Runtime.CompilerServices;
 
