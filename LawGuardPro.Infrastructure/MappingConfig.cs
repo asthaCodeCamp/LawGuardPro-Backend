@@ -1,6 +1,4 @@
-﻿
-
-using AutoMapper;
+﻿using AutoMapper;
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Features.Identity.Commands;
 using LawGuardPro.Application.Features.Settings.Profiles;
