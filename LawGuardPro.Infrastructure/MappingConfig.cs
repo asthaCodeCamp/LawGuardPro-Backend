@@ -3,6 +3,7 @@
 using AutoMapper;
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Features.Identity.Commands;
+using LawGuardPro.Domain.Entities;
 
 namespace LawGuardPro.Infrastructure;
 
