@@ -37,4 +37,9 @@ public class UsersController : ControllerBase
 
         return Ok(result);
     }
+    [HttpGet]
+    public IActionResult Get(string id) 
+    {
+       throw new NotImplementedException();
+    }
 }

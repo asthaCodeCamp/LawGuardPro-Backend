@@ -2,98 +2,88 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using LawGuardPro.Application.Common;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace LawGuardPro.API.Middlewares.Exceptions;
-
-public class GlobalExceptionHandler : IExceptionHandler
+namespace LawGuardPro.API.Middlewares.Exceptions
 {
-    private readonly ILogger<GlobalExceptionHandler> _logger;
-
-    public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+    public class GlobalExceptionHandler : IExceptionHandler
     {
-        _logger = logger;
-    }
+        private readonly ILogger<GlobalExceptionHandler> _logger;
 
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,
-        Exception exception,
-        CancellationToken cancellationToken)
-    {
-        var response = httpContext.Response;
-        response.ContentType = "application/json";
-
-        var errorResponse = new ErrorResponse
+        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
         {
-            Message = "An unexpected error occurred. Please try again later.",
-            Detail = exception.Message // Consider customizing this based on the environment (e.g., show detailed errors in development only)
-        };
-
-        switch (exception)
-        {
-            case NotFoundException:
-                response.StatusCode = (int)HttpStatusCode.NotFound;
-                errorResponse.Message = "Resource not found.";
-                break;
-            case UnauthorizedAccessException:
-                response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                errorResponse.Message = "Unauthorized access.";
-                break;
-            case ValidationException validationException:
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                errorResponse.Message = "Validation error.";
-                errorResponse.Errors = validationException.Errors;
-                break;
-            case BadRequestException:
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                errorResponse.Message = "Bad request.";
-                break;
-            case InternalServerErrorException:
-                response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                errorResponse.Message = "Internal server error.";
-                break;
-            default:
-                response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                break;
+            _logger = logger;
         }
 
-        var result = JsonSerializer.Serialize(errorResponse);
-        await response.WriteAsync(result, cancellationToken);
+        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,
+            Exception exception,
+            CancellationToken cancellationToken)
+        {
+            var response = httpContext.Response;
+            response.ContentType = "application/json";
 
-        // Log the exception
-        _logger.LogError(exception, "An error occurred: {Message}", exception.Message);
+            Result result;
 
-        return true;
+            switch (exception)
+            {
+                case NotFoundException notFoundException:
+                    result = Result.Failure(
+                        (int)HttpStatusCode.NotFound,
+                        new List<Error> { new Error { Code = "exception.notfound", Message = notFoundException.Message } }
+                    );
+                    response.StatusCode = (int)HttpStatusCode.NotFound;
+                    break;
+
+                case UnauthorizedAccessException unauthorizedAccessException:
+                    result = Result.Failure(
+                        (int)HttpStatusCode.Unauthorized,
+                        new List<Error> { new Error { Code = "unauthorized.access", Message = unauthorizedAccessException.Message } }
+                    );
+                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    break;
+
+                case ValidationException validationException:
+                    result = Result.Failure(
+                        (int)HttpStatusCode.BadRequest,
+                        new List<Error> { new Error { Code = "validation.error", Message = validationException.Message } }
+                    );
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+
+                case BadRequestException badRequestException:
+                    result = Result.Failure(
+                        (int)HttpStatusCode.BadRequest,
+                        new List<Error> { new Error { Code = "badrequest.error", Message = badRequestException.Message } }
+                    );
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+
+                case InternalServerErrorException internalServerErrorException:
+                    _logger.LogInformation("Handling unknown exception");
+                    result = Result.Failure(
+                        (int)HttpStatusCode.InternalServerError,
+                        new List<Error> { new Error { Code = "internalserver.error", Message = internalServerErrorException.Message } }
+                    );
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    break;
+
+                default:
+                    result = Result.Failure(
+                        (int)HttpStatusCode.InternalServerError,
+                        new List<Error> { new Error { Code = "unknown.error", Message = "An unexpected error occurred. Please try again later." } }
+                    );
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    break;
+            }
+
+            // Log the exception
+            _logger.LogError(exception, "An error occurred: {Message}", exception.Message);
+
+            var serializedResult = JsonSerializer.Serialize(result);
+            await response.WriteAsync(serializedResult, cancellationToken);
+
+            return true;
+        }
     }
-}
-
-public class ErrorResponse
-{
-    public string Message { get; set; }
-    public string Detail { get; set; }
-    public IDictionary<string, string[]> Errors { get; set; }
-}
-
-public class NotFoundException : Exception
-{
-    public NotFoundException(string message) : base(message) { }
-}
-
-public class ValidationException : Exception
-{
-    public IDictionary<string, string[]> Errors { get; set; }
-
-    public ValidationException(string message, IDictionary<string, string[]> errors) : base(message)
-    {
-        Errors = errors;
-    }
-}
-
-public class BadRequestException : Exception
-{
-    public BadRequestException(string message) : base(message) { }
-}
-
-public class InternalServerErrorException : Exception
-{
-    public InternalServerErrorException(string message) : base(message) { }
 }
