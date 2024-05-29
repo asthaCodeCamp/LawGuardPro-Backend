@@ -17,7 +17,7 @@ namespace LawGuardPro.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.5")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -35,7 +35,6 @@ namespace LawGuardPro.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CountryResidency")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
@@ -46,11 +45,9 @@ namespace LawGuardPro.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
@@ -71,7 +68,6 @@ namespace LawGuardPro.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -144,7 +140,31 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("cases");
+                    b.HasIndex("LawyerId");
+
+                    b.ToTable("Cases");
+                });
+
+            modelBuilder.Entity("LawGuardPro.Domain.Entities.Lawyer", b =>
+                {
+                    b.Property<int>("LawyerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LawyerId"));
+
+                    b.Property<string>("LawyerName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LawyerType")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Rating")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("LawyerId");
+
+                    b.ToTable("Lawyers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -285,7 +305,13 @@ namespace LawGuardPro.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
+                    b.HasOne("LawGuardPro.Domain.Entities.Lawyer", "Lawyer")
+                        .WithMany()
+                        .HasForeignKey("LawyerId");
+
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Lawyer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

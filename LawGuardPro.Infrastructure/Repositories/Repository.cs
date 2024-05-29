@@ -1,5 +1,7 @@
-﻿using LawGuardPro.Infrastructure.Persistence.Context;
+﻿using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace LawGuardPro.Infrastructure.Repositories;
 
@@ -35,5 +37,15 @@ public class Repository<T> : IRepository<T> where T : class
     {
         _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<T> GetByIdAsync(int id)
+    {
+        return await _context.Set<T>().FindAsync(id);
+    }
+
+    public async Task<T> GetFirstAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _context.Set<T>().FirstOrDefaultAsync(predicate);
     }
 }
