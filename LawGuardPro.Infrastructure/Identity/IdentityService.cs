@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using LawGuardPro.Application.Features.Identity.Interfaces;
+using LawGuardPro.Domain.Entities;
 
 namespace LawGuardPro.Infrastructure.Identity;
 
