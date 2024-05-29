@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LawGuardPro.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedIdentity : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,10 +31,10 @@ namespace LawGuardPro.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
-                    CountryResidency = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    CountryResidency = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -52,6 +52,21 @@ namespace LawGuardPro.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Lawyers",
+                columns: table => new
+                {
+                    LawyerId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LawyerName = table.Column<string>(type: "text", nullable: true),
+                    LawyerType = table.Column<string>(type: "text", nullable: true),
+                    Rating = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lawyers", x => x.LawyerId);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,6 +175,39 @@ namespace LawGuardPro.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Cases",
+                columns: table => new
+                {
+                    CaseId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CaseNumber = table.Column<int>(type: "integer", nullable: false),
+                    CaseName = table.Column<string>(type: "text", nullable: true),
+                    CaseType = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    IsAttachmentAvailable = table.Column<bool>(type: "boolean", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsLawyerAssigned = table.Column<bool>(type: "boolean", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "text", nullable: true),
+                    LawyerId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cases", x => x.CaseId);
+                    table.ForeignKey(
+                        name: "FK_Cases_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Cases_Lawyers_LawyerId",
+                        column: x => x.LawyerId,
+                        principalTable: "Lawyers",
+                        principalColumn: "LawyerId");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -196,6 +244,16 @@ namespace LawGuardPro.Infrastructure.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cases_ApplicationUserId",
+                table: "Cases",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cases_LawyerId",
+                table: "Cases",
+                column: "LawyerId");
         }
 
         /// <inheritdoc />
@@ -217,10 +275,16 @@ namespace LawGuardPro.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Cases");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Lawyers");
         }
     }
 }

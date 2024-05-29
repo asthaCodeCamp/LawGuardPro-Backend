@@ -1,9 +1,7 @@
-﻿
-
-using AutoMapper;
+﻿using AutoMapper;
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Features.Identity.Commands;
-using LawGuardPro.Infrastructure.Identity;
+using LawGuardPro.Domain.Entities;
 
 namespace LawGuardPro.Infrastructure;
 
