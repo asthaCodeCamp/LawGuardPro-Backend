@@ -26,3 +26,4 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(c => c.LawyerId);
     }
 
+}
