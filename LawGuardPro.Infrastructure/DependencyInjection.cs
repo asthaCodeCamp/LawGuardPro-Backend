@@ -13,6 +13,8 @@ using System.Text;
 using LawGuardPro.Application.Features.Identity.Interfaces;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Entities;
+using LawGuardPro.Infrastructure.Services;
+using LawGuardPro.Infrastructure.Settings;
 
 namespace LawGuardPro.Infrastructure;
 
@@ -50,6 +52,9 @@ public static class DependencyInjection
                 ValidateAudience = false
             };
         });
+
+        services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
+        services.AddTransient<IEmailService,EmailService>();
 
         return services;
     }

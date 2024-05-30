@@ -6,8 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LawGuardPro.Infrastructure.Persistence.Context;
 
-public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
-{
+
     public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -29,5 +28,5 @@ public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
                 .HasForeignKey(c => c.LawyerId);
         }
     }
-}
+
 
