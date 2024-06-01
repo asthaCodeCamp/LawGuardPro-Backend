@@ -17,6 +17,7 @@ namespace LawGuardPro.Application.Common.Mappings
             CreateMap<CreateCaseCommand, Case>();
             CreateMap<Case, CaseDto>();
             CreateMap<Lawyer, LawyerDTO>().ReverseMap();
+            CreateMap<AddressRequestResidencDTO, AddressUser>();
         }
     }
 }

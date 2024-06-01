@@ -10,7 +10,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<Case> Cases { get; set; }
     public DbSet<Lawyer> Lawyers { get; set; }
-
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<AddressUser> AddressUsers { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -24,5 +25,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(c => c.Lawyer)
             .WithMany()
             .HasForeignKey(c => c.LawyerId);
+
+        modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.AddressUsers)
+                .WithOne(a => a.ApplicationUser)
+                .HasForeignKey(a => a.UserId);
     }
 }

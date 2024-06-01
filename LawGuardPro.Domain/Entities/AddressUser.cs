@@ -14,7 +14,7 @@ namespace LawGuardPro.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AddressId { get; set; }
 
-        public bool? AddressType { get; set; }
+        public int? AddressType { get; set; }
         public string? BillingName { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
