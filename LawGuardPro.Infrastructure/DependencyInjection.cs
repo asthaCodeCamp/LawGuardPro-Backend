@@ -13,6 +13,8 @@ using System.Text;
 using LawGuardPro.Application.Features.Identity.Interfaces;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Entities;
+using LawGuardPro.Infrastructure.UnitofWork;
+
 
 namespace LawGuardPro.Infrastructure;
 
@@ -31,6 +33,10 @@ public static class DependencyInjection
 
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddAutoMapper(typeof(MappingConfig));
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ICaseRepository, CaseRepository>();
+        services.AddScoped<ILawyerRepository, LawyerRepository>();
 
         var key = configuration.GetValue<string>("Jwt:Key");
         services.AddAuthentication(x =>

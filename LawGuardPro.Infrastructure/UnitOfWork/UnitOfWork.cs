@@ -9,7 +9,7 @@ using LawGuardPro.Infrastructure.Repositories;
 using LawGuardPro.Application;
 using LawGuardPro.Application.Interfaces;
 
-namespace LawGuardPro.Infrastructure.UnitOfWork
+namespace LawGuardPro.Infrastructure.UnitofWork
 {
     public class UnitOfWork : IUnitOfWork
     {
