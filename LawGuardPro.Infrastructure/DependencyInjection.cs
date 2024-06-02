@@ -55,6 +55,8 @@ public static class DependencyInjection
 
         services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
         services.AddTransient<IEmailService,EmailService>();
+        services.AddTransient<IEmailRepository, EmailRepository>();
+        services.AddHostedService<EmailSenderService>();
 
         return services;
     }

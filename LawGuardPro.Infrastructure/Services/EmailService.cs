@@ -1,42 +1,60 @@
 ﻿using MimeKit;
-using MailKit.Net.Smtp;
+using AutoMapper;
 using MailKit.Security;
+using MailKit.Net.Smtp;
+using MimeKit.Cryptography;
+using Org.BouncyCastle.Asn1.Ocsp;
+using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.DTO;
 using Microsoft.Extensions.Options;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Infrastructure.Settings;
-using MimeKit.Cryptography;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace LawGuardPro.Infrastructure.Services;
 
 public class EmailService : IEmailService
 {
     private readonly SmtpSettings _smtpSettings;
-
-    public EmailService(IOptions<SmtpSettings> smtpSettings)
+    private readonly IEmailRepository _emailRepository;
+    private readonly IMapper _mapper;
+    public EmailService(IOptions<SmtpSettings> smtpSettings, IEmailRepository emailRepository,IMapper mapper)
     {
         _smtpSettings = smtpSettings.Value;
+        _emailRepository = emailRepository;
+        _mapper = mapper;
     }
 
-    public async Task SendEmailAsync(EmailRequestDTO emailRequest)
+    public async Task<bool> SendEmailAsync(EmailMetaData emailMetaData)
     {
-        var email = new MimeMessage();
-        email.From.Add(new MailboxAddress(_smtpSettings.FromName, _smtpSettings.FromEmail));
-        email.To.Add(new MailboxAddress("", emailRequest.To));
+        try
+        {
+            var email = new EmailBuilder()
+                .SetFrom(_smtpSettings.FromName, _smtpSettings.FromEmail)
+                .SetTo(emailMetaData.To)
+                .SetSubject(emailMetaData.Subject)
+                .SetBody(emailMetaData.Body)
+                .Build();
 
-        var userName = "Shafayet";
+            using var client = new SmtpClient();
+            await client.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, false);
+            await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
+            await client.SendAsync(email);
+            await client.DisconnectAsync(true);
 
-        var bodyBuilder = new BodyBuilder();
-        bodyBuilder.HtmlBody = $"<p>Hey,<br>Just wanted to say {userName} hi all the way from the land of C#.<br>-- Code guy</p>";
-        bodyBuilder.TextBody = $"Just fun";
-        email.Subject = "Testing out email sending";
-        email.Body = bodyBuilder.ToMessageBody();
+            Console.WriteLine("Email sent successfully to " + emailMetaData.To);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Failed to send email: " + ex.Message);
+            return false;
+        }
+    }
 
-        using var client = new SmtpClient();
-        await client.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, false);
-        await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
-        await client.SendAsync(email);
-        await client.DisconnectAsync(true);
+
+
+    public async Task AddEmailToQueueAsync(EmailMetaData emailMetaDataDto)
+    {
+        await _emailRepository.AddAsync(_mapper.Map<Email>(emailMetaDataDto));
     }
 }

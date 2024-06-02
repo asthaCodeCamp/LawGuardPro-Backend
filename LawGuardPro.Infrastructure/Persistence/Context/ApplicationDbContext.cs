@@ -12,6 +12,7 @@ namespace LawGuardPro.Infrastructure.Persistence.Context;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Case> Cases { get; set; }
         public DbSet<Lawyer> Lawyers { get; set; }
+        public DbSet<Email> Emails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
 
         { 
