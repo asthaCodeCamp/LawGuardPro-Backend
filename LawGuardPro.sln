@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawGuardPro.API", "LawGuardPro.API\LawGuardPro.API.csproj", "{C8FAA005-E998-498D-B3DA-BB076481C111}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawGuardPro.API", "LawGuardPro.API\LawGuardPro.API.csproj", "{C8FAA005-E998-498D-B3DA-BB076481C111}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawGuardPro.Application", "LawGuardPro.Application\LawGuardPro.Application.csproj", "{909C0BC6-B711-4C7D-AEC2-A5F6859F0265}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawGuardPro.Application", "LawGuardPro.Application\LawGuardPro.Application.csproj", "{909C0BC6-B711-4C7D-AEC2-A5F6859F0265}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawGuardPro.Domain", "LawGuardPro.Domain\LawGuardPro.Domain.csproj", "{E46C2D7A-729A-48E0-A761-C0E6D9E2F23B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawGuardPro.Domain", "LawGuardPro.Domain\LawGuardPro.Domain.csproj", "{E46C2D7A-729A-48E0-A761-C0E6D9E2F23B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawGuardPro.Infrastructure", "LawGuardPro.Infrastructure\LawGuardPro.Infrastructure.csproj", "{19041648-1368-4A9C-97DB-394EE1E713CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawGuardPro.Infrastructure", "LawGuardPro.Infrastructure\LawGuardPro.Infrastructure.csproj", "{19041648-1368-4A9C-97DB-394EE1E713CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

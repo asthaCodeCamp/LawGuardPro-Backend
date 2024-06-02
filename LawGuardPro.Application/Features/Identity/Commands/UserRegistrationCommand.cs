@@ -1,10 +1,8 @@
-﻿using LawGuardPro.Application.DTO;
-using MediatR;
-using System.Net;
-using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
 using LawGuardPro.Application.Common;
+using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Features.Identity.Interfaces;
+using MediatR;
 
 namespace LawGuardPro.Application.Features.Identity.Commands;
 
@@ -40,7 +38,7 @@ public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCo
             return Result<UserDTO>.Failure(new List<Error>() { new Error() { Message = "user already exists", Code = "409 Conflict" } });
         }
 
-        return await _identityService.Register(_mapper.Map<RegistrationRequestDTO>(request));
+        return await _identityService.RegisterAsync(_mapper.Map<RegistrationRequestDTO>(request));
 
     }
 }
