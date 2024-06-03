@@ -4,6 +4,6 @@ namespace LawGuardPro.Application.Interfaces;
 
 public interface IEmailRepository: IRepository<Email>
 {
-    public IQueryable GetAllUnsentEmail();
+    public IQueryable<Email> GetAllUnsentEmail();
 }
 

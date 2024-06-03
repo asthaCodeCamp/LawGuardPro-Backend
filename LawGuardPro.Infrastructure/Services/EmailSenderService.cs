@@ -2,51 +2,54 @@
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Entities;
-using LawGuardPro.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace LawGuardPro.Infrastructure.Services;
-
-public class EmailSenderService : BackgroundService
+namespace LawGuardPro.Infrastructure.Services
 {
-    readonly ILogger<EmailSenderService> _logger;
-    private readonly IEmailService _emailService;
-    private readonly IEmailRepository _emailRepository;
-    private readonly IMapper _mapper;
-    public EmailSenderService(ILogger<EmailSenderService> logger, IEmailService emailService, IEmailRepository emailRepository, IMapper mapper)
+    public class EmailSenderService : BackgroundService
     {
-        _logger = logger;
-        _emailService = emailService;
-        _emailRepository = emailRepository;
-        _mapper = mapper;
-    }
+        private readonly ILogger<EmailSenderService> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
-    protected async override Task ExecuteAsync(CancellationToken cancellationToken)
-    {
-        while (!cancellationToken.IsCancellationRequested)
+        public EmailSenderService(ILogger<EmailSenderService> logger, IServiceProvider serviceProvider)
         {
-            _logger.LogInformation("Email Sender Services start!");
-            try
-            {
-                var emailsToSend =  _emailRepository.GetAllUnsentEmail();
+            _logger = logger;
+            _serviceProvider = serviceProvider;
+        }
 
-                foreach (Email email in emailsToSend)
+        protected async override Task ExecuteAsync(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                _logger.LogInformation("Email Sender Service started!");
+                try
                 {
-                    if( await _emailService.SendEmailAsync(_mapper.Map<EmailMetaData>(email)))
+                    using (var scope = _serviceProvider.CreateScope())
                     {
-                        email.IsSent = true;
-                        await _emailRepository.UpdateAsync(email);
+                        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                        var emailRepository = scope.ServiceProvider.GetRequiredService<IEmailRepository>();
+                        var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+
+                        List<Email> emailsToSend = emailRepository.GetAllUnsentEmail().ToList();
+
+                        foreach (Email email in emailsToSend)
+                        {
+                            if (await emailService.SendEmailAsync(mapper.Map<EmailMetaData>(email)))
+                            {
+                                email.IsSent = true;
+                                await emailRepository.UpdateAsync(email);
+                            }
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error sending emails");
+                }
+                await Task.Delay(3000, cancellationToken);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error sending emails");
-            }
-            await Task.Delay(3000,  cancellationToken);
-            
         }
     }
 }

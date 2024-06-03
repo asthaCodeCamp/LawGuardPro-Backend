@@ -9,9 +9,11 @@ public class EmailRepository: Repository<Email>, IEmailRepository
 {
     public EmailRepository(ApplicationDbContext context) : base(context) { }
 
-    public IQueryable GetAllUnsentEmail()
+    public IQueryable<Email> GetAllUnsentEmail()
     {
-        var query = from emails in _context.Emails select emails.IsSent == false;         
+        var query = from emails in _context.Emails
+                    where emails.IsSent == false
+                    select emails;     
         return query;
     }
 }

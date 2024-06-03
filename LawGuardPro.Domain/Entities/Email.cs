@@ -8,12 +8,14 @@ public class Email
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    public string FromName { get; set; } = string.Empty;
     [Required]
-    public string From { get; set; } = string.Empty;
+    public string FromEmail { get; set; } = string.Empty;
+    public string ToName { get; set; } = string.Empty;
     [Required]
-    public string To { get; set; } = string.Empty;
-    public string? Subject { get; set; }
-    public string? Body { get; set; }
+    public string ToEmail { get; set; } = string.Empty;
     public bool IsSent { get; set; } = false;
+    public string Subject { get; set; } = string.Empty;
+    public string Body { get; set; } = string.Empty;
 }
 

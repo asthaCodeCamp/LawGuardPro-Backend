@@ -15,6 +15,7 @@ public class MappingConfig: Profile
             CreateMap<UserLoginCommand, LoginRequestDTO>().ReverseMap();
             CreateMap<RegistrationRequestDTO, UserRegistrationCommand>().ReverseMap();
             CreateMap<EmailMetaData, Email>().ReverseMap();
+            CreateMap<EmailMetaData, SendEmailCommand>().ReverseMap();
         }
         catch (Exception ex)
         {

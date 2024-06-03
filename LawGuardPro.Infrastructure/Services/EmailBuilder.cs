@@ -1,48 +1,77 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using MimeKit;
 
 namespace LawGuardPro.Infrastructure.Services;
 
 public class EmailBuilder
 {
-    private MimeMessage _email;
-    private BodyBuilder _bodyBuilder;
+    private string _fromEmail;
+    private string _toEmail;
+    private string _fromName;
+    private string _toName;
+    private MimeEntity _body;
+    public string _subject;
 
-    public EmailBuilder()
-    {
-        _email = new MimeMessage();
-        _bodyBuilder = new BodyBuilder();
-    }
+    public EmailBuilder() { }
 
-    public EmailBuilder SetFrom(string name, string email)
+    public EmailBuilder SetFromName(string name)
     {
-        _email.From.Add(new MailboxAddress(name, email));
+        _fromName = name;
         return this;
     }
 
-    public EmailBuilder SetTo(string toEmail)
+    public EmailBuilder SetToName(string name)
     {
-        _email.To.Add(new MailboxAddress("", toEmail));
+        _toName = name;
+        return this;
+    }
+
+    public EmailBuilder SetFromEmail(string email)
+    {
+        _fromEmail = email;
+        return this;
+    }
+
+    public EmailBuilder SetToEmail(string email)
+    {
+        _toEmail = email;
         return this;
     }
 
     public EmailBuilder SetSubject(string subject)
     {
-        _email.Subject = subject;
+        _subject = subject;
         return this;
     }
 
-    public EmailBuilder SetBody(string body)
+    public EmailBuilder SetHtmlBody(string htmlBody, string textBody = "")
     {
-        _bodyBuilder.HtmlBody = body;
-        _bodyBuilder.TextBody = body;
+        var bodyBuilder = new BodyBuilder();
+        bodyBuilder.HtmlBody = htmlBody;
+        bodyBuilder.TextBody = textBody;
+        _body = bodyBuilder.ToMessageBody();
+
+        return this;
+    }
+
+    public EmailBuilder SetTextBody(string textBody = "")
+    {
+        var bodyBuilder = new BodyBuilder();
+        bodyBuilder.TextBody = textBody;
+        _body = bodyBuilder.ToMessageBody();
+
         return this;
     }
 
     public MimeMessage Build()
     {
-        _email.Body = _bodyBuilder.ToMessageBody();
-        return _email;
+        var email = new MimeMessage();
+        email.From.Add(new MailboxAddress(_fromName, _fromEmail));
+        email.To.Add(new MailboxAddress(_toName, _toEmail));
+        email.Subject = _subject;
+        email.Body = _body;
+
+        return email;
     }
 }
 

@@ -3,6 +3,7 @@ using LawGuardPro.Application;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Infrastructure;
 using LawGuardPro.Infrastructure.Repositories;
+using LawGuardPro.Infrastructure.Services;
 using LawGuardPro.Infrastructure.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,7 +27,7 @@ public class Program
                                 .AddScoped<ILawyerRepository, LawyerRepository>()
                                 .AddControllers();
 
-
+        builder.Services.AddHostedService<EmailSenderService>();
         var app = builder.Build();
         
         // Configure the HTTP request pipeline.

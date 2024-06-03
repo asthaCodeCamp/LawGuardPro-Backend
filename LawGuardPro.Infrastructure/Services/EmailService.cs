@@ -1,57 +1,40 @@
-﻿using MimeKit;
-using AutoMapper;
-using MailKit.Security;
-using MailKit.Net.Smtp;
-using MimeKit.Cryptography;
-using Org.BouncyCastle.Asn1.Ocsp;
-using LawGuardPro.Domain.Entities;
+﻿using AutoMapper;
 using LawGuardPro.Application.DTO;
-using Microsoft.Extensions.Options;
+using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Infrastructure.Settings;
+using LawGuardPro.Infrastructure.Services.Interfaces;
 
 namespace LawGuardPro.Infrastructure.Services;
 
 public class EmailService : IEmailService
 {
-    private readonly SmtpSettings _smtpSettings;
     private readonly IEmailRepository _emailRepository;
     private readonly IMapper _mapper;
-    public EmailService(IOptions<SmtpSettings> smtpSettings, IEmailRepository emailRepository,IMapper mapper)
+    private readonly IEmailSender _emailSender;
+
+    public EmailService(
+        IMapper mapper,
+        IEmailSender emailSender,
+        IEmailRepository emailRepository)
     {
-        _smtpSettings = smtpSettings.Value;
-        _emailRepository = emailRepository;
         _mapper = mapper;
+        _emailSender = emailSender;
+        _emailRepository = emailRepository;
     }
 
     public async Task<bool> SendEmailAsync(EmailMetaData emailMetaData)
     {
-        try
-        {
-            var email = new EmailBuilder()
-                .SetFrom(_smtpSettings.FromName, _smtpSettings.FromEmail)
-                .SetTo(emailMetaData.To)
-                .SetSubject(emailMetaData.Subject)
-                .SetBody(emailMetaData.Body)
-                .Build();
+        var email = new EmailBuilder()
+            .SetFromName(emailMetaData.FromName)
+            .SetFromEmail(emailMetaData.FromEmail)
+            .SetToName(emailMetaData.ToName)
+            .SetToEmail(emailMetaData.ToEmail)
+            .SetSubject(emailMetaData.Subject)
+            .SetHtmlBody(emailMetaData.Body)
+            .Build();
 
-            using var client = new SmtpClient();
-            await client.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, false);
-            await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
-            await client.SendAsync(email);
-            await client.DisconnectAsync(true);
-
-            Console.WriteLine("Email sent successfully to " + emailMetaData.To);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Failed to send email: " + ex.Message);
-            return false;
-        }
+        return await _emailSender.SendEmailAsync(email);
     }
-
-
 
     public async Task AddEmailToQueueAsync(EmailMetaData emailMetaDataDto)
     {

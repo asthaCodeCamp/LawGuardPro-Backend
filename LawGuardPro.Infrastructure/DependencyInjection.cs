@@ -15,6 +15,7 @@ using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Entities;
 using LawGuardPro.Infrastructure.Services;
 using LawGuardPro.Infrastructure.Settings;
+using LawGuardPro.Infrastructure.Services.Interfaces;
 
 namespace LawGuardPro.Infrastructure;
 
@@ -56,7 +57,8 @@ public static class DependencyInjection
         services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
         services.AddTransient<IEmailService,EmailService>();
         services.AddTransient<IEmailRepository, EmailRepository>();
-        services.AddHostedService<EmailSenderService>();
+        services.AddScoped<IEmailSender, EmailSender>();
+        
 
         return services;
     }

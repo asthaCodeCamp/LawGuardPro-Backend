@@ -4,15 +4,18 @@ using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace LawGuardPro.Application.Features.Identity.Commands;
 
 public class SendEmailCommand : IRequest<Result>
 {
-    public string From { get; set; } = string.Empty;
-    public string To { get; set; } = string.Empty;
-    public string? Subject { get; set; }
-    public string? Body { get; set; }
+    public string FromName { get; set; } = string.Empty;
+    public string FromEmail { get; set; } = string.Empty;
+    public string ToName { get; set; } = string.Empty;
+    public string ToEmail { get; set; } = string.Empty;
+    public string Subject { get; set; } = string.Empty;
+    public string Body { get; set; } = string.Empty;
 }
 
 public class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, Result>
@@ -29,7 +32,7 @@ public class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, Result>
     {
         try
         {
-            await _emailService.SendEmailAsync(_mapper.Map<EmailMetaData>(request));
+            await _emailService.AddEmailToQueueAsync(_mapper.Map<EmailMetaData>(request));
             return Result.Success(StatusCodes.Status202Accepted);
         }
         catch (Exception ex)
