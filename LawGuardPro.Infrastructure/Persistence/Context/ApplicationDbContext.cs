@@ -11,7 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<Case> Cases { get; set; }
     public DbSet<Lawyer> Lawyers { get; set; }
-
+    public DbSet<Email> Emails { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

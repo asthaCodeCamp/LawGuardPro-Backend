@@ -10,9 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using LawGuardPro.Application.Features.Identity.Interfaces;
 using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Domain.Entities;
 using LawGuardPro.Infrastructure.Services;
 using LawGuardPro.Infrastructure.Settings;
 using LawGuardPro.Infrastructure.Services.Interfaces;
@@ -56,7 +54,6 @@ public static class DependencyInjection
         });
 
         services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
-        services.AddTransient<IEmailService,EmailService>();
         services.AddTransient<IEmailRepository, EmailRepository>();
         services.AddScoped<IEmailSender, EmailSender>();
         

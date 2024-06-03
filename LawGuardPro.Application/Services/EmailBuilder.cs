@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using MimeKit;
+﻿using MimeKit;
 
-namespace LawGuardPro.Infrastructure.Services;
+namespace LawGuardPro.Application.Services;
 
 public class EmailBuilder
 {

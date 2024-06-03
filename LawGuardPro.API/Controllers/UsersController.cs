@@ -4,8 +4,6 @@ using LawGuardPro.Application.Features.Settings.Profiles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-using LawGuardPro.Application.Features.Identity.Commands;
-
 namespace LawGuardPro.API.Controllers;
 
 [Route("api/UsersAuth")]
@@ -43,7 +41,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [Route("api/emails")]
+    [Route("api/sendemail")]
     public async Task<IActionResult> SendEmail(SendEmailCommand command)
     {
         var result = await _sender.Send(command);
