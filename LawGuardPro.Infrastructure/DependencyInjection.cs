@@ -29,9 +29,10 @@ public static class DependencyInjection
               options.UseNpgsql(configuration.GetConnectionString("DefaultSQLConnection")));
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-
+        services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+             .AddEntityFrameworkStores<ApplicationDbContext>()
+             .AddDefaultTokenProviders();
+        
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddAutoMapper(typeof(MappingConfig));
 

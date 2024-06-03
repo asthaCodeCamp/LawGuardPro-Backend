@@ -19,14 +19,14 @@ public class IdentityService : IIdentityService
 {
     private string secretKey;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
     private readonly IMapper _mapper;
 
     public IdentityService(
         IMapper mapper,
         IConfiguration configuration,
         UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager)
+        RoleManager<IdentityRole<Guid>> roleManager)
     {
         _mapper = mapper;
         secretKey = configuration.GetValue<string>("Jwt:Key")!;
@@ -63,7 +63,7 @@ public class IdentityService : IIdentityService
 
         if (!await _roleManager.RoleExistsAsync("user"))
         {
-            await _roleManager.CreateAsync(new IdentityRole("user"));
+            await _roleManager.CreateAsync(new IdentityRole<Guid>("user"));
             await _userManager.AddToRoleAsync(user, "user");
         }
         await _userManager.AddToRoleAsync(user, "user");
@@ -89,8 +89,8 @@ public class IdentityService : IIdentityService
 
             Subject = new ClaimsIdentity(new Claim[] {
                    new Claim( ClaimTypes.Name, user.Id.ToString()),
-                   new Claim(ClaimTypes.Role, roles.FirstOrDefault()),
-                   new Claim(ClaimTypes.Email, user.Email)
+                   new Claim(ClaimTypes.Role, roles.FirstOrDefault()!),
+                   new Claim(ClaimTypes.Email, user.Email!)
                 }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

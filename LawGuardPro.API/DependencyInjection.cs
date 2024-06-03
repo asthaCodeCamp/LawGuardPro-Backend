@@ -1,11 +1,11 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using LawGuardPro.API.Middlewares.Exceptions;
+using Microsoft.OpenApi.Models;
 
 namespace LawGuardPro.Api;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApi(
-        this IServiceCollection services)
+    public static IServiceCollection AddApi(this IServiceCollection services)
     {
         services.AddSwaggerGen(opt =>
         {
@@ -21,25 +21,45 @@ public static class DependencyInjection
             });
 
             opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
                 {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{}
-                    }
-                });
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
         });
 
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
         services.AddControllers();
         services.AddSwaggerGen();
         services.AddEndpointsApiExplorer();
 
         return services;
+    }
+
+    public static WebApplication UseApi(this WebApplication app)
+    {
+        app.UseExceptionHandler();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        return app;
     }
 }
