@@ -1,18 +1,16 @@
-﻿using LawGuardPro.Application.Features.Identity.Interfaces;
+﻿using System.Text;
 using LawGuardPro.Domain.Entities;
-using LawGuardPro.Infrastructure.Identity;
-using LawGuardPro.Infrastructure.Persistence.Context;
-using LawGuardPro.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using LawGuardPro.Application.Features.Identity.Interfaces;
 using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Domain.Entities;
+using Microsoft.Extensions.Configuration;
+using LawGuardPro.Infrastructure.Identity;
+using LawGuardPro.Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using LawGuardPro.Infrastructure.Persistence.Context;
+using LawGuardPro.Application.Features.Identity.Interfaces;
 
 namespace LawGuardPro.Infrastructure;
 
@@ -24,12 +22,10 @@ public static class DependencyInjection
     {
         services.AddDbContext<ApplicationDbContext>(options =>
               options.UseNpgsql(configuration.GetConnectionString("DefaultSQLConnection")));
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-
-        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
         services.AddAutoMapper(typeof(MappingConfig));
 
         var key = configuration.GetValue<string>("Jwt:Key");
@@ -50,6 +46,24 @@ public static class DependencyInjection
                 ValidateAudience = false
             };
         });
+
+        services.RegisterServices();
+        services.RegisterRepositories();
+
+        return services;
+    }
+
+    private static IServiceCollection RegisterServices(this IServiceCollection services)
+    {
+        services.AddScoped<IIdentityService, IdentityService>();
+
+        return services;
+    }
+
+    private static IServiceCollection RegisterRepositories(this IServiceCollection services)
+    {
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<IAddressRepository, AddressRepository>();
 
         return services;
     }

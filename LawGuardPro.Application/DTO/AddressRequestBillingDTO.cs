@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace LawGuardPro.Application.DTO;
 
-namespace LawGuardPro.Application.DTO
-{
-    public class AddressRequestBillingDTO
-    {
-       
-        public string? BillingName { get; set; }
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-        public string Town { get; set; }
-        public int PostalCode { get; set; }
-        public string Country { get; set; }
+public class AddressRequestBillingDTO
+{       
+    public string? BillingName { get; set; }
+    public string AddressLine1 { get; set; }
+    public string AddressLine2 { get; set; }
+    public string Town { get; set; }
+    public int PostalCode { get; set; }
+    public string Country { get; set; }
 
-        // Foreign key property
-       
-    }
+    // Foreign key property
+   
 }

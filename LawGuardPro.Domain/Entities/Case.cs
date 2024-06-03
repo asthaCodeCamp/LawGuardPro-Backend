@@ -18,7 +18,7 @@ namespace LawGuardPro.Domain.Entities
         public DateTime CreatedOn { get; set; }
         public DateTime LastUpdated { get; set; }
         public bool IsLawyerAssigned { get; set; }
-        public string? ApplicationUserId { get; set; }
+        public Guid? ApplicationUserId { get; set; }
         public int? LawyerId { get; set; }
 
         public ApplicationUser? ApplicationUser { get; set; }

@@ -17,10 +17,10 @@ namespace LawGuardPro.Application.Common.Mappings
             CreateMap<CreateCaseCommand, Case>();
             CreateMap<Case, CaseDto>();
             CreateMap<Lawyer, LawyerDTO>().ReverseMap();
-            CreateMap<AddressRequestResidencDTO, AddressUser>();
-            CreateMap<AddressRequestBillingDTO, AddressUser>();
-            CreateMap<AddressUser, AddressResponseBillingDTO>();
-            CreateMap<AddressUser, AddressResponseResidencDTO>();
+            CreateMap<AddressRequestResidencDTO, Address>();
+            CreateMap<AddressRequestBillingDTO, Address>();
+            CreateMap<Address, AddressResponseBillingDTO>();
+            CreateMap<Address, AddressResponseResidencDTO>();
         }
     }
 }

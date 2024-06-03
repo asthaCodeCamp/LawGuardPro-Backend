@@ -2,11 +2,12 @@
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Features.Users.Commands;
 using LawGuardPro.Application.Features.Users.Queries;
-using MediatR; 
+using MediatR;
+using LawGuardPro.Domain.Common.Enums;
 
 namespace LawGuardPro.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/address")]
     [ApiController]
     public class AddressController : ControllerBase
     {
@@ -17,22 +18,11 @@ namespace LawGuardPro.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("CreateResidenceAddress")]
-        public async Task<IActionResult> Create([FromBody] AddressRequestResidencDTO model)
+        [HttpPost("create/residence")]
+        public async Task<IActionResult> Create([FromBody] CreateAddressResidenCommand model)
         {
-            var command = new CreateAddressResidenCommand
-            {
-                AddressType = 1,
-                AddressLine1 = model.AddressLine1,
-                AddressLine2 = model.AddressLine2,
-                Town = model.Town,
-                PostalCode = model.PostalCode,
-                Country = model.Country,
-                UserId = 1
 
-            };
-
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(model);
 
             if (result.IsSuccess())
             {
@@ -42,23 +32,11 @@ namespace LawGuardPro.Controllers
             return BadRequest(result); 
         }
 
-        [HttpPost("CreateBillingAddress")]
-        public async Task<IActionResult> CreateBillingAddress([FromBody] AddressRequestBillingDTO model)
+        [HttpPost("create/billing")]
+        public async Task<IActionResult> CreateBillingAddress([FromBody] CreateAddressBillingCommand model)
         {
-            var command = new CreateAddressBillingCommand
-            {
-                AddressType = 2,
-                BillingName=model.BillingName,
-                AddressLine1 = model.AddressLine1,
-                AddressLine2 = model.AddressLine2,
-                Town = model.Town,
-                PostalCode = model.PostalCode,
-                Country = model.Country,
-                UserId = 1
 
-            };
-
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(model);
 
             if (result.IsSuccess())
             {
@@ -68,14 +46,13 @@ namespace LawGuardPro.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("GetBillingAddressById")]
-        public async Task<IActionResult> GetBillingAddressById([FromBody] int Id)
+        [HttpGet("billing/{userId:Guid}")]
+        public async Task<IActionResult> GetBillingAddressById(Guid userId)
         {
-            var query = new GetAddressBillingQueries
+            var query = new GetAddressBillingQuery
             {
 
-                UserId = Id
-
+                UserId = userId
             };
 
             var result = await _mediator.Send(query);
@@ -89,13 +66,13 @@ namespace LawGuardPro.Controllers
 
         }
 
-        [HttpGet("GetResidencAddressById")]
-        public async Task<IActionResult> GetResidencAddressById([FromBody] int Id)
+        [HttpGet("residence/{userId:Guid}")]
+        public async Task<IActionResult> GetResidencAddressById( Guid userId)
         {
-            var query = new GetAddressResidenQueries
+            var query = new GetAddressResidenQuery
             {
 
-                UserId = Id
+                UserId = userId
 
             };
 
@@ -107,7 +84,6 @@ namespace LawGuardPro.Controllers
             }
 
             return Ok(result);
-
         }
 
     }

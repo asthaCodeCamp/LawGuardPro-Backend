@@ -1,41 +1,48 @@
-﻿using AutoMapper;
-using LawGuardPro.Application.Common;
-using LawGuardPro.Application.Interfaces;
+﻿using MediatR;
+using AutoMapper;
 using LawGuardPro.Domain.Entities;
-using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
+using LawGuardPro.Application.Common;
+using LawGuardPro.Domain.Common.Enums;
+using LawGuardPro.Application.Interfaces;
 
 namespace LawGuardPro.Application.Features.Users.Commands;
 
-public class CreateAddressResidenCommand : IRequest<Result<int>>
+public class CreateAddressResidenCommand : IRequest<Result<Guid>>
 {
-    public int? AddressType { get; set; }
+    public AddressType AddressType { get; set; }
     public string AddressLine1 { get; set; }
     public string AddressLine2 { get; set; }
     public string Town { get; set; }
     public int PostalCode { get; set; }
     public string Country { get; set; }
-    public int UserId { get; set; }
 }
 
-public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressResidenCommand, Result<int>>
+public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressResidenCommand, Result<Guid>>
 {
-    private readonly IRepository<AddressUser> _repository;
+    private readonly IRepository<Address> _repository;
     private readonly IMapper _mapper;
 
-    public CreateAddressResidenCommandHandler(IRepository<AddressUser> repository, IMapper mapper)
+    public CreateAddressResidenCommandHandler(IRepository<Address> repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(CreateAddressResidenCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateAddressResidenCommand request, CancellationToken cancellationToken)
     {
-        var address = _mapper.Map<AddressUser>(request);
-
+        var address = new Address
+        {
+            AddressType = AddressType.Residence,
+            AddressLine1 = request.AddressLine1,
+            AddressLine2 = request.AddressLine2,
+            Town = request.Town,
+            PostalCode = request.PostalCode,
+            Country = request.Country,
+           UserId=new Guid("1e883be0-c947-4d7d-89d1-31bd175eb54b")
+        };
+            
         await _repository.AddAsync(address);
 
-        return Result<int>.Success(address.AddressId);
+        return Result<Guid>.Success(address.Id);
     }
 }

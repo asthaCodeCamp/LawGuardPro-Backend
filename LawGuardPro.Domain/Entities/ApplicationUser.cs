@@ -7,12 +7,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LawGuardPro.Domain.Entities
 {
-    public class ApplicationUser : IdentityUser
-    {
+    public class ApplicationUser : IdentityUser<Guid>
+    {  
         public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string? LastName { get; set; } 
         public string? CountryResidency { get; set; }
-        public ICollection<AddressUser> AddressUsers { get; set; } = new List<AddressUser>();
+        public ICollection<Address> AddressUsers { get; set; } = new List<Address>();
     }
 }
