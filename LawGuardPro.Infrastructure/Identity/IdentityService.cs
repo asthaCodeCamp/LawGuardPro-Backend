@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using System.Text;
-using System.Security.Claims;
-using LawGuardPro.Domain.Entities;
+using LawGuardPro.Application.Common;
 using LawGuardPro.Application.DTO;
 using Microsoft.AspNetCore.Identity;
-using LawGuardPro.Application.Common;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 using LawGuardPro.Application.Features.Identity.Interfaces;
+using LawGuardPro.Domain.Entities;
 
 namespace LawGuardPro.Infrastructure.Identity;
 
@@ -86,8 +86,9 @@ public class IdentityService : IIdentityService
 
             Subject = new ClaimsIdentity(new Claim[] {
                    new Claim( ClaimTypes.Name, user.Id.ToString()),
-                   new Claim(ClaimTypes.Role, roles.FirstOrDefault())
-                  
+                   new Claim(ClaimTypes.Role, roles.FirstOrDefault()!),
+                   new Claim(ClaimTypes.Email, user.Email!)
+
                 }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
