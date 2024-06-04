@@ -14,7 +14,8 @@ public class MappingConfig: Profile
             CreateMap<ApplicationUser, UserDTO>().ReverseMap();
             CreateMap<UserLoginCommand, LoginRequestDTO>().ReverseMap();
             CreateMap<RegistrationRequestDTO, UserRegistrationCommand>().ReverseMap();
-
+            CreateMap<ApplicationUser, AddressResponseBillingDTO>().ReverseMap();
+            CreateMap<ApplicationUser, AddressResponseResidencDTO>().ReverseMap();
         }
         catch (Exception ex)
         {

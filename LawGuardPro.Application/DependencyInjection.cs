@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
 
 namespace LawGuardPro.Application;
 
@@ -16,4 +15,3 @@ public static class DependencyInjection
         return services;
     }
 }
- 
