@@ -83,9 +83,8 @@ public class IdentityService : IIdentityService
         var key = Encoding.ASCII.GetBytes(_secretKey);//convert the secretKey from string to bytes
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-
             Subject = new ClaimsIdentity(new Claim[] {
-                   new Claim( ClaimTypes.Name, user.Id.ToString()),
+                   new Claim(ClaimTypes.Name, user.Id.ToString()),
                    new Claim(ClaimTypes.Role, roles.FirstOrDefault()!),
                    new Claim(ClaimTypes.Email, user.Email!)
                 }),

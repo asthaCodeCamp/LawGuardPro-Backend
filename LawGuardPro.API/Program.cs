@@ -23,7 +23,9 @@ public class Program
             .AddScoped<ICaseRepository, CaseRepository>()
             .AddScoped<ILawyerRepository, LawyerRepository>()
             .AddControllers();
-
+       
+        builder.Services.AddHostedService<EmailSenderService>();
+        builder.Services.AddHttpContextAccessor();       
         var app = builder.Build();
         app.UseApi();
 
