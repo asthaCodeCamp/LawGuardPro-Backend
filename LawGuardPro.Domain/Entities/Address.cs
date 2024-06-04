@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using LawGuardPro.Domain.Common.Enums;
 using System.ComponentModel.DataAnnotations;
-using LawGuardPro.Domain.Common.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LawGuardPro.Domain.Entities;
 
@@ -17,9 +17,6 @@ public class Address
     public int PostalCode { get; set; }
     public string? Country { get; set; }
 
-    // Foreign key property
     public Guid UserId { get; set; }
-
-    // Navigation property
     public ApplicationUser? ApplicationUser { get; set; }
 }

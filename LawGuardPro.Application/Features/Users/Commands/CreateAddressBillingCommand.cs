@@ -6,6 +6,7 @@ using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Common.Enums;
 
 namespace LawGuardPro.Application.Features.Users.Commands;
+
 public class CreateAddressBillingCommand : IRequest<Result<Guid>>
 {
     public AddressType? AddressType { get; set; }
@@ -15,10 +16,8 @@ public class CreateAddressBillingCommand : IRequest<Result<Guid>>
     public string Town { get; set; }
     public int PostalCode { get; set; }
     public string Country { get; set; }
-
-    // Foreign key property
-   
 }
+
 public class CreateAddressBillingCommandHandler : IRequestHandler<CreateAddressBillingCommand, Result<Guid>>
 {
     private readonly IRepository<Address> _repository;

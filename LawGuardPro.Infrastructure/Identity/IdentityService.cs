@@ -1,20 +1,20 @@
 ﻿using AutoMapper;
 using System.Text;
-using LawGuardPro.Application.Common;
+using System.Security.Claims;
+using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.DTO;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using LawGuardPro.Application.Common;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
 using LawGuardPro.Application.Features.Identity.Interfaces;
-using LawGuardPro.Domain.Entities;
 
 namespace LawGuardPro.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
-    private string secretKey;
+    private string _secretKey;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
     private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ public class IdentityService : IIdentityService
         RoleManager<IdentityRole<Guid>> roleManager)
     {
         _mapper = mapper;
-        secretKey = configuration.GetValue<string>("Jwt:Key")!;
+        _secretKey = configuration.GetValue<string>("Jwt:Key")!;
         _userManager = userManager;
         _roleManager = roleManager;
     }
@@ -51,7 +51,7 @@ public class IdentityService : IIdentityService
         };
 
         var result = await _userManager.CreateAsync(user, registrationRequestDTO.Password);
-       
+
         if (!result.Succeeded)
         {
             var errors = result.Errors.Select(error => new Error { Message = error.Description, Code = error.Code }).ToList();
@@ -74,13 +74,13 @@ public class IdentityService : IIdentityService
         bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
 
         if (user == null || isValid == false)
-        { 
+        {
             return Result<LoginResponseDTO>.Failure(new List<Error> { new Error() { Message = "Invalid username or password", Code = "InvalidCredentials" } });
         }
         var roles = await _userManager.GetRolesAsync(user);
         //if the user is found generate JWT token
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(secretKey);//convert the secretKey from string to bytes
+        var key = Encoding.ASCII.GetBytes(_secretKey);//convert the secretKey from string to bytes
         var tokenDescriptor = new SecurityTokenDescriptor
         {
 

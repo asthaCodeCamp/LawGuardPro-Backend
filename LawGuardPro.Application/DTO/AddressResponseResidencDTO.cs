@@ -1,9 +1,4 @@
-﻿using LawGuardPro.Domain.Common.Enums;
-using LawGuardPro.Domain.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace LawGuardPro.Application.DTO;
+﻿namespace LawGuardPro.Application.DTO;
 
 public class AddressResponseResidencDTO
 {

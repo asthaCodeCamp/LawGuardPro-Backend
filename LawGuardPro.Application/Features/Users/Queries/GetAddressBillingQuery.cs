@@ -1,9 +1,9 @@
-﻿using AutoMapper;
+﻿using MediatR;
+using AutoMapper;
 using LawGuardPro.Application.DTO;
-using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Domain.Common.Enums;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
+using LawGuardPro.Domain.Common.Enums;
+using LawGuardPro.Application.Interfaces;
 
 namespace LawGuardPro.Application.Features.Users.Queries;
 

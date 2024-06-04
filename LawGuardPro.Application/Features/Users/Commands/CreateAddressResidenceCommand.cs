@@ -7,7 +7,7 @@ using LawGuardPro.Application.Interfaces;
 
 namespace LawGuardPro.Application.Features.Users.Commands;
 
-public class CreateAddressResidenCommand : IRequest<Result<Guid>>
+public class CreateAddressResidenceCommand : IRequest<Result<Guid>>
 {
     public AddressType AddressType { get; set; }
     public string AddressLine1 { get; set; }
@@ -17,7 +17,7 @@ public class CreateAddressResidenCommand : IRequest<Result<Guid>>
     public string Country { get; set; }
 }
 
-public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressResidenCommand, Result<Guid>>
+public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressResidenceCommand, Result<Guid>>
 {
     private readonly IRepository<Address> _repository;
     private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressR
         _mapper = mapper;
     }
 
-    public async Task<Result<Guid>> Handle(CreateAddressResidenCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateAddressResidenceCommand request, CancellationToken cancellationToken)
     {
         var address = new Address
         {
@@ -38,9 +38,9 @@ public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressR
             Town = request.Town,
             PostalCode = request.PostalCode,
             Country = request.Country,
-           UserId=new Guid("1e883be0-c947-4d7d-89d1-31bd175eb54b")
+            UserId = new Guid("1e883be0-c947-4d7d-89d1-31bd175eb54b")
         };
-            
+
         await _repository.AddAsync(address);
 
         return Result<Guid>.Success(address.Id);
