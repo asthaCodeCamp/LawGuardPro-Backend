@@ -14,16 +14,16 @@ namespace LawGuardPro.Infrastructure.UnitofWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
-        private IRepository<Case> _caseRepository;
-        private IRepository<Lawyer> _lawyerRepository;
+        private ICaseRepository _caseRepository;
+        private ILawyerRepository _lawyerRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IRepository<Case> CaseRepository => _caseRepository ??= new Repository<Case>(_context);
-        public IRepository<Lawyer> LawyerRepository => _lawyerRepository ??= new Repository<Lawyer>(_context);
+        public ICaseRepository CaseRepository => _caseRepository ??= new CaseRepository(_context);
+        public ILawyerRepository LawyerRepository => _lawyerRepository ??= new LawyerRepository(_context);
 
         public async Task<int> CommitAsync()
         {

@@ -181,7 +181,7 @@ namespace LawGuardPro.Infrastructure.Migrations
                 {
                     CaseId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CaseNumber = table.Column<int>(type: "integer", nullable: false),
+                    CaseNumber = table.Column<string>(type: "text", nullable: true),
                     CaseName = table.Column<string>(type: "text", nullable: true),
                     CaseType = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),

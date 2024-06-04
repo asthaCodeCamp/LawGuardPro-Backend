@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LawGuardPro.Infrastructure.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LawGuardPro.Infrastructure.Repositories
 {
@@ -42,6 +43,45 @@ namespace LawGuardPro.Infrastructure.Repositories
                 await _context.Entry(caseEntity).Reference(c => c.Lawyer).LoadAsync();
             }
             return caseEntity;
+        }
+
+        public async Task<string> GetMaxCaseNumberAsync()
+        {
+            var maxCaseNumber = await _context.Cases
+               .OrderByDescending(c => c.CaseNumber)
+               .Select(c => c.CaseNumber)
+               .FirstOrDefaultAsync();
+
+            return maxCaseNumber;
+        }
+
+        public async Task<(IEnumerable<Case> Cases, int TotalCount)> GetCasesByUserIdAsync(string userId, int pageNumber, int pageSize)
+        {
+            var query = _context.Cases
+                .Where(c => c.ApplicationUserId == userId)
+                .Select(c => new
+                {
+                    c.CaseNumber,
+                    c.CaseName,
+                    c.LastUpdated,
+                    c.Status
+                });
+
+            var totalCount = await query.CountAsync();
+
+            var cases = await query
+                .OrderByDescending(c => c.LastUpdated)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (cases.Select(c => new Case
+            {
+                CaseNumber = c.CaseNumber,
+                CaseName = c.CaseName,
+                LastUpdated = c.LastUpdated,
+                Status = c.Status
+            }), totalCount);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace LawGuardPro.Application.DTO
     public class CaseDto
     {
         public int CaseId { get; set; }
-        public int CaseNumber { get; set; }
+        public string? CaseNumber { get; set; }
         public string? CaseName { get; set; }
         public string? CaseType { get; set; }
         public string? Description { get; set; }

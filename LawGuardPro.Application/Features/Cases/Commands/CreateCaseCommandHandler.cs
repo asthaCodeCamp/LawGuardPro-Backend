@@ -29,7 +29,17 @@ namespace LawGuardPro.Application.Features.Cases.Commands
         {
             var caseEntity = _mapper.Map<Case>(request);
 
-            caseEntity.CaseNumber = new Random().Next(100000, 999999);
+            var maxCaseNumberString = await _unitOfWork.CaseRepository.GetMaxCaseNumberAsync();
+            int maxCaseNumber = 0;
+
+            if (!string.IsNullOrEmpty(maxCaseNumberString))
+            {
+                maxCaseNumber = int.Parse(maxCaseNumberString);
+            }
+
+            int nextCaseNumber = maxCaseNumber + 1;
+            caseEntity.CaseNumber = nextCaseNumber.ToString("D6");
+
             caseEntity.Status = "working";
             caseEntity.CreatedOn = DateTime.UtcNow;
             caseEntity.LastUpdated = DateTime.UtcNow;

@@ -29,5 +29,19 @@ namespace LawGuardPro.API.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetCasesByUserId(string userId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var query = new GetCasesByUserIdQuery(userId, pageNumber, pageSize);
+            var result = await _mediator.Send(query);
+
+            if (result.IsSuccess())
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }
