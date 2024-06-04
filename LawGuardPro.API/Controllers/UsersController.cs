@@ -47,4 +47,16 @@ public class UsersController : ControllerBase
         var result = await _sender.Send(command);
         return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
+
+    [HttpPatch("UpdateUserInfo")]
+    public async Task<IActionResult> UpdateUserInfo(ProfileEditCommand model)
+    {
+        if (model == null)
+        {
+            return BadRequest("Invalid user data.");
+        }
+        var result = await _sender.Send(model);
+        if (!result.IsSuccess()) return StatusCode(result.StatusCode, result);
+        return Ok(result);
+    }
 }
