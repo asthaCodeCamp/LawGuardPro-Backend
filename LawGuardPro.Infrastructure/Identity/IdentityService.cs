@@ -88,7 +88,6 @@ public class IdentityService : IIdentityService
                    new Claim( ClaimTypes.Name, user.Id.ToString()),
                    new Claim(ClaimTypes.Role, roles.FirstOrDefault()!),
                    new Claim(ClaimTypes.Email, user.Email!)
-
                 }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
