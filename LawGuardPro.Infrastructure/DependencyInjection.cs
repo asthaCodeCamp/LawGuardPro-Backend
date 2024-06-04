@@ -6,10 +6,13 @@ using Microsoft.IdentityModel.Tokens;
 using LawGuardPro.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
 using LawGuardPro.Infrastructure.Identity;
+using LawGuardPro.Infrastructure.Services;
+using LawGuardPro.Infrastructure.Settings;
 using LawGuardPro.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using LawGuardPro.Infrastructure.Persistence.Context;
+using LawGuardPro.Infrastructure.Services.Interfaces;
 using LawGuardPro.Application.Features.Identity.Interfaces;
 
 namespace LawGuardPro.Infrastructure;
@@ -49,6 +52,10 @@ public static class DependencyInjection
                 ValidateAudience = false
             };
         });
+
+        services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
+        services.AddTransient<IEmailRepository, EmailRepository>();
+        services.AddScoped<IEmailSender, EmailSender>();
 
         return services;
     }

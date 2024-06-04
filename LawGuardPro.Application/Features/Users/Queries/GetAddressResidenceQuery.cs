@@ -7,13 +7,13 @@ using LawGuardPro.Application.Interfaces;
 
 namespace LawGuardPro.Application.Features.Users.Queries;
 
-public class GetAddressResidenceQuery : IRequest<AddressResponseResidencDTO>
+public class GetAddressResidenceQuery : IRequest<AddressResponseResidenceDTO>
 {
     public Guid UserId { get; set; }
 }
 
 public class GetAddressResidenceQueryHandler
-    : IRequestHandler<GetAddressResidenceQuery, AddressResponseResidencDTO>
+    : IRequestHandler<GetAddressResidenceQuery, AddressResponseResidenceDTO>
 {
     private readonly IAddressRepository _repository;
     private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ public class GetAddressResidenceQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<AddressResponseResidencDTO> Handle(GetAddressResidenceQuery request, CancellationToken cancellationToken)
+    public async Task<AddressResponseResidenceDTO> Handle(GetAddressResidenceQuery request, CancellationToken cancellationToken)
     {
         var details = await _repository
                             .FilterBy(
@@ -32,7 +32,7 @@ public class GetAddressResidenceQueryHandler
                                 user => user.AddressType == AddressType.Residence)
                             .FirstOrDefaultAsync();
 
-        var address = _mapper.Map<AddressResponseResidencDTO>(details);
+        var address = _mapper.Map<AddressResponseResidenceDTO>(details);
         return address;
     }
 }

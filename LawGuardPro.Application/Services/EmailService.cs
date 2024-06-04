@@ -1,0 +1,43 @@
+﻿using AutoMapper;
+using LawGuardPro.Application.DTO;
+using LawGuardPro.Domain.Entities;
+using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Infrastructure.Services.Interfaces;
+
+namespace LawGuardPro.Application.Services;
+
+public class EmailService : IEmailService
+{
+    private readonly IEmailRepository _emailRepository;
+    private readonly IMapper _mapper;
+    private readonly IEmailSender _emailSender;
+
+    public EmailService(
+        IMapper mapper,
+        IEmailSender emailSender,
+        IEmailRepository emailRepository)
+    {
+        _mapper = mapper;
+        _emailSender = emailSender;
+        _emailRepository = emailRepository;
+    }
+
+    public async Task<bool> SendEmailAsync(EmailMetaData emailMetaData)
+    {
+        var email = new EmailBuilder()
+            .SetFromName(emailMetaData.FromName)
+            .SetFromEmail(emailMetaData.FromEmail)
+            .SetToName(emailMetaData.ToName)
+            .SetToEmail(emailMetaData.ToEmail)
+            .SetSubject(emailMetaData.Subject)
+            .SetHtmlBody(emailMetaData.Body)
+            .Build();
+
+        return await _emailSender.SendEmailAsync(email);
+    }
+
+    public async Task AddEmailToQueueAsync(EmailMetaData emailMetaDataDto)
+    {
+        await _emailRepository.AddAsync(_mapper.Map<Email>(emailMetaDataDto));
+    }
+}
