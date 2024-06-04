@@ -1,6 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using LawGuardPro.Application.Common;
 using LawGuardPro.Application.Features.Identity.Commands;
+using LawGuardPro.Application.Features.Settings.Profiles;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LawGuardPro.API.Controllers;
 
@@ -36,6 +38,13 @@ public class UsersController : ControllerBase
         }
 
         return Ok(result);
-    }           
-    
+    }
+
+    [HttpPost]
+    [Route("api/sendemail")]
+    public async Task<IActionResult> SendEmail(SendEmailCommand command)
+    {
+        var result = await _sender.Send(command);
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
+    }
 }

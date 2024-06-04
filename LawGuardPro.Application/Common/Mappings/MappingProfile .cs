@@ -15,6 +15,6 @@ public class MappingProfile : Profile
         CreateMap<AddressRequestResidencDTO, Address>();
         CreateMap<AddressRequestBillingDTO, Address>();
         CreateMap<Address, AddressResponseBillingDTO>();
-        CreateMap<Address, AddressResponseResidencDTO>();
+        CreateMap<Address, AddressResponseResidenceDTO>();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace LawGuardPro.Application.DTO;
 
-public class AddressResponseResidencDTO
+public class AddressResponseResidenceDTO
 {
     public Guid UserId { get; set; }
     public string? AddressLine1 { get; set; }
