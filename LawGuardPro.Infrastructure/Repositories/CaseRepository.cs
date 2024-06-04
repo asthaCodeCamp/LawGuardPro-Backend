@@ -58,7 +58,7 @@ namespace LawGuardPro.Infrastructure.Repositories
         public async Task<(IEnumerable<Case> Cases, int TotalCount)> GetCasesByUserIdAsync(string userId, int pageNumber, int pageSize)
         {
             var query = _context.Cases
-                .Where(c => c.ApplicationUserId == userId)
+                .Where(c => c.UserId == userId)
                 .Select(c => new
                 {
                     c.CaseNumber,

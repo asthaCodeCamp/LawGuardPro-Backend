@@ -18,7 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Case>()
             .HasOne(c => c.ApplicationUser)
             .WithMany()
-            .HasForeignKey(c => c.ApplicationUserId);
+            .HasForeignKey(c => c.UserId);
 
         modelBuilder.Entity<Case>()
             .HasOne(c => c.Lawyer)
