@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using LawGuardPro.Application.DTO;
-using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Entities;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LawGuardPro.Application.Interfaces;
 
@@ -52,4 +51,3 @@ public class EmailSenderService : BackgroundService
         }
     }
 }
-

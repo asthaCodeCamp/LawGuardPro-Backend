@@ -5,7 +5,7 @@ using LawGuardPro.Domain.Entities;
 
 namespace LawGuardPro.Infrastructure;
 
-public class MappingConfig: Profile
+public class MappingConfig : Profile
 {
     public MappingConfig()
     {
@@ -16,6 +16,8 @@ public class MappingConfig: Profile
             CreateMap<RegistrationRequestDTO, UserRegistrationCommand>().ReverseMap();
             CreateMap<EmailMetaData, Email>().ReverseMap();
             CreateMap<EmailMetaData, SendEmailCommand>().ReverseMap();
+            CreateMap<ApplicationUser, AddressResponseBillingDTO>().ReverseMap();
+            CreateMap<ApplicationUser, AddressResponseResidenceDTO>().ReverseMap();
         }
         catch (Exception ex)
         {

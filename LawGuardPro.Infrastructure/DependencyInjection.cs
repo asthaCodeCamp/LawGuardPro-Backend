@@ -1,19 +1,19 @@
-﻿using LawGuardPro.Application.Features.Identity.Interfaces;
+﻿using System.Text;
 using LawGuardPro.Domain.Entities;
-using LawGuardPro.Infrastructure.Identity;
-using LawGuardPro.Infrastructure.Persistence.Context;
-using LawGuardPro.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using LawGuardPro.Application.Interfaces;
+using Microsoft.Extensions.Configuration;
+using LawGuardPro.Infrastructure.Identity;
 using LawGuardPro.Infrastructure.Services;
 using LawGuardPro.Infrastructure.Settings;
+using LawGuardPro.Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using LawGuardPro.Infrastructure.Persistence.Context;
 using LawGuardPro.Infrastructure.Services.Interfaces;
+using LawGuardPro.Application.Features.Identity.Interfaces;
 
 namespace LawGuardPro.Infrastructure;
 
@@ -30,7 +30,7 @@ public static class DependencyInjection
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();
-        
+
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddAutoMapper(typeof(MappingConfig));
 
@@ -56,7 +56,6 @@ public static class DependencyInjection
         services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
         services.AddTransient<IEmailRepository, EmailRepository>();
         services.AddScoped<IEmailSender, EmailSender>();
-        
 
         return services;
     }

@@ -4,14 +4,12 @@ namespace LawGuardPro.Application.Services;
 
 public class EmailBuilder
 {
-    private string _fromEmail;
-    private string _toEmail;
-    private string _fromName;
-    private string _toName;
-    private MimeEntity _body;
-    public string _subject;
-
-    public EmailBuilder() { }
+    private string _fromEmail = string.Empty;
+    private string _toEmail = string.Empty;
+    private string _fromName = string.Empty;
+    private string _toName = string.Empty;
+    private MimeEntity? _body;
+    public string _subject = string.Empty;
 
     public EmailBuilder SetFromName(string name)
     {

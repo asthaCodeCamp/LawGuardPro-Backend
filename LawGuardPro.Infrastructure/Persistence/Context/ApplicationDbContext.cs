@@ -1,7 +1,7 @@
 ﻿using  LawGuardPro.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace LawGuardPro.Infrastructure.Persistence.Context;
 
@@ -12,6 +12,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Case> Cases { get; set; }
     public DbSet<Lawyer> Lawyers { get; set; }
     public DbSet<Email> Emails { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -27,4 +28,3 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .HasForeignKey(c => c.LawyerId);
     }
 }
-
