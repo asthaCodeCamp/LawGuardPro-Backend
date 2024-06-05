@@ -52,7 +52,7 @@ public static class DependencyInjection
                 ValidateAudience = false
             };
         });
-
+        services.AddScoped<IAddressRepository, AddressRepository>();
         services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
         services.AddTransient<IEmailRepository, EmailRepository>();
         services.AddScoped<IEmailSender, EmailSender>();
