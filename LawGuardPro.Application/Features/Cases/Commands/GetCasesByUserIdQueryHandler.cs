@@ -1,15 +1,8 @@
-﻿using LawGuardPro.Application.Common;
-using LawGuardPro.Domain.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LawGuardPro.Application.Interfaces;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using LawGuardPro.Application.Common;
 using LawGuardPro.Application.DTO;
+using LawGuardPro.Application.Interfaces;
+using MediatR;
 
 
 namespace LawGuardPro.Application.Features.Cases.Commands
@@ -17,25 +10,34 @@ namespace LawGuardPro.Application.Features.Cases.Commands
     public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, Result<(IEnumerable<CaseDto> Cases, int TotalCount)>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetCasesByUserIdQueryHandler(IUnitOfWork unitOfWork)
+        public GetCasesByUserIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<(IEnumerable<CaseDto> Cases, int TotalCount)>> Handle(GetCasesByUserIdQuery request, CancellationToken cancellationToken)
         {
-            var (cases, totalCount) = await _unitOfWork.CaseRepository.GetCasesByUserIdAsync(request.UserId, request.PageNumber, request.PageSize);
-
-            var caseDtos = cases.Select(c => new CaseDto
+            try
             {
-                CaseNumber = c.CaseNumber,
-                CaseName = c.CaseName,
-                LastUpdated = c.LastUpdated,
-                Status = c.Status
-            }).ToList();
+                var casesResult = await _unitOfWork.CaseRepository.GetCasesByUserIdAsync(request.UserId, request.PageNumber, request.PageSize);
 
-            return Result<(IEnumerable<CaseDto> Cases, int TotalCount)>.Success((caseDtos, totalCount));
+                var totalCount = casesResult.TotalCount;
+
+                var pagedCases = casesResult.Cases
+                    .Skip((request.PageNumber - 1) * request.PageSize)
+                    .Take(request.PageSize);
+
+                var caseDtos = pagedCases.Select(c => _mapper.Map<CaseDto>(c));
+
+                return Result<(IEnumerable<CaseDto>, int TotalCount)>.Success((caseDtos, totalCount));
+            }
+            catch (Exception ex)
+            {
+                return Result<(IEnumerable<CaseDto>, int TotalCount)>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "ServerError" } });
+            }
         }
     }
 }

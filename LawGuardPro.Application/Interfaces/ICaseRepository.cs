@@ -1,4 +1,5 @@
-﻿using LawGuardPro.Domain.Entities;
+﻿using LawGuardPro.Application.DTO;
+using LawGuardPro.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace LawGuardPro.Application.Interfaces
         Task<Case> GetCaseWithDetailsAsync(int caseId);
         Task<Case> GetCaseWithDetailsExplicitAsync(int caseId);
         Task<string> GetMaxCaseNumberAsync();
-        Task<(IEnumerable<Case> Cases, int TotalCount)> GetCasesByUserIdAsync(string userId, int pageNumber, int pageSize);
+        Task<(IEnumerable<CaseDto> Cases, int TotalCount)> GetCasesByUserIdAsync(string userId, int pageNumber, int pageSize);
     }
 }
