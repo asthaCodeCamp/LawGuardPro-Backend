@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LawGuardPro.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240604070515_test")]
-    partial class test
+    [Migration("20240605163327_pavel")]
+    partial class pavel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,9 +40,6 @@ namespace LawGuardPro.Infrastructure.Migrations
                     b.Property<int>("AddressType")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("BillingName")
                         .HasColumnType("text");
 
@@ -60,9 +57,9 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresss");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.ApplicationUser", b =>
@@ -388,7 +385,9 @@ namespace LawGuardPro.Infrastructure.Migrations
                 {
                     b.HasOne("LawGuardPro.Domain.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany("AddressUsers")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
                 });

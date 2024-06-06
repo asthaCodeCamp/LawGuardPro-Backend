@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using LawGuardPro.Infrastructure.Persistence.Context;
 using LawGuardPro.Infrastructure.Services.Interfaces;
 using LawGuardPro.Application.Features.Identity.Interfaces;
+using LawGuardPro.Application.Services;
 
 namespace LawGuardPro.Infrastructure;
 
@@ -26,7 +27,7 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
               options.UseNpgsql(configuration.GetConnectionString("DefaultSQLConnection")));
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        services.AddScoped<IAddressRepository, AddressRepository > ();
+        services.AddScoped<IAddressRepository, AddressRepository>();
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();

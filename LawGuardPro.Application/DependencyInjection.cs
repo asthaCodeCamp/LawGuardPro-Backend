@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Application.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LawGuardPro.Application;
@@ -14,9 +15,10 @@ public static class DependencyInjection
             option.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<IUserContext, UserContext>();
-
+        services.AddScoped<IUserContext, UserContext>();         
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IResetPassword, ResetPassword>();
+       
         return services;
     }
 }

@@ -4,6 +4,9 @@ using LawGuardPro.Infrastructure;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Infrastructure.UnitOfWork;
 using LawGuardPro.Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using LawGuardPro.Infrastructure.Persistence.Context;
+using Microsoft.AspNetCore.Identity;
 
 namespace LawGuardPro.API;
 
@@ -23,9 +26,10 @@ public class Program
             .AddScoped<ICaseRepository, CaseRepository>()
             .AddScoped<ILawyerRepository, LawyerRepository>()
             .AddControllers();
+      
+        builder.Services.AddHostedService<EmailSenderService>();      
+        builder.Services.AddHttpContextAccessor();
        
-        builder.Services.AddHostedService<EmailSenderService>();
-        builder.Services.AddHttpContextAccessor();       
         var app = builder.Build();
         app.UseApi();
 

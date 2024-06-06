@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LawGuardPro.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class pavel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Addresss",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -24,17 +24,17 @@ namespace LawGuardPro.Infrastructure.Migrations
                     Town = table.Column<string>(type: "text", nullable: true),
                     PostalCode = table.Column<int>(type: "integer", nullable: false),
                     Country = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ApplicationUserId = table.Column<Guid>(type: "uuid", nullable: true)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_Addresss", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Address_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
+                        name: "FK_Addresss_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -105,9 +105,9 @@ namespace LawGuardPro.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_ApplicationUserId",
-                table: "Address",
-                column: "ApplicationUserId");
+                name: "IX_Addresss_UserId",
+                table: "Addresss",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cases_ApplicationUserId",
@@ -124,7 +124,7 @@ namespace LawGuardPro.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "Addresss");
 
             migrationBuilder.DropTable(
                 name: "Cases");
