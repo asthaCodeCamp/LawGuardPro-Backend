@@ -1,10 +1,9 @@
 using LawGuardPro.Api;
 using LawGuardPro.Application;
-using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Infrastructure;
-using LawGuardPro.Infrastructure.Repositories;
+using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Infrastructure.UnitOfWork;
-using Microsoft.Extensions.DependencyInjection;
+using LawGuardPro.Infrastructure.Repositories;
 
 namespace LawGuardPro.API;
 
@@ -14,33 +13,22 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
         var configuration = builder.Configuration;
-        object value = builder.Services
-                                .AddApi()
-                                .AddApplication()
-                                .AddInfrastructure(configuration)
-                                .AddScoped<IUnitOfWork, UnitOfWork>()
-                                .AddAutoMapper(typeof(Program))
-                                .AddScoped<ICaseRepository, CaseRepository>()
-                                .AddScoped<ILawyerRepository, LawyerRepository>()
-                                .AddControllers();
+        builder.Services
+            .AddApi()
+            .AddApplication()
+            .AddInfrastructure(configuration)
+            .AddScoped<IUnitOfWork, UnitOfWork>()
+            .AddAutoMapper(typeof(Program))
+            .AddScoped<ICaseRepository, CaseRepository>()
+            .AddScoped<ILawyerRepository, LawyerRepository>()
+            .AddControllers();
 
-
+        builder.Services.AddHostedService<EmailSenderService>();
         var app = builder.Build();
-        
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.UseApi();
 
-        app.UseHttpsRedirection();
-        app.UseAuthentication();
-        app.UseAuthorization();
         app.MapControllers();
-
         app.Run();
     }
 }

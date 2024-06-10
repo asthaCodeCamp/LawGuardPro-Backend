@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace LawGuardPro.Application.Interfaces;
 
@@ -15,4 +10,5 @@ public interface IRepository<T> where T : class
     Task<T> GetFirstAsync(Expression<Func<T, bool>> predicate);
     Task UpdateAsync(T model);
     Task DeleteAsync(T model);
+    IQueryable<T> FilterBy(params Expression<Func<T, bool>>[] predicate);
 }
