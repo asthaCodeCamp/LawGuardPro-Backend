@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace LawGuardPro.Domain.Entities
+namespace LawGuardPro.Domain.Entities;
+
+public class ApplicationUser : IdentityUser<Guid>
 {
-    public class ApplicationUser : IdentityUser
-    {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? CountryResidency { get; set; }
-    }
+     public string FirstName { get; set; } = string.Empty;
+     public string LastName { get; set; } = string.Empty;
+     public string CountryResidency { get; set; } = string.Empty;
+     public ICollection<Address> AddressUsers { get; set; } = new List<Address>();
 }

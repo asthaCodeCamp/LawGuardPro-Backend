@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
+using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
-using LawGuardPro.Application.Common.Mappings;
 
 namespace LawGuardPro.Application;
 
@@ -15,7 +15,7 @@ public static class DependencyInjection
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(typeof(MappingProfile));
 
+        services.AddScoped<IEmailService, EmailService>();
         return services;
     }
 }
- 

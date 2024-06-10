@@ -2,21 +2,20 @@
 using LawGuardPro.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-
 namespace LawGuardPro.Infrastructure.Repositories;
-
-public class Repository<T> : IRepository<T> where T : class
+public class Repository<T>
+    : IRepository<T> where T : class
 {
     protected readonly ApplicationDbContext _context;
-    
+
     public Repository(ApplicationDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task AddAsync(T entity)
     {
-       // await _context.AddAsync(entity);
+        // await _context.AddAsync(entity);
         _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
     }
@@ -26,7 +25,6 @@ public class Repository<T> : IRepository<T> where T : class
         _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync();
     }
-
 
     public async Task<IEnumerable<T>> FindAllAsync()
     {
@@ -47,5 +45,18 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task<T> GetFirstAsync(Expression<Func<T, bool>> predicate)
     {
         return await _context.Set<T>().FirstOrDefaultAsync(predicate);
+    }
+
+    public IQueryable<T> FilterBy(params Expression<Func<T, bool>>[] predicates)
+    {
+        IQueryable<T> set = _context.Set<T>();
+        if (predicates.Length == 0) return set;
+
+        foreach (var predicate in predicates)
+        {
+            set = set.Where(predicate);
+        }
+
+        return set;
     }
 }
