@@ -6,27 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LawGuardPro.API.Controllers
+namespace LawGuardPro.API.Controllers;
+
+[Route("api/lawyer")]
+[ApiController]
+public class LawyersController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LawyersController : ControllerBase
+    private readonly ILawyerRepository _lawyerRepository;
+    private readonly IMapper _mapper;
+
+    public LawyersController(ILawyerRepository lawyerRepository, IMapper mapper)
     {
-        private readonly ILawyerRepository _lawyerRepository;
-        private readonly IMapper _mapper;
+        _lawyerRepository = lawyerRepository;
+        _mapper = mapper;
+    }
 
-        public LawyersController(ILawyerRepository lawyerRepository, IMapper mapper)
-        {
-            _lawyerRepository = lawyerRepository;
-            _mapper = mapper;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<LawyerDTO>>> GetLawyers()
-        {
-            var lawyers = await _lawyerRepository.FindAllAsync();
-            var lawyerDTOs = _mapper.Map<IEnumerable<LawyerDTO>>(lawyers);
-            return Ok(lawyerDTOs);
-        }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<LawyerDTO>>> GetLawyers()
+    {
+        var lawyers = await _lawyerRepository.FindAllAsync();
+        var lawyerDTOs = _mapper.Map<IEnumerable<LawyerDTO>>(lawyers);
+        return Ok(lawyerDTOs);
     }
 }

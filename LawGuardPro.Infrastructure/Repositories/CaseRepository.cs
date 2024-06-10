@@ -49,7 +49,7 @@ namespace LawGuardPro.Infrastructure.Repositories
             return maxCaseNumber;
         }
 
-        public async Task<(IEnumerable<CaseDto> Cases, int TotalCount)> GetCasesByUserIdAsync(string userId, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<CaseDto> Cases, int TotalCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize)
         {
             var query = _context.Cases
                 .Where(c => c.UserId == userId)

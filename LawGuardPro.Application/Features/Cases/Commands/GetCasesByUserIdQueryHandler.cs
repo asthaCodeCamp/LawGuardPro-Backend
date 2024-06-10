@@ -5,39 +5,38 @@ using LawGuardPro.Application.Interfaces;
 using MediatR;
 
 
-namespace LawGuardPro.Application.Features.Cases.Commands
+namespace LawGuardPro.Application.Features.Cases.Commands;
+
+public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, Result<(IEnumerable<CaseDto> Cases, int TotalCount)>>
 {
-    public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, Result<(IEnumerable<CaseDto> Cases, int TotalCount)>>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public GetCasesByUserIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public GetCasesByUserIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public async Task<Result<(IEnumerable<CaseDto> Cases, int TotalCount)>> Handle(GetCasesByUserIdQuery request, CancellationToken cancellationToken)
+    {
+        try
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            var casesResult = await _unitOfWork.CaseRepository.GetCasesByUserIdAsync(request.UserId, request.PageNumber, request.PageSize);
+
+            var totalCount = casesResult.TotalCount;
+
+            var pagedCases = casesResult.Cases
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize);
+
+            var caseDtos = pagedCases.Select(c => _mapper.Map<CaseDto>(c));
+
+            return Result<(IEnumerable<CaseDto>, int TotalCount)>.Success((caseDtos, totalCount));
         }
-
-        public async Task<Result<(IEnumerable<CaseDto> Cases, int TotalCount)>> Handle(GetCasesByUserIdQuery request, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                var casesResult = await _unitOfWork.CaseRepository.GetCasesByUserIdAsync(request.UserId, request.PageNumber, request.PageSize);
-
-                var totalCount = casesResult.TotalCount;
-
-                var pagedCases = casesResult.Cases
-                    .Skip((request.PageNumber - 1) * request.PageSize)
-                    .Take(request.PageSize);
-
-                var caseDtos = pagedCases.Select(c => _mapper.Map<CaseDto>(c));
-
-                return Result<(IEnumerable<CaseDto>, int TotalCount)>.Success((caseDtos, totalCount));
-            }
-            catch (Exception ex)
-            {
-                return Result<(IEnumerable<CaseDto>, int TotalCount)>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "ServerError" } });
-            }
+            return Result<(IEnumerable<CaseDto>, int TotalCount)>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "ServerError" } });
         }
     }
 }

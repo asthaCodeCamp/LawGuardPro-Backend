@@ -12,11 +12,11 @@ namespace LawGuardPro.Application.Features.Cases.Commands;
 
 public class GetCasesByUserIdQuery : IRequest<Result<(IEnumerable<CaseDto> Cases, int TotalCount)>>
 {
-    public string UserId { get; set; }
+    public Guid UserId { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
 
-    public GetCasesByUserIdQuery(string userId, int pageNumber, int pageSize)
+    public GetCasesByUserIdQuery(Guid userId, int pageNumber, int pageSize)
     {
         UserId = userId;
         PageNumber = pageNumber;

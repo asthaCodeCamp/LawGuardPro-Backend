@@ -6,7 +6,7 @@ using LawGuardPro.Application.Features.Cases.Commands;
 
 namespace LawGuardPro.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/case")]
 [ApiController]
 public class CaseController : ControllerBase
 {
@@ -31,7 +31,7 @@ public class CaseController : ControllerBase
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<IActionResult> GetCasesByUserId(string userId, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<IActionResult> GetCasesByUserId(Guid userId, [FromQuery] int pageNumber, [FromQuery] int pageSize)
     {
         var query = new GetCasesByUserIdQuery(userId, pageNumber, pageSize);
         var result = await _mediator.Send(query);
