@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LawGuardPro.Application;
@@ -12,6 +14,7 @@ public static class DependencyInjection
             option.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+        services.AddScoped<IEmailService, EmailService>();
         return services;
     }
 }
