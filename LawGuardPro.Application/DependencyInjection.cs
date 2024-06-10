@@ -2,6 +2,7 @@
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
+using LawGuardPro.Application.Common.Mappings;
 
 namespace LawGuardPro.Application;
 

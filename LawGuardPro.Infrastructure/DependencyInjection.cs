@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using LawGuardPro.Infrastructure.Persistence.Context;
 using LawGuardPro.Infrastructure.Services.Interfaces;
 using LawGuardPro.Application.Features.Identity.Interfaces;
+using LawGuardPro.Infrastructure.UnitofWork;
 
 namespace LawGuardPro.Infrastructure;
 
