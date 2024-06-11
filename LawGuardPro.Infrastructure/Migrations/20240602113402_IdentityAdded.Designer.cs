@@ -12,63 +12,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LawGuardPro.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:LawGuardPro.Infrastructure/Migrations/20240611050852_AddedCaseTable.Designer.cs
-    [Migration("20240611050852_AddedCaseTable")]
-    partial class AddedCaseTable
-========
-    [Migration("20240611064119_test")]
-    partial class test
->>>>>>>> features/KAN-42:LawGuardPro.Infrastructure/Migrations/20240611064119_test.Designer.cs
+    [Migration("20240602113402_IdentityAdded")]
+    partial class IdentityAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Address", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AddressLine1")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AddressLine2")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AddressType")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("BillingName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("text");
-
-                    b.Property<int>("PostalCode")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Town")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("Address");
-                });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.ApplicationUser", b =>
                 {
@@ -145,119 +100,6 @@ namespace LawGuardPro.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
-                {
-                    b.Property<int>("CaseId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CaseId"));
-
-                    b.Property<string>("CaseName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CaseNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CaseType")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsAttachmentAvailable")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsLawyerAssigned")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("LawyerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("UserId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("CaseId");
-
-                    b.HasIndex("LawyerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Cases");
-                });
-
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Email", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FromEmail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FromName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsSent")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ToEmail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ToName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Emails");
-                });
-
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Lawyer", b =>
-                {
-                    b.Property<int>("LawyerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LawyerId"));
-
-                    b.Property<string>("LawyerName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LawyerType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("LawyerId");
-
-                    b.ToTable("Lawyers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -390,32 +232,6 @@ namespace LawGuardPro.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Address", b =>
-                {
-                    b.HasOne("LawGuardPro.Domain.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany("AddressUsers")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
-                {
-                    b.HasOne("LawGuardPro.Domain.Entities.Lawyer", "Lawyer")
-                        .WithMany()
-                        .HasForeignKey("LawyerId");
-
-                    b.HasOne("LawGuardPro.Domain.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Lawyer");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -465,11 +281,6 @@ namespace LawGuardPro.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("AddressUsers");
                 });
 #pragma warning restore 612, 618
         }
