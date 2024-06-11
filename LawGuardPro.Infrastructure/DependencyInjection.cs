@@ -25,7 +25,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseNpgsql(configuration.GetConnectionString("DefaultSQLConnection")));
+              options.UseNpgsql(configuration.GetConnectionString("ProdSQLConnection")));
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
