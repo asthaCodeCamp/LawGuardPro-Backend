@@ -7,7 +7,7 @@ using MediatR;
 
 namespace LawGuardPro.Application.Features.Cases.Commands;
 
-public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, Result<(IEnumerable<CaseDto> Cases, int TotalCount)>>
+public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, IResult<(IEnumerable<CaseDto> Cases, int TotalCount)>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;

@@ -1,4 +1,6 @@
-﻿namespace LawGuardPro.Domain.Entities;
+﻿using LawGuardPro.Domain.Common.Enums;
+
+namespace LawGuardPro.Domain.Entities;
 
 public class Case
 {
@@ -8,7 +10,7 @@ public class Case
     public string? CaseType { get; set; }
     public string? Description { get; set; }
     public bool IsAttachmentAvailable { get; set; }
-    public string? Status { get; set; }
+    public CaseStatus Status { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime LastUpdated { get; set; }
     public bool IsLawyerAssigned { get; set; }
