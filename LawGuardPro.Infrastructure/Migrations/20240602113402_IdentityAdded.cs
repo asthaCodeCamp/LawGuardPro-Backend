@@ -7,11 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LawGuardPro.Infrastructure.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:LawGuardPro.Infrastructure/Migrations/20240611050852_AddedCaseTable.cs
-    public partial class AddedCaseTable : Migration
-========
     public partial class IdentityAdded : Migration
->>>>>>>> features/KAN-42:LawGuardPro.Infrastructure/Migrations/20240602113402_IdentityAdded.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
