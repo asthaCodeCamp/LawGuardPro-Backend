@@ -26,5 +26,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .HasOne(c => c.Lawyer)
             .WithMany()
             .HasForeignKey(c => c.LawyerId);
+
+        modelBuilder.Entity<Case>()
+            .Property(c => c.Status)
+            .HasConversion<int>();
     }
 }

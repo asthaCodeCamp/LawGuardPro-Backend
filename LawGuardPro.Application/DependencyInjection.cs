@@ -14,8 +14,6 @@ public static class DependencyInjection
         services.AddMediatR(option =>
             option.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddAutoMapper(typeof(MappingProfile));
-
         services.AddScoped<IEmailService, EmailService>();
         return services;
     }

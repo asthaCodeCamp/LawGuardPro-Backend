@@ -16,8 +16,6 @@ public class Program
             .AddApi()
             .AddApplication()
             .AddInfrastructure(configuration);
-
-
         builder.Services.AddHostedService<EmailSenderService>();
         
         var app = builder.Build();

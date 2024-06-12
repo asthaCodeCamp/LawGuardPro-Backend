@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using LawGuardPro.Application.Common;
-using LawGuardPro.Application.DTO;
+using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.Interfaces;
 using MediatR;
 
 
 namespace LawGuardPro.Application.Features.Cases.Commands;
 
-public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, Result<(IEnumerable<CaseDto> Cases, int TotalCount)>>
+public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, IResult<(IEnumerable<Case> Cases, int TotalCount)>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuer
         _mapper = mapper;
     }
 
-    public async Task<Result<(IEnumerable<CaseDto> Cases, int TotalCount)>> Handle(GetCasesByUserIdQuery request, CancellationToken cancellationToken)
+    public async Task<IResult<(IEnumerable<Case> Cases, int TotalCount)>> Handle(GetCasesByUserIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -30,13 +30,13 @@ public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuer
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize);
 
-            var caseDtos = pagedCases.Select(c => _mapper.Map<CaseDto>(c));
+            var cases = pagedCases.Select(c => _mapper.Map<Case>(c));
 
-            return Result<(IEnumerable<CaseDto>, int TotalCount)>.Success((caseDtos, totalCount));
+            return Result<(IEnumerable<Case>, int TotalCount)>.Success((cases, totalCount));
         }
         catch (Exception ex)
         {
-            return Result<(IEnumerable<CaseDto>, int TotalCount)>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "ServerError" } });
+            return Result<(IEnumerable<Case>, int TotalCount)>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "ServerError" } });
         }
     }
 }

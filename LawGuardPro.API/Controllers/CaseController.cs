@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using LawGuardPro.Application.Features.Cases.Commands;
 
@@ -38,17 +36,9 @@ public class CaseController : ControllerBase
 
         if (result.IsSuccess())
         {
-            return Ok(new
-            {
-                Cases = result.Data.Cases,
-                TotalCount = result.Data.TotalCount
-            });
+            return Ok(result);
         }
 
-        return BadRequest(new
-        {
-            StatusCode = result.StatusCode,
-            Errors = result.Errors
-        });
+        return BadRequest(result);
     }
 }
