@@ -1,12 +1,5 @@
-﻿using LawGuardPro.Domain.Entities;
-using LawGuardPro.Infrastructure.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LawGuardPro.Infrastructure.Persistence.Context;
 using LawGuardPro.Infrastructure.Repositories;
-using LawGuardPro.Application;
 using LawGuardPro.Application.Interfaces;
 
 namespace LawGuardPro.Infrastructure.UnitofWork;

@@ -28,7 +28,7 @@ public class CaseRepository : Repository<Case>, ICaseRepository
             .FirstOrDefaultAsync(c => c.CaseId == caseId);
     }
 
-    public async Task<Case> GetCaseWithDetailsExplicitAsync(int caseId)
+    public async Task<Case?> GetCaseWithDetailsExplicitAsync(int caseId)
     {
         var caseEntity = await _context.Cases.AsNoTracking().FirstOrDefaultAsync(c => c.CaseId == caseId);
         if (caseEntity != null)
@@ -39,7 +39,7 @@ public class CaseRepository : Repository<Case>, ICaseRepository
         return caseEntity;
     }
 
-    public async Task<string> GetMaxCaseNumberAsync()
+    public async Task<string?> GetMaxCaseNumberAsync()
     {
         var maxCaseNumber = await _context.Cases
            .OrderByDescending(c => c.CaseNumber)
@@ -49,11 +49,11 @@ public class CaseRepository : Repository<Case>, ICaseRepository
         return maxCaseNumber;
     }
 
-    public async Task<(IEnumerable<CaseDto> Cases, int TotalCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize)
+    public async Task<(IEnumerable<Case?> Cases, int TotalCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize)
     {
         var query = _context.Cases
             .Where(c => c.UserId == userId)
-            .Select(c => new CaseDto
+            .Select(c => new Case
             {
                 CaseId = c.CaseId,
                 CaseNumber = c.CaseNumber,
@@ -62,6 +62,7 @@ public class CaseRepository : Repository<Case>, ICaseRepository
                 LastUpdated = c.LastUpdated
             });
 
+       // var caseR = _context.Cases.First();
         var totalCount = await query.CountAsync();
 
         var cases = await query

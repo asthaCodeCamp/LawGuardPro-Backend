@@ -18,7 +18,7 @@ public class CreateCaseCommandHandler : IRequestHandler<CreateCaseCommand, IResu
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(CreateCaseCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<int>> Handle(CreateCaseCommand request, CancellationToken cancellationToken)
     {
         var caseEntity = _mapper.Map<Case>(request);
 
@@ -30,18 +30,18 @@ public class CreateCaseCommandHandler : IRequestHandler<CreateCaseCommand, IResu
             maxCaseNumber = int.Parse(maxCaseNumberString);
         }
         int nextCaseNumber = maxCaseNumber + 1;
+
         caseEntity.CaseNumber = nextCaseNumber.ToString("D6");
         caseEntity.Status = CaseStatus.Working;
         caseEntity.CreatedOn = DateTime.UtcNow;
         caseEntity.LastUpdated = DateTime.UtcNow;
-        caseEntity.IsAttachmentAvailable = !string.IsNullOrEmpty(request.Attachment);
-        caseEntity.IsLawyerAssigned = false;
+
 
         var lawyer = await _unitOfWork.LawyerRepository.GetFirstAsync(l => l.LawyerType == request.CaseType);
         if (lawyer != null)
         {
             caseEntity.LawyerId = lawyer.LawyerId;
-            caseEntity.IsLawyerAssigned = true;
+
         }
 
         await _unitOfWork.CaseRepository.AddAsync(caseEntity);

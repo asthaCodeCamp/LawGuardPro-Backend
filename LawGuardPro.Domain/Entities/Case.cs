@@ -9,11 +9,9 @@ public class Case
     public string? CaseName { get; set; }
     public string? CaseType { get; set; }
     public string? Description { get; set; }
-    public bool IsAttachmentAvailable { get; set; }
     public CaseStatus Status { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime LastUpdated { get; set; }
-    public bool IsLawyerAssigned { get; set; }
     public Guid? UserId { get; set; }
     public int? LawyerId { get; set; }
 
