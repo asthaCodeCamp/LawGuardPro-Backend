@@ -1,4 +1,5 @@
 ﻿using LawGuardPro.Domain.Entities;
+using LawGuardPro.Application.DTO;
 
 namespace LawGuardPro.Application.Interfaces;
 
