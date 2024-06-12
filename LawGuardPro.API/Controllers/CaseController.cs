@@ -39,6 +39,6 @@ public class CaseController : ControllerBase
             return Ok(result);
         }
 
-        return BadRequest(result);
+        return BadRequest(result.Errors);
     }
 }
