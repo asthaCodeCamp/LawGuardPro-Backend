@@ -1,5 +1,4 @@
-﻿using LawGuardPro.Application.DTO;
-using LawGuardPro.Application.Interfaces;
+﻿using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Entities;
 using LawGuardPro.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -62,7 +61,6 @@ public class CaseRepository : Repository<Case>, ICaseRepository
                 LastUpdated = c.LastUpdated
             });
 
-       // var caseR = _context.Cases.First();
         var totalCount = await query.CountAsync();
 
         var cases = await query

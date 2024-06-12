@@ -36,12 +36,10 @@ public class CreateCaseCommandHandler : IRequestHandler<CreateCaseCommand, IResu
         caseEntity.CreatedOn = DateTime.UtcNow;
         caseEntity.LastUpdated = DateTime.UtcNow;
 
-
         var lawyer = await _unitOfWork.LawyerRepository.GetFirstAsync(l => l.LawyerType == request.CaseType);
         if (lawyer != null)
         {
             caseEntity.LawyerId = lawyer.LawyerId;
-
         }
 
         await _unitOfWork.CaseRepository.AddAsync(caseEntity);
