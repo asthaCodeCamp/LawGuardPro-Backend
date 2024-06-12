@@ -20,11 +20,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         modelBuilder.Entity<Case>()
             .HasOne(c => c.ApplicationUser)
             .WithMany()
-            .HasForeignKey(c => c.ApplicationUserId);
+            .HasForeignKey(c => c.UserId).IsRequired();
 
         modelBuilder.Entity<Case>()
             .HasOne(c => c.Lawyer)
             .WithMany()
             .HasForeignKey(c => c.LawyerId);
+
+        modelBuilder.Entity<Case>()
+            .Property(c => c.Status)
+            .HasConversion<int>();
     }
 }

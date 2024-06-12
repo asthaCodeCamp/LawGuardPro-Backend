@@ -42,6 +42,7 @@ public interface IResult<T>
     public T Data { get; }
     public int StatusCode { get; }
     public List<Error> Errors { get; }
+    public bool IsSuccess();
 }
 
 public class Result<T> : IResult<T>
