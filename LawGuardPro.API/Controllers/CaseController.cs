@@ -36,9 +36,18 @@ public class CaseController : ControllerBase
 
         if (result.IsSuccess())
         {
-            return Ok(result);
+            return Ok(new
+            {
+                Cases = result.Data.Cases,
+                TotalCount = result.Data.TotalCount
+            });
         }
 
-        return BadRequest(result.Errors);
+        return BadRequest(new
+
+        {
+            StatusCode = result.StatusCode,
+            Errors = result.Errors
+        });
     }
 }
