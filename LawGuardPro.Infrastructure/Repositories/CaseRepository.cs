@@ -18,7 +18,7 @@ public class CaseRepository : Repository<Case>, ICaseRepository
             .ToListAsync();
     }
 
-    public async Task<Case?> GetCaseWithDetailsAsync(int caseId)
+    public async Task<Case?> GetCaseWithDetailsAsync(Guid caseId)
     {
         return await _context.Cases
             .Include(c => c.ApplicationUser)
@@ -27,7 +27,7 @@ public class CaseRepository : Repository<Case>, ICaseRepository
             .FirstOrDefaultAsync(c => c.CaseId == caseId);
     }
 
-    public async Task<Case?> GetCaseWithDetailsExplicitAsync(int caseId)
+    public async Task<Case?> GetCaseWithDetailsExplicitAsync(Guid caseId)
     {
         var caseEntity = await _context.Cases.AsNoTracking().FirstOrDefaultAsync(c => c.CaseId == caseId);
         if (caseEntity != null)
@@ -71,7 +71,7 @@ public class CaseRepository : Repository<Case>, ICaseRepository
 
         return (cases, totalCount);
     }
-    public async Task<Case?> GetCaseByUserIdAndCaseIdAsync(Guid userId, int caseId)
+    public async Task<Case?> GetCaseByUserIdAndCaseIdAsync(Guid userId, Guid caseId)
     {
         return await _context.Cases
             .Where(c => c.UserId == userId && c.CaseId == caseId)

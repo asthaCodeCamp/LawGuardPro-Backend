@@ -4,7 +4,7 @@ namespace LawGuardPro.Domain.Entities;
 
 public class Case
 {
-    public int CaseId { get; set; }
+    public Guid CaseId { get; set; }
     public string? CaseNumber { get; set; }
     public string? CaseName { get; set; }
     public string? CaseType { get; set; }
@@ -13,7 +13,7 @@ public class Case
     public DateTime CreatedOn { get; set; }
     public DateTime LastUpdated { get; set; }
     public Guid? UserId { get; set; }
-    public int? LawyerId { get; set; }
+    public Guid? LawyerId { get; set; }
 
     public ApplicationUser? ApplicationUser { get; set; }
     public Lawyer? Lawyer { get; set; }

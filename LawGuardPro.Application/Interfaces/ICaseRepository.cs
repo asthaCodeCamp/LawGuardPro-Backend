@@ -6,9 +6,9 @@ namespace LawGuardPro.Application.Interfaces;
 public interface ICaseRepository : IRepository<Case>
 {
     Task<List<Case>> GetCasesWithLawyersAndUsersAsync();
-    Task<Case?> GetCaseWithDetailsAsync(int caseId);
-    Task<Case?> GetCaseWithDetailsExplicitAsync(int caseId);
+    Task<Case?> GetCaseWithDetailsAsync(Guid caseId);
+    Task<Case?> GetCaseWithDetailsExplicitAsync(Guid caseId);
     Task<string?> GetMaxCaseNumberAsync();
     Task<(IEnumerable<Case?> Cases, int TotalCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize);
-    Task<Case?> GetCaseByUserIdAndCaseIdAsync(Guid userId, int caseId);
+    Task<Case?> GetCaseByUserIdAndCaseIdAsync(Guid userId, Guid caseId);
 }

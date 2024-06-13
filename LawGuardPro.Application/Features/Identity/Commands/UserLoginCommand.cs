@@ -8,13 +8,13 @@ using LawGuardPro.Application.Features.Identity.Interfaces;
 
 namespace LawGuardPro.Application.Features.Identity.Commands;
 
-public class UserLoginCommand : IRequest<Result<LoginResponseDTO>>
+public class UserLoginCommand : IRequest<IResult<LoginResponseDTO>>
 {
     public string UserName { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
 }
 
-public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, Result<LoginResponseDTO>>
+public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, IResult<LoginResponseDTO>>
 {
     private readonly IIdentityService _identityService;
     private readonly IMapper _mapper;
@@ -25,7 +25,7 @@ public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, Result<
         _identityService = identityService;
     }
 
-    public async Task<Result<LoginResponseDTO>> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<LoginResponseDTO>> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
         return await _identityService.LoginAsync(_mapper.Map<LoginRequestDTO>(request));
     }

@@ -17,7 +17,7 @@ public class CreateAddressResidenceCommand : IRequest<Result<Guid>>
     public string Country { get; set; }
 }
 
-public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressResidenceCommand, Result<Guid>>
+public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressResidenceCommand, IResult<Guid>>
 {
     private readonly IRepository<Address> _repository;
     private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressR
         _userContext = userContext;
     }
 
-    public async Task<Result<Guid>> Handle(CreateAddressResidenceCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<Guid>> Handle(CreateAddressResidenceCommand request, CancellationToken cancellationToken)
     {
         var UserId = _userContext.UserId;
         var address = new Address

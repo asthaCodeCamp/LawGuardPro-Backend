@@ -18,7 +18,7 @@ public class LawyerRepository : Repository<Lawyer>, ILawyerRepository
                              .ToListAsync();
     }
 
-    public async Task<Lawyer> GetLawyerByIdAsync(int lawyerId)
+    public async Task<Lawyer?> GetLawyerByIdAsync(Guid lawyerId)
     {
         return await _context.Lawyers
                              .FirstOrDefaultAsync(l => l.LawyerId == lawyerId);
