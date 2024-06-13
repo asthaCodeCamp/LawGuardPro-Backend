@@ -37,7 +37,7 @@ public class IdentityService : IIdentityService
         return user == null ? true : false;
     }
 
-    public async Task<Result<UserDTO>> RegisterAsync(RegistrationRequestDTO registrationRequestDTO)
+    public async Task<IResult<UserDTO>> RegisterAsync(RegistrationRequestDTO registrationRequestDTO)
     {
         var user = new ApplicationUser
         {
@@ -68,7 +68,7 @@ public class IdentityService : IIdentityService
         return Result<UserDTO>.Success(userDto);
     }
 
-    public async Task<Result<LoginResponseDTO>> LoginAsync(LoginRequestDTO loginRequestDTO)
+    public async Task<IResult<LoginResponseDTO>> LoginAsync(LoginRequestDTO loginRequestDTO)
     {
         var user = await _userManager.FindByEmailAsync(loginRequestDTO.UserName);
         bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
@@ -101,7 +101,7 @@ public class IdentityService : IIdentityService
         return Result<LoginResponseDTO>.Success(loginResponseDTO);
     }
 
-    public async Task<Result<UserDTO>> UpdateUserInfoAsync(UserUpdateDTO userUpdateDto)
+    public async Task<IResult<UserDTO>> UpdateUserInfoAsync(UserUpdateDTO userUpdateDto)
     {
         if (userUpdateDto == null)
         {

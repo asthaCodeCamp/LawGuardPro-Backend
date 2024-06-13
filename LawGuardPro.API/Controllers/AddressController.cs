@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using LawGuardPro.Application.Features.Users.Queries;
 using LawGuardPro.Application.Features.Users.Commands;
 
-namespace LawGuardPro.Controllers;
+namespace LawGuardPro.API.Controllers;
 
 [Route("api/address")]
 [ApiController]
