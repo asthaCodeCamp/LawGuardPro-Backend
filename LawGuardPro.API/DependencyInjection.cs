@@ -36,6 +36,7 @@ public static class DependencyInjection
             });
         });
 
+        services.AddCors();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddControllers();
@@ -47,6 +48,12 @@ public static class DependencyInjection
 
     public static WebApplication UseApi(this WebApplication app)
     {
+        app.UseCors(builder =>
+        {
+            builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+        });
         app.UseExceptionHandler();
 
         // Configure the HTTP request pipeline.
