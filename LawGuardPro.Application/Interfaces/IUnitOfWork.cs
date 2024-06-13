@@ -9,8 +9,8 @@ namespace LawGuardPro.Application.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Case> CaseRepository { get; }
-        IRepository<Lawyer> LawyerRepository { get; }
+        ICaseRepository CaseRepository { get; }
+        ILawyerRepository LawyerRepository { get; }
         Task<int> CommitAsync();
     }
 }

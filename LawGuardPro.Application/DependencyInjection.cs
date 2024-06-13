@@ -3,6 +3,7 @@ using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Application.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using LawGuardPro.Application.Common.Mappings;
 
 namespace LawGuardPro.Application;
 
