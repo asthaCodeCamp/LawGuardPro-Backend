@@ -2,8 +2,6 @@ using LawGuardPro.Api;
 using LawGuardPro.Application;
 using LawGuardPro.Infrastructure;
 using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Infrastructure.UnitOfWork;
-using LawGuardPro.Infrastructure.Repositories;
 
 namespace LawGuardPro.API;
 
@@ -17,14 +15,9 @@ public class Program
         builder.Services
             .AddApi()
             .AddApplication()
-            .AddInfrastructure(configuration)
-            .AddScoped<IUnitOfWork, UnitOfWork>()
-            .AddAutoMapper(typeof(Program))
-            .AddScoped<ICaseRepository, CaseRepository>()
-            .AddScoped<ILawyerRepository, LawyerRepository>()
-            .AddControllers();
-
+            .AddInfrastructure(configuration);
         builder.Services.AddHostedService<EmailSenderService>();
+        
         var app = builder.Build();
         app.UseApi();
 

@@ -4,6 +4,7 @@ using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.Common;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Common.Enums;
+using LawGuardPro.Application.Services;
 
 namespace LawGuardPro.Application.Features.Users.Commands;
 
@@ -22,25 +23,31 @@ public class CreateAddressBillingCommandHandler : IRequestHandler<CreateAddressB
 {
     private readonly IRepository<Address> _repository;
     private readonly IMapper _mapper;
-
-    public CreateAddressBillingCommandHandler(IRepository<Address> repository, IMapper mapper)
+    private readonly IUserContext _userContext;
+    public CreateAddressBillingCommandHandler(IRepository<Address> repository, IMapper mapper, IUserContext userContext)
     {
         _repository = repository;
         _mapper = mapper;
+        _userContext = userContext;
     }
+
+
 
     public async Task<Result<Guid>> Handle(CreateAddressBillingCommand request, CancellationToken cancellationToken)
     {
+
+        var UserId =  _userContext.UserId;
+        
         var address = new Address
         {
-            AddressType =AddressType.Billing,
+            AddressType = AddressType.Billing,
             BillingName = request.BillingName,
             AddressLine1 = request.AddressLine1,
             AddressLine2 = request.AddressLine2,
             Town = request.Town,
             PostalCode = request.PostalCode,
             Country = request.Country,
-            UserId = new Guid("1e883be0-c947-4d7d-89d1-31bd175eb54b")
+            UserId = (Guid)UserId
         };
 
         await _repository.AddAsync(address);

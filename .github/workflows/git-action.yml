@@ -1,0 +1,53 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }}, watching you bro
+on:
+  push:
+    branches:
+      - 'staging'
+
+jobs:
+  build-actions:
+    runs-on: ubuntu-latest
+    container:
+      image: asthaitdevops/aspnetsdk-zip:6.0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      - run: echo "Starting process"
+      - run: ls
+      - run: dotnet publish ./LawGuardPro.API -c Release --no-self-contained --runtime linux-x64  -o ./publish
+      - run: |
+          cd publish ; cat <<EOF > Dockerfile
+          # Use the official ASP.NET runtime image
+          FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+          WORKDIR /app
+          COPY . .
+
+          ENV ASPNETCORE_ENVIRONMENT Staging
+          ENV ASPNETCORE_URLS=http://+:5140
+          EXPOSE 5140
+
+          # Set the entry point
+          ENTRYPOINT ["dotnet", "LawGuardPro.API.dll"]
+          EOF
+      - run: pwd ; zip -r web.zip publish
+      - uses: actions/upload-artifact@v2
+        with:
+          name: web
+          path: ./publish/web.zip
+      - run: ls
+      - uses: appleboy/scp-action@v0.1.0
+        with:
+          username: ${{ secrets.DEPLOY_USER }}
+          host: ${{ secrets.STAGING_HOST }}
+          key: ${{ secrets.KEY }}
+          target: '/home/ubuntu/codecampb2'
+          source: 'web.zip'
+      - uses: appleboy/ssh-action@master
+        with:
+          username: ${{ secrets.DEPLOY_USER }}
+          host: ${{ secrets.STAGING_HOST }}
+          key: ${{ secrets.KEY }}
+          script: 'cd /home/ubuntu/codecampb2/ ; unzip -o web.zip ; cd publish ; sudo docker stop codecampb2prd || true ; sudo docker rm codecampb2prd || true ; sudo docker rmi codecampb2prd || true ;  sudo docker build -t codecampb2prd . ; sudo docker run -d -p 5140:5140 --name codecampb2prd -e ASPNETCORE_ENVIRONMENT=Staging codecampb2prd ;'
