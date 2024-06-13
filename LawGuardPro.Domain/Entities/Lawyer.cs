@@ -7,7 +7,6 @@ public class Lawyer
     public string? LawyerType { get; set; }
     public decimal Rating { get; set; }
 
-    public ApplicationUser? ApplicationUser { get; set; }
     public ICollection<Case> Cases { get; set; } = new List<Case>();
 
 }
