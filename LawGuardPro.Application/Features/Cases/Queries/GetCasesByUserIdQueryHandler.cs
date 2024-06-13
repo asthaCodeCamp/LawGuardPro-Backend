@@ -4,7 +4,7 @@ using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Interfaces;
 using MediatR;
 
-namespace LawGuardPro.Application.Features.Cases.Commands;
+namespace LawGuardPro.Application.Features.Cases.Queries;
 
 public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, IResult<(IEnumerable<CaseDto> Cases, int TotalCount)>>
 {

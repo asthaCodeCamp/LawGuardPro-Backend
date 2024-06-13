@@ -2,7 +2,7 @@
 using LawGuardPro.Application.DTO;
 using MediatR;
 
-namespace LawGuardPro.Application.Features.Cases.Commands;
+namespace LawGuardPro.Application.Features.Cases.Queries;
 
 public class GetCasesByUserIdQuery : IRequest<IResult<(IEnumerable<CaseDto> Cases, int TotalCount)>>
 {

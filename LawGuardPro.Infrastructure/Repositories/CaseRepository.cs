@@ -71,5 +71,12 @@ public class CaseRepository : Repository<Case>, ICaseRepository
 
         return (cases, totalCount);
     }
+    public async Task<Case?> GetCaseByUserIdAndCaseIdAsync(Guid userId, int caseId)
+    {
+        return await _context.Cases
+            .Where(c => c.UserId == userId && c.CaseId == caseId)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+    }
 
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using LawGuardPro.Application.Features.Cases.Queries;
 using LawGuardPro.Application.Features.Cases.Commands;
 
 namespace LawGuardPro.API.Controllers;
@@ -45,6 +46,24 @@ public class CaseController : ControllerBase
 
         return BadRequest(new
 
+        {
+            StatusCode = result.StatusCode,
+            Errors = result.Errors
+        });
+    }
+    
+    [HttpGet("user/{userId}/case/{caseId}")]
+    public async Task<IActionResult> GetCaseByUserIdAndCaseId(Guid userId, int caseId)
+    {
+        var query = new GetCaseByUserIdAndCaseIdQuery(userId, caseId);
+        var result = await _mediator.Send(query);
+
+        if (result.IsSuccess())
+        {
+            return Ok(result.Data);
+        }
+
+        return BadRequest(new
         {
             StatusCode = result.StatusCode,
             Errors = result.Errors
