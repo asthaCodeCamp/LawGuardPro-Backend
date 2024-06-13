@@ -1,4 +1,4 @@
-﻿namespace LawGuardPro.Exceptions.Domain
+﻿namespace LawGuardPro.Domain.Exceptions
 {
     public class NotFoundException : Exception
     {

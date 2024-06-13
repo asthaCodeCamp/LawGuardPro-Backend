@@ -18,7 +18,7 @@ namespace LawGuardPro.Application.Features.Users.Commands
         public string OldPassword { get; set; }
     }
 
-    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, Result<Guid>>
+    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, IResult<Guid>>
     {
         private readonly IResetPassword _resetPassword;
         private readonly IUserContext _userContext;
@@ -34,7 +34,7 @@ namespace LawGuardPro.Application.Features.Users.Commands
 
         }
 
-        public async Task<Result<Guid>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<IResult<Guid>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(_userContext.Email);
             if (user == null)

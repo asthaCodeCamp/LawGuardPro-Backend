@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using LawGuardPro.Application.Features.Cases.Queries;
 using LawGuardPro.Application.Features.Cases.Commands;
 
 namespace LawGuardPro.API.Controllers;
@@ -20,25 +21,24 @@ public class CaseController : ControllerBase
     {
         var result = await _mediator.Send(command);
 
-        if (result.IsSuccess())
-        {
-            return Ok(result);
-        }
-
-        return BadRequest(result);
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
 
-    [HttpGet("user/{userId}")]
-    public async Task<IActionResult> GetCasesByUserId(Guid userId, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+    [HttpGet("list")]
+    public async Task<IActionResult> GetCasesByUserId([FromQuery] int pageNumber, [FromQuery] int pageSize)
     {
-        var query = new GetCasesByUserIdQuery(userId, pageNumber, pageSize);
+        var query = new GetCasesByUserIdQuery(pageNumber, pageSize);
         var result = await _mediator.Send(query);
 
-        if (result.IsSuccess())
-        {
-            return Ok(result);
-        }
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
+    }
+    
+    [HttpGet("{caseId}")]
+    public async Task<IActionResult> GetCaseByUserIdAndCaseId(Guid caseId)
+    {
+        var query = new GetCaseByUserIdAndCaseIdQuery(caseId);
+        var result = await _mediator.Send(query);
 
-        return BadRequest(result);
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
 }

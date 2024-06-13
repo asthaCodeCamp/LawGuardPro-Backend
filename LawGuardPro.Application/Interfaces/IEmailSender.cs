@@ -1,7 +1,7 @@
 ﻿using MimeKit;
 using MailKit.Net.Smtp;
 
-namespace LawGuardPro.Infrastructure.Services.Interfaces;
+namespace LawGuardPro.Application.Interfaces;
 
 public interface IEmailSender : ISmtpClient
 {

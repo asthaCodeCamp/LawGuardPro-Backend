@@ -34,7 +34,12 @@ public class Result : IResult
 
     public static Result Failure(int statusCode, List<Error> errors) { 
            return new Result(statusCode, errors); 
-    } 
+    }
+
+    public static IResult Failure(List<Error> errors)
+    {
+        return new Result(StatusCodes.Status404NotFound, new List<Error>());
+    }
 }
 
 public interface IResult<T> 
@@ -66,7 +71,7 @@ public class Result<T> : IResult<T>
         return false;
     }
 
-    public static Result<T> Success(T data) {
+    public static IResult<T> Success(T data) {
         
         return new Result<T> (StatusCodes.Status200OK, data, new List<Error>());
     }

@@ -1,5 +1,5 @@
-﻿using LawGuardPro.Domain.Entities;
-using LawGuardPro.Infrastructure.Services.Interfaces;
+﻿using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Domain.Entities;
 using LawGuardPro.Infrastructure.Settings;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
