@@ -1,6 +1,5 @@
 ﻿using LawGuardPro.API.Middlewares.Exceptions;
 using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
 
 namespace LawGuardPro.Api;
 
@@ -37,26 +36,10 @@ public static class DependencyInjection
             });
         });
 
-        //CORS services
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowLocalhost",
-                builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
-                });
-        });
-
+        services.AddCors();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
-        services.AddControllers().AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-        });
-
+        services.AddControllers();
         services.AddSwaggerGen();
         services.AddEndpointsApiExplorer();
 
@@ -65,7 +48,12 @@ public static class DependencyInjection
 
     public static WebApplication UseApi(this WebApplication app)
     {
-        app.UseCors();
+        app.UseCors(builder =>
+        {
+            builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+        });
         app.UseExceptionHandler();
 
         // Configure the HTTP request pipeline.
