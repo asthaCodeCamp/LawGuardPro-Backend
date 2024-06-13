@@ -6,12 +6,10 @@ namespace LawGuardPro.Application.Features.Cases.Queries;
 
 public class GetCaseByUserIdAndCaseIdQuery : IRequest<IResult<CaseDetailsDTO>>
 {
-    public Guid UserId { get; }
-    public int CaseId { get; }
+    public Guid CaseId { get; }
 
-    public GetCaseByUserIdAndCaseIdQuery(Guid userId, int caseId)
+    public GetCaseByUserIdAndCaseIdQuery(Guid caseId)
     {
-        UserId = userId;
         CaseId = caseId;
     }
 }

@@ -4,15 +4,13 @@ using MediatR;
 
 namespace LawGuardPro.Application.Features.Cases.Queries;
 
-public class GetCasesByUserIdQuery : IRequest<IResult<(IEnumerable<CaseDto> Cases, int TotalCount)>>
+public class GetCasesByUserIdQuery : IRequest<IResult<PaginatedCaseListDto>>
 {
-    public Guid UserId { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
 
-    public GetCasesByUserIdQuery(Guid userId, int pageNumber, int pageSize)
+    public GetCasesByUserIdQuery(int pageNumber, int pageSize)
     {
-        UserId = userId;
         PageNumber = pageNumber;
         PageSize = pageSize;
     }

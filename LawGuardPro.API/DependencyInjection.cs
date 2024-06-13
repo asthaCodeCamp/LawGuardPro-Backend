@@ -1,5 +1,6 @@
 ﻿using LawGuardPro.API.Middlewares.Exceptions;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 namespace LawGuardPro.Api;
 
@@ -38,7 +39,12 @@ public static class DependencyInjection
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        });
+
         services.AddSwaggerGen();
         services.AddEndpointsApiExplorer();
 

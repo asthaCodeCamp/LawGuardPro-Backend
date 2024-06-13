@@ -6,22 +6,25 @@ using MediatR;
 
 namespace LawGuardPro.Application.Features.Cases.Queries;
 
-public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, IResult<(IEnumerable<CaseDto> Cases, int TotalCount)>>
+public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuery, IResult<PaginatedCaseListDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUserContext _userContext;
 
-    public GetCasesByUserIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetCasesByUserIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserContext userContext)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _userContext = userContext;
     }
 
-    public async Task<IResult<(IEnumerable<CaseDto> Cases, int TotalCount)>> Handle(GetCasesByUserIdQuery request, CancellationToken cancellationToken)
+    public async Task<IResult<PaginatedCaseListDto>> Handle(GetCasesByUserIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var casesResult = await _unitOfWork.CaseRepository.GetCasesByUserIdAsync(request.UserId, request.PageNumber, request.PageSize);
+            var casesResult = await _unitOfWork.CaseRepository
+                .GetCasesByUserIdAsync(_userContext.UserId!.Value, request.PageNumber, request.PageSize);
 
             var totalCount = casesResult.TotalCount;
 
@@ -31,11 +34,11 @@ public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuer
 
             var cases = pagedCases.Select(c => _mapper.Map<CaseDto>(c));
 
-            return Result<(IEnumerable<CaseDto>, int TotalCount)>.Success((cases, totalCount));
+            return Result<PaginatedCaseListDto>.Success(new() { Cases = cases, TotalCount = totalCount });
         }
         catch (Exception ex)
         {
-            return Result<(IEnumerable<CaseDto>, int TotalCount)>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "ServerError" } });
+            return Result<PaginatedCaseListDto>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "ServerError" } });
         }
     }
 }

@@ -10,30 +10,26 @@ public class GetCaseByUserIdAndCaseIdQueryHandler : IRequestHandler<GetCaseByUse
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUserContext _userContext;
 
-    public GetCaseByUserIdAndCaseIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetCaseByUserIdAndCaseIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserContext userContext)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _userContext = userContext;
     }
 
     public async Task<IResult<CaseDetailsDTO>> Handle(GetCaseByUserIdAndCaseIdQuery request, CancellationToken cancellationToken)
     {
-        try
-        {
-            var caseEntity = await _unitOfWork.CaseRepository.GetCaseByUserIdAndCaseIdAsync(request.UserId, request.CaseId);
+        var caseEntity = await _unitOfWork.CaseRepository
+                .GetCaseByUserIdAndCaseIdAsync(_userContext.UserId!.Value, request.CaseId);
 
-            if (caseEntity == null)
-            {
-                return Result<CaseDetailsDTO>.Failure(new List<Error> { new Error { Message = "Case not found", Code = "NotFound" } });
-            }
-
-            var caseDto = _mapper.Map<CaseDetailsDTO>(caseEntity);
-            return Result<CaseDetailsDTO>.Success(caseDto);
-        }
-        catch (Exception ex)
+        if (caseEntity == null)
         {
-            return Result<CaseDetailsDTO>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "ServerError" } });
+            return Result<CaseDetailsDTO>.Failure(new List<Error> { new Error { Message = "Case not found", Code = "NotFound" } });
         }
+
+        var caseDto = _mapper.Map<CaseDetailsDTO>(caseEntity);
+        return Result<CaseDetailsDTO>.Success(caseDto);
     }
 }
