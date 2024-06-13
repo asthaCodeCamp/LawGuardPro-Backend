@@ -7,7 +7,7 @@ using LawGuardPro.Application.Interfaces;
 
 namespace LawGuardPro.Application.Features.Users.Commands;
 
-public class CreateAddressResidenceCommand : IRequest<Result<Guid>>
+public class CreateAddressResidenceCommand : IRequest<IResult<Guid>>
 {
     public AddressType AddressType { get; set; }
     public string AddressLine1 { get; set; }
@@ -17,12 +17,15 @@ public class CreateAddressResidenceCommand : IRequest<Result<Guid>>
     public string Country { get; set; }
 }
 
-public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressResidenceCommand, IResult<Guid>>
+public class CreateAddressResidenceCommandHandler : IRequestHandler<CreateAddressResidenceCommand, IResult<Guid>>
 {
     private readonly IRepository<Address> _repository;
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
-    public CreateAddressResidenCommandHandler(IRepository<Address> repository, IMapper mapper, IUserContext userContext)
+    public CreateAddressResidenceCommandHandler(
+        IRepository<Address> repository,
+        IMapper mapper,
+        IUserContext userContext)
     {
         _repository = repository;
         _mapper = mapper;
@@ -40,7 +43,7 @@ public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressR
             Town = request.Town,
             PostalCode = request.PostalCode,
             Country = request.Country,
-            UserId =  (Guid)UserId,
+            UserId =  (Guid) UserId!,
         };
 
         await _repository.AddAsync(address);
