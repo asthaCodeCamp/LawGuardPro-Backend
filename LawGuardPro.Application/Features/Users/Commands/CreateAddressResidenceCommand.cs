@@ -21,15 +21,17 @@ public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressR
 {
     private readonly IRepository<Address> _repository;
     private readonly IMapper _mapper;
-
-    public CreateAddressResidenCommandHandler(IRepository<Address> repository, IMapper mapper)
+    private readonly IUserContext _userContext;
+    public CreateAddressResidenCommandHandler(IRepository<Address> repository, IMapper mapper, IUserContext userContext)
     {
         _repository = repository;
         _mapper = mapper;
+        _userContext = userContext;
     }
 
     public async Task<Result<Guid>> Handle(CreateAddressResidenceCommand request, CancellationToken cancellationToken)
     {
+        var UserId = _userContext.UserId;
         var address = new Address
         {
             AddressType = AddressType.Residence,
@@ -38,7 +40,7 @@ public class CreateAddressResidenCommandHandler : IRequestHandler<CreateAddressR
             Town = request.Town,
             PostalCode = request.PostalCode,
             Country = request.Country,
-            UserId = new Guid("1e883be0-c947-4d7d-89d1-31bd175eb54b")
+            UserId =  (Guid)UserId,
         };
 
         await _repository.AddAsync(address);

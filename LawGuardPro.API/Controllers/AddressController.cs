@@ -30,7 +30,7 @@ public class AddressController : ControllerBase
     [HttpGet("billing/{userId:Guid}")]
     public async Task<IActionResult> GetBillingAddressById(Guid userId)
     {
-        var result = await _mediator.Send(new GetAddressResidenceQuery { UserId = userId });
+        var result = await _mediator.Send(new GetAddressBillingQuery { UserId = userId });
         if (result == null) return NotFound();
         return Ok(result);
 
