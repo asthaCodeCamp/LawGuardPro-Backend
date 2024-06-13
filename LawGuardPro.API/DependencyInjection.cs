@@ -37,6 +37,18 @@ public static class DependencyInjection
             });
         });
 
+        //CORS services
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowLocalhost",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+        });
+
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddControllers().AddJsonOptions(options =>
@@ -53,6 +65,7 @@ public static class DependencyInjection
 
     public static WebApplication UseApi(this WebApplication app)
     {
+        app.UseCors();
         app.UseExceptionHandler();
 
         // Configure the HTTP request pipeline.
