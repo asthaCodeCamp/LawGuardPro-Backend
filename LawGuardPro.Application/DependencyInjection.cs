@@ -18,7 +18,8 @@ public static class DependencyInjection
         services.AddScoped<IUserContext, UserContext>();         
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IResetPassword, ResetPassword>();
-       
+        services.AddHttpContextAccessor();
+
         return services;
     }
 }

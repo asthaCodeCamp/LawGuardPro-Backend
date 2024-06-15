@@ -1,4 +1,5 @@
 ﻿using MimeKit;
+using System;
 
 namespace LawGuardPro.Application.Services;
 
@@ -41,10 +42,17 @@ public class EmailBuilder
         return this;
     }
 
-    public EmailBuilder SetHtmlBody(string htmlBody, string textBody = "")
+    public EmailBuilder SetHtmlBody(string htmlBody, bool isResetPassLink, string textBody = "")
     {
         var bodyBuilder = new BodyBuilder();
-        bodyBuilder.HtmlBody = htmlBody;
+        if (isResetPassLink)
+        {
+            bodyBuilder.HtmlBody = $"<p>Please <a href=\"{htmlBody}\" style=\"text-decoration: none; color: #0000EE;\">click here</a> to reset your password.</p>";
+        }
+        else 
+        {
+            bodyBuilder.HtmlBody = htmlBody;
+        }
         bodyBuilder.TextBody = textBody;
         _body = bodyBuilder.ToMessageBody();
 
