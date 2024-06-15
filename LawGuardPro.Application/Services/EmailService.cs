@@ -2,7 +2,6 @@
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Infrastructure.Services.Interfaces;
 using Org.BouncyCastle.Pqc.Crypto.Lms;
 
 namespace LawGuardPro.Application.Services;

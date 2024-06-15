@@ -101,7 +101,7 @@ public class IdentityService : IIdentityService
         return Result<LoginResponseDTO>.Success(loginResponseDTO);
     }
 
-    public async Task<Result<UserUpdateDTO>> UpdateUserInfoAsync(UserUpdateDTO userUpdateDto)
+    public async Task<IResult<UserUpdateDTO>> UpdateUserInfoAsync(UserUpdateDTO userUpdateDto)
     {
         if (userUpdateDto == null)
         {

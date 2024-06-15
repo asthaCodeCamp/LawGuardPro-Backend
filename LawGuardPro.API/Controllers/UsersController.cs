@@ -8,7 +8,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LawGuardPro.API.Controllers;
 
-[Route("api/UsersAuth")]
+[Route("api/usersauth")]
 [ApiController]
 public class UsersController : ControllerBase
 {
@@ -50,7 +50,7 @@ public class UsersController : ControllerBase
         return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
 
-    [HttpPatch("UpdateUserInfo")]
+    [HttpPatch("updateuserinfo")]
     public async Task<IActionResult> UpdateUserInfo(ProfileEditCommand model)
     {
         if (model == null)
@@ -69,7 +69,7 @@ public class UsersController : ControllerBase
         return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
 
-    [HttpPost("reset-forgotten-password")]
+    [HttpPost("resetforgottenpassword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetForgottenPasswordCommand model)
     {
         var result = await _sender.Send(model);

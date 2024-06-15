@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LawGuardPro.Application.Features.Settings.Profiles;
 
-public class ProfileEditCommand : IRequest<Result<UserUpdateDTO>>
+public class ProfileEditCommand : IRequest<IResult<UserUpdateDTO>>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -15,7 +15,7 @@ public class ProfileEditCommand : IRequest<Result<UserUpdateDTO>>
     public string Email { get; set; } = string.Empty;
 }
 
-public class ProfileEditCommandHandler : IRequestHandler<ProfileEditCommand, Result<UserUpdateDTO>>
+public class ProfileEditCommandHandler : IRequestHandler<ProfileEditCommand, IResult<UserUpdateDTO>>
 {
     private readonly IIdentityService _identityService;
     private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ public class ProfileEditCommandHandler : IRequestHandler<ProfileEditCommand, Res
         _identityService = identityService;
     }
 
-    public async Task<Result<UserUpdateDTO>> Handle(ProfileEditCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<UserUpdateDTO>> Handle(ProfileEditCommand request, CancellationToken cancellationToken)
     {
         return await _identityService.UpdateUserInfoAsync(_mapper.Map<UserUpdateDTO>(request));
     }
