@@ -8,7 +8,7 @@ using LawGuardPro.Application.Services;
 
 namespace LawGuardPro.Application.Features.Users.Commands;
 
-public class CreateAddressBillingCommand : IRequest<Result<Guid>>
+public class CreateAddressBillingCommand : IRequest<IResult<Guid>>
 {
     public AddressType? AddressType { get; set; }
     public string? BillingName { get; set; }
@@ -19,7 +19,7 @@ public class CreateAddressBillingCommand : IRequest<Result<Guid>>
     public string Country { get; set; }
 }
 
-public class CreateAddressBillingCommandHandler : IRequestHandler<CreateAddressBillingCommand, Result<Guid>>
+public class CreateAddressBillingCommandHandler : IRequestHandler<CreateAddressBillingCommand, IResult<Guid>>
 {
     private readonly IRepository<Address> _repository;
     private readonly IMapper _mapper;
@@ -33,7 +33,7 @@ public class CreateAddressBillingCommandHandler : IRequestHandler<CreateAddressB
 
 
 
-    public async Task<Result<Guid>> Handle(CreateAddressBillingCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<Guid>> Handle(CreateAddressBillingCommand request, CancellationToken cancellationToken)
     {
 
         var UserId =  _userContext.UserId;

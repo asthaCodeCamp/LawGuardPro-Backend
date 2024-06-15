@@ -10,6 +10,6 @@ namespace LawGuardPro.Application.Interfaces
     public interface ILawyerRepository : IRepository<Lawyer>
     {
         Task<IEnumerable<Lawyer>> GetLawyersByTypeAsync(string lawyerType);
-        Task<Lawyer> GetLawyerByIdAsync(int lawyerId);
+        Task<Lawyer?> GetLawyerByIdAsync(Guid lawyerId);
     }
 }

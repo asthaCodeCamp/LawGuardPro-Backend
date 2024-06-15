@@ -18,7 +18,7 @@ namespace LawGuardPro.Application.Services
             _userManager = userManager;
         }
 
-        public async Task<Result<Guid>> HardResetPasswordAsync(string email, string newPassword)
+        public async Task<IResult<Guid>> HardResetPasswordAsync(string email, string newPassword)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)

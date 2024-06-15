@@ -6,7 +6,7 @@ using MediatR;
 
 namespace LawGuardPro.Application.Features.Identity.Commands;
 
-public class UserRegistrationCommand : IRequest<Result<UserDTO>>
+public class UserRegistrationCommand : IRequest<IResult<UserDTO>>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -16,7 +16,7 @@ public class UserRegistrationCommand : IRequest<Result<UserDTO>>
     public string CountryResidency { get; set; } = string.Empty;
 }
 
-public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, Result<UserDTO>>
+public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, IResult<UserDTO>>
 {
     private readonly IIdentityService _identityService;
     private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCo
         _identityService = identityService;
     }
 
-    public async Task<Result<UserDTO>> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<UserDTO>> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
     {
         bool isUserNameUnique = await _identityService.IsUniqueUser(request.Email);
 

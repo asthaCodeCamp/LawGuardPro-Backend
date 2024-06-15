@@ -4,8 +4,9 @@ using LawGuardPro.Domain.Entities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using LawGuardPro.Application.Interfaces;
 
-namespace LawGuardPro.Application.Interfaces;
+namespace LawGuardPro.Infrastructure.Services;
 
 public class EmailSenderService : BackgroundService
 {

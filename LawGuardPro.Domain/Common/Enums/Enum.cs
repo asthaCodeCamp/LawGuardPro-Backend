@@ -7,6 +7,6 @@ public enum AddressType
 }
 public enum CaseStatus
 { 
-    Working = 0,
-    Closed = 1
+    Working = 1,
+    Closed = 0
 }

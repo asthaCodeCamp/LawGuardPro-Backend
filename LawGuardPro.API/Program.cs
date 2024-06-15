@@ -1,7 +1,7 @@
 using LawGuardPro.Api;
 using LawGuardPro.Application;
 using LawGuardPro.Infrastructure;
-using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Infrastructure.Services;
 
 namespace LawGuardPro.API;
 
