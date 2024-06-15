@@ -3,6 +3,7 @@ using LawGuardPro.Application.DTO;
 using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Infrastructure.Services.Interfaces;
+using Org.BouncyCastle.Pqc.Crypto.Lms;
 
 namespace LawGuardPro.Application.Services;
 
@@ -15,7 +16,8 @@ public class EmailService : IEmailService
     public EmailService(
         IMapper mapper,
         IEmailSender emailSender,
-        IEmailRepository emailRepository)
+        IEmailRepository emailRepository
+        )
     {
         _mapper = mapper;
         _emailSender = emailSender;
@@ -24,13 +26,14 @@ public class EmailService : IEmailService
 
     public async Task<bool> SendEmailAsync(EmailMetaData emailMetaData)
     {
+        bool ResetPassLinkTemplate = (emailMetaData.Subject == "Password Reset Link Inside") ? true : false; 
         var email = new EmailBuilder()
             .SetFromName(emailMetaData.FromName)
             .SetFromEmail(emailMetaData.FromEmail)
             .SetToName(emailMetaData.ToName)
             .SetToEmail(emailMetaData.ToEmail)
             .SetSubject(emailMetaData.Subject)
-            .SetHtmlBody(emailMetaData.Body)
+            .SetHtmlBody(emailMetaData.Body, ResetPassLinkTemplate)
             .Build();
 
         return await _emailSender.SendEmailAsync(email);

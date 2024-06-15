@@ -1,8 +1,10 @@
 using LawGuardPro.Application.Common;
 using LawGuardPro.Application.Features.Identity.Commands;
 using LawGuardPro.Application.Features.Settings.Profiles;
+using LawGuardPro.Application.Features.Users.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LawGuardPro.API.Controllers;
 
@@ -58,5 +60,19 @@ public class UsersController : ControllerBase
         var result = await _sender.Send(model);
         if (!result.IsSuccess()) return StatusCode(result.StatusCode, result);
         return Ok(result);
+    }
+
+    [HttpPost("forgetpassword")]
+    public async Task<IActionResult> ForgetPassword(ForgetPasswordCommand model)
+    {
+        var result = await _sender.Send(model);
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPost("reset-forgotten-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetForgottenPasswordCommand model)
+    {
+        var result = await _sender.Send(model);
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
 }
