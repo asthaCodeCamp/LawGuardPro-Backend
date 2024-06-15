@@ -6,7 +6,7 @@ using LawGuardPro.Application.Features.Users.Commands;
 
 namespace LawGuardPro.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/resetpassword")]
     [ApiController]
     public class ResetPasswordController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace LawGuardPro.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPut("resetPassword")]
+        [HttpPut("resetpassword")]
         public async Task<IActionResult> ChangeUserPassword([FromBody] ResetPasswordCommand model)
         {
             var result = await _mediator.Send(model);
