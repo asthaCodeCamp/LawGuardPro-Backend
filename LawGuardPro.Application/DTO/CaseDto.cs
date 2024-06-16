@@ -15,4 +15,6 @@ public class PaginatedCaseListDto
 {
     public IEnumerable<CaseDto> Cases { get; set; } = [];
     public int TotalCount { get; set; }
+    public int OpenCase { get; set; }
+    public int ClosedCase { get; set; }
 }
