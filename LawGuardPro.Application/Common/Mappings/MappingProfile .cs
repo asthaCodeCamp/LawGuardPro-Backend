@@ -11,7 +11,7 @@ public class MappingProfile : Profile
     {
         CreateMap<CreateCaseCommand, Case>();
         CreateMap<Case, CaseDto>();
-        CreateMap<Case, CaseDetailsDTO>();
+        CreateMap<Case, CaseDetailsDTO>().ReverseMap();
         CreateMap<Lawyer, LawyerDTO>().ReverseMap();
         CreateMap<AddressRequestResidencDTO, Address>();
         CreateMap<AddressRequestBillingDTO, Address>();
