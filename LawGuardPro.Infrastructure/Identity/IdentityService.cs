@@ -14,7 +14,7 @@ namespace LawGuardPro.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
-    private string _secretKey;
+    private readonly string _secretKey;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
     private readonly IMapper _mapper;
@@ -85,7 +85,7 @@ public class IdentityService : IIdentityService
         {
             Subject = new ClaimsIdentity(new Claim[] {
                    new Claim(ClaimTypes.Name, user.Id.ToString()),
-                   new Claim(ClaimTypes.Role, roles.FirstOrDefault()!),
+                   new Claim(ClaimTypes.Role, roles.FirstOrDefault()),
                    new Claim(ClaimTypes.Email, user.Email!)
                 }),
             Expires = DateTime.UtcNow.AddDays(7),
@@ -96,21 +96,21 @@ public class IdentityService : IIdentityService
         {
             Token = tokenHandler.WriteToken(token),//serialized  the token 
             User = _mapper.Map<UserDTO>(user),
-            Role = roles.FirstOrDefault()
+            Role = roles.FirstOrDefault()!
         };
         return Result<LoginResponseDTO>.Success(loginResponseDTO);
     }
 
-    public async Task<IResult<UserDTO>> UpdateUserInfoAsync(UserUpdateDTO userUpdateDto)
+    public async Task<IResult<UserUpdateDTO>> UpdateUserInfoAsync(UserUpdateDTO userUpdateDto)
     {
         if (userUpdateDto == null)
         {
-            return Result<UserDTO>.Failure(new List<Error> { new Error() { Message = "Invalid user data.", Code = "" } });
+            return Result<UserUpdateDTO>.Failure(new List<Error> { new Error() { Message = "Invalid user data.", Code = "" } });
         }
         var user = await _userManager.FindByEmailAsync(userUpdateDto.Email);
         if (user == null)
         {
-            return Result<UserDTO>.Failure(new List<Error> { new Error() { Message = $"User with email '{userUpdateDto.Email}' not found.", Code = "UserNotFound" } });
+            return Result<UserUpdateDTO>.Failure(new List<Error> { new Error() { Message = $"User with email '{userUpdateDto.Email}' not found.", Code = "UserNotFound" } });
         }
         user.FirstName = userUpdateDto.FirstName;
         user.LastName = userUpdateDto.LastName;
@@ -118,9 +118,20 @@ public class IdentityService : IIdentityService
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) {
             var errors = result.Errors.Select(error => new Error { Message = error.Description, Code = error.Code }).ToList();
-            return Result<UserDTO>.Failure(errors);
+            return Result<UserUpdateDTO>.Failure(errors);
         }
-        var userDto = _mapper.Map<UserDTO>(user);
-        return Result<UserDTO>.Success(userDto);
+        var userUpdateResponse = _mapper.Map<UserUpdateDTO>(user);
+        return Result<UserUpdateDTO>.Success(userUpdateResponse);
     }
+    public async Task<Guid?> GetUserIdByEmailAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        return user?.Id;
+    }
+    public async Task<string?> GetEmailByUserIdAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        return user?.Email;
+    }
+
 }
