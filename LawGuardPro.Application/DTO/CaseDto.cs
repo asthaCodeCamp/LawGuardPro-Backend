@@ -9,10 +9,14 @@ public class CaseDto
     public string? CaseName { get; set; }
     public CaseStatus Status { get; set; }
     public DateTime LastUpdated { get; set; }
+    public int TotalQuoted { get; set; }
+    public int TotalPaid { get; set; }
 }
 
 public class PaginatedCaseListDto
 {
     public IEnumerable<CaseDto> Cases { get; set; } = [];
     public int TotalCount { get; set; }
+    public int OpenCase { get; set; }
+    public int ClosedCase { get; set; }
 }

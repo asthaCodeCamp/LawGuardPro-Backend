@@ -56,7 +56,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresss");
+                    b.ToTable("Addresss", (string)null);
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.ApplicationUser", b =>
@@ -176,7 +176,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cases");
+                    b.ToTable("Cases", (string)null);
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Email", b =>
@@ -216,7 +216,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Emails");
+                    b.ToTable("Emails", (string)null);
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Lawyer", b =>
@@ -236,7 +236,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("LawyerId");
 
-                    b.ToTable("Lawyers");
+                    b.ToTable("Lawyers", (string)null);
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.UserOTP", b =>
@@ -267,7 +267,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserOTPs");
+                    b.ToTable("UserOTPs", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
