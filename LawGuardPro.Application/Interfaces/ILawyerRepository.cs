@@ -11,5 +11,6 @@ namespace LawGuardPro.Application.Interfaces
     {
         Task<IEnumerable<Lawyer>> GetLawyersByTypeAsync(string lawyerType);
         Task<Lawyer?> GetLawyerByIdAsync(Guid lawyerId);
+        Task<Lawyer?> GetLawyerByUserIdAndCaseIdAsync(Guid userId, Guid caseId);
     }
 }

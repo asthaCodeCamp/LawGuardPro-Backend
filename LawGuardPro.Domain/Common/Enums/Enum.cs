@@ -10,3 +10,8 @@ public enum CaseStatus
     Working = 1,
     Closed = 0
 }
+public enum QuoteStatus
+{
+    Paid = 1,
+    Unpaid = 0
+}

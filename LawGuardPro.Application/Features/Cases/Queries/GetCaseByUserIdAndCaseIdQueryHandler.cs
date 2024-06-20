@@ -21,15 +21,23 @@ public class GetCaseByUserIdAndCaseIdQueryHandler : IRequestHandler<GetCaseByUse
 
     public async Task<IResult<CaseDetailsDTO>> Handle(GetCaseByUserIdAndCaseIdQuery request, CancellationToken cancellationToken)
     {
-        var caseEntity = await _unitOfWork.CaseRepository
-                .GetCaseByUserIdAndCaseIdAsync(_userContext.UserId!.Value, request.CaseId);
-
-        if (caseEntity == null)
+        try
         {
-            return Result<CaseDetailsDTO>.Failure(new List<Error> { new Error { Message = "Case not found", Code = "NotFound" } });
-        }
+            var caseEntity = await _unitOfWork.CaseRepository
+                    .GetCaseByUserIdAndCaseIdAsync(_userContext.UserId!.Value, request.CaseId);
 
-        var caseDto = _mapper.Map<CaseDetailsDTO>(caseEntity);
-        return Result<CaseDetailsDTO>.Success(caseDto);
+            if (caseEntity == null)
+            {
+                return Result<CaseDetailsDTO>.Failure(new List<Error> { new Error { Message = "Case not found", Code = "NotFound" } });
+            }
+
+            var caseDto = _mapper.Map<CaseDetailsDTO>(caseEntity);
+            return Result<CaseDetailsDTO>.Success(caseDto);
+        }
+        catch (Exception ex) 
+        {
+            return Result<CaseDetailsDTO>.Failure(new List<Error> { new Error { Message = ex.Message, Code = "NotFound" } });
+
+        }
     }
 }

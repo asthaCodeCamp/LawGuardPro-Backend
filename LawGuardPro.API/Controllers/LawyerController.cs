@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using LawGuardPro.Application.DTO;
+using LawGuardPro.Application.Features.Cases.Queries;
 using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LawGuardPro.API.Controllers;
@@ -12,18 +12,21 @@ public class LawyersController : ControllerBase
 {
     private readonly ILawyerRepository _lawyerRepository;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
-    public LawyersController(ILawyerRepository lawyerRepository, IMapper mapper)
+    public LawyersController(ILawyerRepository lawyerRepository, IMapper mapper, IMediator mediator)
     {
         _lawyerRepository = lawyerRepository;
         _mapper = mapper;
+        _mediator = mediator;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<LawyerDTO>>> GetLawyers()
+    [HttpGet("{caseId}")]
+    public async Task<IActionResult> GetLawyerByUserIdAndCaseId(Guid caseId)
     {
-        var lawyers = await _lawyerRepository.FindAllAsync();
-        var lawyerDTOs = _mapper.Map<IEnumerable<LawyerDTO>>(lawyers);
-        return Ok(lawyerDTOs);
+        var query = new GetLawyerByUserIdAndCaseIdQuery(caseId);
+        var result = await _mediator.Send(query);
+
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
 }
