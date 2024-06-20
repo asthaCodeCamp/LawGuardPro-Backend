@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LawGuardPro.Application.Features.Users.Commands
 {
-    public class ResetPasswordCommand : IRequest<Result<Guid>>
+    public class ResetPasswordCommand : IRequest<IResult<Guid>>
     {
         public string NewPassword { get; set; }
         public string OldPassword { get; set; }
