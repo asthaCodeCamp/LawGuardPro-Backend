@@ -28,12 +28,7 @@ public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuer
                 .GetCasesByUserIdAsync(_userContext.UserId!.Value, request.PageNumber, request.PageSize);
 
             var totalCount = casesResult.TotalCount;
-
-            var pagedCases = casesResult.Cases
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize);
-
-            var cases = pagedCases.Select(c => _mapper.Map<CaseDto>(c));
+            var cases = casesResult.Cases.Select(c => _mapper.Map<CaseDto>(c));
             var openCaseCount = casesResult.TotalOpenCount;
             var closedCaseCount = casesResult.TotalClosedCount;
 
