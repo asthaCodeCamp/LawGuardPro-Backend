@@ -2,6 +2,7 @@
 using LawGuardPro.Application.Common;
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Domain.Common.Enums;
 using MediatR;
 
 namespace LawGuardPro.Application.Features.Cases.Queries;
@@ -27,14 +28,17 @@ public class GetCasesByUserIdQueryHandler : IRequestHandler<GetCasesByUserIdQuer
                 .GetCasesByUserIdAsync(_userContext.UserId!.Value, request.PageNumber, request.PageSize);
 
             var totalCount = casesResult.TotalCount;
+            var cases = casesResult.Cases.Select(c => _mapper.Map<CaseDto>(c));
+            var openCaseCount = casesResult.TotalOpenCount;
+            var closedCaseCount = casesResult.TotalClosedCount;
 
-            var pagedCases = casesResult.Cases
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize);
-
-            var cases = pagedCases.Select(c => _mapper.Map<CaseDto>(c));
-
-            return Result<PaginatedCaseListDto>.Success(new() { Cases = cases, TotalCount = totalCount });
+            return Result<PaginatedCaseListDto>.Success(new() 
+            {
+                Cases = cases,
+                TotalCount = totalCount,
+                OpenCase = openCaseCount,
+                ClosedCase = closedCaseCount
+            });
         }
         catch (Exception ex)
         {

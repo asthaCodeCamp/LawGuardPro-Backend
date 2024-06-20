@@ -2,6 +2,7 @@
 using LawGuardPro.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+
 namespace LawGuardPro.Infrastructure.Repositories;
 public class Repository<T>
     : IRepository<T> where T : class
