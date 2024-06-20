@@ -20,7 +20,7 @@ public class Program
 
         var app = builder.Build();
         app.UseApi();
-
+        app.UseStaticFiles();
         app.MapControllers();
         app.Run();
     }

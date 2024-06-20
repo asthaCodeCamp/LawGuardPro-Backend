@@ -75,4 +75,16 @@ public class UsersController : ControllerBase
         var result = await _sender.Send(model);
         return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
+
+    [HttpPost("getuserinfo")]
+    public async Task<IActionResult> GetUserInfo(ProfileInfoQuery model)
+    {
+        if (model == null)
+        {
+            return BadRequest("Invalid user data.");
+        }
+        var result = await _sender.Send(model);
+        if (!result.IsSuccess()) return StatusCode(result.StatusCode, result);
+        return Ok(result);
+    }
 }
