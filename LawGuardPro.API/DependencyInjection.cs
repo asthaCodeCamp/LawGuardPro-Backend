@@ -1,4 +1,5 @@
-﻿using LawGuardPro.API.Middlewares.Exceptions;
+﻿using LawGuardPro.API.Filters;
+using LawGuardPro.API.Middlewares.Exceptions;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
@@ -8,9 +9,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApi(this IServiceCollection services)
     {
+        
+
         services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
+            opt.OperationFilter<FileUploadOperationFilter>();
             opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
