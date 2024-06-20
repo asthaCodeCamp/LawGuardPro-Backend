@@ -9,6 +9,6 @@ public interface ICaseRepository : IRepository<Case>
     Task<Case?> GetCaseWithDetailsAsync(Guid caseId);
     Task<Case?> GetCaseWithDetailsExplicitAsync(Guid caseId);
     Task<string?> GetMaxCaseNumberAsync();
-    Task<(IEnumerable<Case?> Cases, int TotalCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize);
+    Task<(IEnumerable<Case?> Cases, int TotalCount, int TotalOpenCount, int TotalClosedCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize);
     Task<Case?> GetCaseByUserIdAndCaseIdAsync(Guid userId, Guid caseId);
 }

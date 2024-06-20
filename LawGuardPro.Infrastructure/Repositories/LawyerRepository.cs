@@ -23,5 +23,12 @@ public class LawyerRepository : Repository<Lawyer>, ILawyerRepository
         return await _context.Lawyers
                              .FirstOrDefaultAsync(l => l.LawyerId == lawyerId);
     }
+    public async Task<Lawyer?> GetLawyerByUserIdAndCaseIdAsync(Guid userId, Guid caseId)
+    {
+        return await _context.Cases
+            .Where(c => c.UserId == userId && c.CaseId == caseId)
+            .Select(c => c.Lawyer)
+            .FirstOrDefaultAsync();
+    }
 
 }
