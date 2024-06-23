@@ -37,4 +37,8 @@ public class QuoteRepository : Repository<Quote>, IQuoteRepository
             .Where(q => q.UserId == userId && q.CaseId == caseId)
             .ToListAsync();
     }
+    public async Task<Quote?> GetByIdAsync(Guid quoteId)
+    {
+        return await _context.Quotes.FindAsync(quoteId);
+    }
 }

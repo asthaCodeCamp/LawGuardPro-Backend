@@ -1,4 +1,5 @@
-﻿using LawGuardPro.Application.Features.Quotation.Queries;
+﻿using LawGuardPro.Application.Features.Cases.Commands;
+using LawGuardPro.Application.Features.Quotation.Queries;
 using LawGuardPro.Application.Features.Quotes.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,18 @@ public class QuoteController : ControllerBase
         var query = new GetAllQuotesByUserIdAndCaseIdQuery(caseId);
         var result = await _mediator.Send(query);
 
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPut("status")]
+    public async Task<IActionResult> ChangeQuoteStatus(Guid quoteId, [FromBody] ChangeQuoteStatusCommand command)
+    {
+        if (quoteId != command.QuoteId)
+        {
+            return BadRequest("Quote ID mismatch.");
+        }
+
+        var result = await _mediator.Send(command);
         return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
 }

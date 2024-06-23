@@ -106,5 +106,8 @@ public class CaseRepository : Repository<Case>, ICaseRepository
 
         return caseEntity;
     }
-
+    public async Task<Case?> GetByIdAsync(Guid caseId)
+    {
+        return await _context.Cases.FindAsync(caseId);
+    }
 }

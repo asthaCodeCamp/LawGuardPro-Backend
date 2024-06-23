@@ -43,6 +43,12 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, IRe
                 return Result<string>.Failure(new List<Error> { new Error { Message = "Case is not assigned to the provided lawyer.", Code = "InvalidLawyerForCase" } });
             }
 
+            // Check if the case is open or closed
+            if (caseEntity.Status == CaseStatus.Closed)
+            {
+                return Result<string>.Failure(new List<Error> { new Error { Message = "Cannot create a quote for a closed case.", Code = "CaseClosed" } });
+            }
+
             // Get the maximum quote number for the provided CaseId to determine the next quote number
             var maxQuoteNumberString = await _unitOfWork.QuoteRepository.GetMaxQuoteNumberByCaseIdAsync(request.CaseId);
             int maxQuoteNumber = 0;
@@ -67,7 +73,6 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, IRe
             quote.CreatedOn = DateTime.UtcNow;
             quote.UserId = userId;
             quote.PaymentMethod = "Stripe";
-            quote.TotalPaid = 0;
             quote.Value = request.Value;
             quote.TotalValue = request.TotalValue;
             quote.LawyerId = request.LawyerId;
@@ -76,6 +81,9 @@ public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, IRe
             // Calculate the TotalQuoted as the summation of all quotations' total value for the given case
             var existingQuotes = await _unitOfWork.QuoteRepository.GetQuotesByCaseIdAsync(request.CaseId);
             quote.TotalQuoted = existingQuotes.Sum(q => q.TotalValue) + request.TotalValue;
+
+            // Calculate the TotalPaid as the summation of all quotations' total value for the given case with status Paid
+            quote.TotalPaid = existingQuotes.Where(q => q.Status == QuoteStatus.Paid).Sum(q => q.TotalValue);
 
             await _unitOfWork.QuoteRepository.AddAsync(quote);
             await _unitOfWork.CommitAsync();
