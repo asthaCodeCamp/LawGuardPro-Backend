@@ -24,7 +24,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseNpgsql(configuration.GetConnectionString("ProdSQLConnection")));
+              options.UseNpgsql(configuration.GetConnectionString("DefaultSQLConnection")));
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IAddressRepository, AddressRepository>();
 
