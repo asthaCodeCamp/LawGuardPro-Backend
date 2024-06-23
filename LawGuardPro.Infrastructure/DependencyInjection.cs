@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using LawGuardPro.Infrastructure.Persistence.Context;
 using LawGuardPro.Application.Features.Identity.Interfaces;
-using LawGuardPro.Application.Services;
 using LawGuardPro.Infrastructure.UnitofWork;
 
 namespace LawGuardPro.Infrastructure;
@@ -63,6 +62,7 @@ public static class DependencyInjection
         services.AddScoped<ILawyerRepository, LawyerRepository>();
         services.AddScoped<IOtpService, OtpService>();
         services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IQuoteRepository, QuoteRepository>();
 
         return services;
     }

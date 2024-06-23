@@ -2,7 +2,6 @@
 using LawGuardPro.Application.Common;
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Domain.Common.Enums;
 using MediatR;
 
 namespace LawGuardPro.Application.Features.Cases.Queries;
