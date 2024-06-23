@@ -14,6 +14,7 @@ namespace LawGuardPro.Application.DTO
         public int TotalQuoted { get; set; }
         public int TotalPaid { get; set; }
         public Guid? UserId { get; set; }
+        public Guid? LawyerId { get; set; }
 
     }
 }

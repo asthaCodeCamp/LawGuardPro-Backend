@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly ApplicationDbContext _context;
     private ICaseRepository _caseRepository;
     private ILawyerRepository _lawyerRepository;
+    private IQuoteRepository _quoteRepository;
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -17,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
 
     public ICaseRepository CaseRepository => _caseRepository ??= new CaseRepository(_context);
     public ILawyerRepository LawyerRepository => _lawyerRepository ??= new LawyerRepository(_context);
+    public IQuoteRepository QuoteRepository => _quoteRepository ??= new QuoteRepository(_context);
 
     public async Task<int> CommitAsync()
     {

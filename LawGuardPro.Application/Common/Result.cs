@@ -8,6 +8,7 @@ public interface IResult
 {
     public int StatusCode { get; set; }
     public List<Error> Errors { get; set; }
+    public bool IsSuccess();
 }
 
 public class Result : IResult

@@ -41,4 +41,17 @@ public class CaseController : ControllerBase
 
         return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
+
+    [HttpPut("status")]
+    public async Task<IActionResult> ChangeCaseStatus(Guid caseId, [FromBody] ChangeCaseStatusCommand command)
+    {
+        if (caseId != command.CaseId)
+        {
+            return BadRequest("Case ID mismatch.");
+        }
+
+        var result = await _mediator.Send(command);
+
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
+    }
 }

@@ -1,4 +1,5 @@
-﻿using LawGuardPro.Application.Interfaces;
+﻿using LawGuardPro.Application.DTO;
+using LawGuardPro.Application.Interfaces;
 using LawGuardPro.Domain.Common.Enums;
 using LawGuardPro.Domain.Entities;
 using LawGuardPro.Infrastructure.Persistence.Context;
@@ -49,60 +50,64 @@ public class CaseRepository : Repository<Case>, ICaseRepository
         return maxCaseNumber;
     }
 
-    public async Task<(IEnumerable<Case?> Cases, int TotalCount, int TotalOpenCount, int TotalClosedCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize)
+    public async Task<(IEnumerable<CaseDto?> Cases, int TotalCount, int TotalOpenCount, int TotalClosedCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize)
     {
-        var query = _context.Cases
-            .Where(c => c.UserId == userId)
-            .Select(c => new Case
-            {
-                CaseId = c.CaseId,
-                CaseNumber = c.CaseNumber,
-                CaseName = c.CaseName,
-                Status = c.Status,
-                LastUpdated = c.LastUpdated
-            });
+        var casesQuery = _context.Cases
+            .Where(c => c.UserId == userId);
 
-        var totalCount = await query.CountAsync();
+        var totalCount = await casesQuery.CountAsync();
 
-        var openCasesQuery = _context.Cases
-    .Where(c => c.UserId == userId && c.Status == CaseStatus.Working)
-    .Select(c => new Case
-    {
-        CaseId = c.CaseId,
-        CaseNumber = c.CaseNumber,
-        CaseName = c.CaseName,
-        Status = c.Status,
-        LastUpdated = c.LastUpdated
-    });
+        var openCasesCount = await casesQuery
+            .Where(c => c.Status == CaseStatus.Working)
+            .CountAsync();
 
-        var closedCasesQuery = _context.Cases
-            .Where(c => c.UserId == userId && c.Status == CaseStatus.Closed)
-            .Select(c => new Case
-            {
-                CaseId = c.CaseId,
-                CaseNumber = c.CaseNumber,
-                CaseName = c.CaseName,
-                Status = c.Status,
-                LastUpdated = c.LastUpdated
-            });
+        var closedCasesCount = await casesQuery
+            .Where(c => c.Status == CaseStatus.Closed)
+            .CountAsync();
 
-        var totalOpenCount = await openCasesQuery.CountAsync();
-        var totalClosedCount = await closedCasesQuery.CountAsync();
-
-        var cases = await query
+        var cases = await casesQuery
             .OrderByDescending(c => c.LastUpdated)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
+            .Select(c => new CaseDto
+            {
+                CaseId = c.CaseId,
+                CaseNumber = c.CaseNumber,
+                CaseName = c.CaseName,
+                Status = c.Status,
+                LastUpdated = c.LastUpdated,
+                TotalQuoted = _context.Quotes.Where(q => q.CaseId == c.CaseId).Sum(q => q.TotalValue),
+                TotalPaid = _context.Quotes.Where(q => q.CaseId == c.CaseId).Sum(q => q.TotalPaid)
+            })
             .ToListAsync();
 
-        return (cases, totalCount, totalOpenCount, totalClosedCount);
+        return (cases, totalCount, openCasesCount, closedCasesCount);
     }
-    public async Task<Case?> GetCaseByUserIdAndCaseIdAsync(Guid userId, Guid caseId)
+    public async Task<CaseDetailsDTO?> GetCaseByUserIdAndCaseIdAsync(Guid userId, Guid caseId)
     {
-        return await _context.Cases
+        var caseEntity = await _context.Cases
             .Where(c => c.UserId == userId && c.CaseId == caseId)
             .AsNoTracking()
+            .Select(c => new CaseDetailsDTO
+            {
+                CaseId = caseId,
+                CaseNumber = c.CaseNumber,
+                CaseName = c.CaseName,
+                CaseType = c.CaseType,
+                Description = c.Description,
+                Status = c.Status,
+                LastUpdated = c.LastUpdated,
+                UserId = userId,
+                LawyerId = c.LawyerId,
+                TotalQuoted = _context.Quotes.Where(q => q.CaseId == c.CaseId).Sum(q => q.TotalValue),
+                TotalPaid = _context.Quotes.Where(q => q.CaseId == c.CaseId).Sum(q => q.TotalPaid)
+            })
             .FirstOrDefaultAsync();
-    }
 
+        return caseEntity;
+    }
+    public async Task<Case?> GetByIdAsync(Guid caseId)
+    {
+        return await _context.Cases.FindAsync(caseId);
+    }
 }

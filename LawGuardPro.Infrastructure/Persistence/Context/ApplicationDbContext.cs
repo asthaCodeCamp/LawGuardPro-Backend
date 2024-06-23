@@ -1,4 +1,4 @@
-﻿using  LawGuardPro.Domain.Entities;
+﻿using LawGuardPro.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -14,6 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Email> Emails { get; set; }
     public DbSet<Address> Addresss { get; set; }
     public DbSet<UserOTP> UserOTPs { get; set; }
+    public DbSet<Quote> Quotes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,5 +38,20 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         modelBuilder.Entity<Case>()
             .Property(c => c.Status)
             .HasConversion<int>();
+
+        modelBuilder.Entity<Quote>()
+            .HasOne(q => q.ApplicationUser)
+            .WithMany(u => u.Quotes)
+            .HasForeignKey(q => q.UserId).IsRequired();
+
+        modelBuilder.Entity<Quote>()
+            .HasOne(q => q.Lawyer)
+            .WithMany(l => l.Quotes)
+            .HasForeignKey(q => q.LawyerId).IsRequired();
+
+        modelBuilder.Entity<Quote>()
+            .HasOne(q => q.Case)
+            .WithMany(c => c.Quotes)
+            .HasForeignKey(q => q.CaseId).IsRequired();
     }
 }
