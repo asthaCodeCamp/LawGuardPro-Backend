@@ -56,7 +56,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresss");
+                    b.ToTable("Addresss", (string)null);
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.ApplicationUser", b =>
@@ -176,7 +176,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cases");
+                    b.ToTable("Cases", (string)null);
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Email", b =>
@@ -216,7 +216,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Emails");
+                    b.ToTable("Emails", (string)null);
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Lawyer", b =>
@@ -236,60 +236,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("LawyerId");
 
-                    b.ToTable("Lawyers");
-                });
-
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Quote", b =>
-                {
-                    b.Property<Guid?>("QuoteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CaseId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("LawyerId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PaymentMethod")
-                        .HasColumnType("text");
-
-                    b.Property<string>("QuoteNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalPaid")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalQuoted")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalValue")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("UserId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
-
-                    b.HasKey("QuoteId");
-
-                    b.HasIndex("CaseId");
-
-                    b.HasIndex("LawyerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Quotes");
+                    b.ToTable("Lawyers", (string)null);
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.UserOTP", b =>
@@ -320,7 +267,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserOTPs");
+                    b.ToTable("UserOTPs", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -481,33 +428,6 @@ namespace LawGuardPro.Infrastructure.Migrations
                     b.Navigation("Lawyer");
                 });
 
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Quote", b =>
-                {
-                    b.HasOne("LawGuardPro.Domain.Entities.Case", "Case")
-                        .WithMany("Quotes")
-                        .HasForeignKey("CaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LawGuardPro.Domain.Entities.Lawyer", "Lawyer")
-                        .WithMany("Quotes")
-                        .HasForeignKey("LawyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LawGuardPro.Domain.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany("Quotes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Case");
-
-                    b.Navigation("Lawyer");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -564,20 +484,11 @@ namespace LawGuardPro.Infrastructure.Migrations
                     b.Navigation("AddressUsers");
 
                     b.Navigation("Cases");
-
-                    b.Navigation("Quotes");
-                });
-
-            modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
-                {
-                    b.Navigation("Quotes");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Lawyer", b =>
                 {
                     b.Navigation("Cases");
-
-                    b.Navigation("Quotes");
                 });
 #pragma warning restore 612, 618
         }
