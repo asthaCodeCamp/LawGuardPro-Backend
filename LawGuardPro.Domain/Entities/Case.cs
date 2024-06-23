@@ -17,4 +17,5 @@ public class Case
 
     public ApplicationUser? ApplicationUser { get; set; }
     public Lawyer? Lawyer { get; set; }
+    public ICollection<Quote> Quotes { get; set; } = new List<Quote>();
 }

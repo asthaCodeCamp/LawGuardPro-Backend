@@ -9,4 +9,5 @@ public class ApplicationUser : IdentityUser<Guid>
      public string CountryResidency { get; set; } = string.Empty;
      public ICollection<Address> AddressUsers { get; set; } = new List<Address>();
      public ICollection<Case> Cases { get; set; } = new List<Case>();
+     public ICollection<Quote> Quotes { get; set; } = new List<Quote>();
 }

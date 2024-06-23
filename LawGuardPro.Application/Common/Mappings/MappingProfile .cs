@@ -2,6 +2,7 @@
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.Features.Cases.Commands;
+using LawGuardPro.Application.Features.Quotes.Commands;
 
 namespace LawGuardPro.Application.Common.Mappings;
 
@@ -17,5 +18,7 @@ public class MappingProfile : Profile
         CreateMap<AddressRequestBillingDTO, Address>();
         CreateMap<Address, AddressResponseBillingDTO>();
         CreateMap<Address, AddressResponseResidenceDTO>();
+        CreateMap<CreateQuoteCommand, Quote>();
+        CreateMap<Quote, QuoteDTO>();
     }
 }
