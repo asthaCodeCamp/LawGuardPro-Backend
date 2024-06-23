@@ -8,5 +8,6 @@ public class Lawyer
     public decimal Rating { get; set; }
 
     public ICollection<Case> Cases { get; set; } = new List<Case>();
+    public ICollection<Quote> Quotes { get; set; } = new List<Quote>();
 
 }
