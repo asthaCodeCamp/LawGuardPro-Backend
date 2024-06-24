@@ -37,7 +37,7 @@ public class CreateAddressBillingCommandHandler : IRequestHandler<CreateAddressB
     {
 
         var UserId =  _userContext.UserId;
-        
+        var curAddress = await _repository.GetFirstAsync(address => address.UserId == UserId);
         var address = new Address
         {
             AddressType = AddressType.Billing,
@@ -50,8 +50,20 @@ public class CreateAddressBillingCommandHandler : IRequestHandler<CreateAddressB
             UserId = (Guid)UserId
         };
 
-        await _repository.AddAsync(address);
-
+        
+        if (curAddress == null)
+        {
+            await _repository.AddAsync(address);
+        }
+        else
+        {
+            curAddress.AddressLine1 = request.AddressLine1;
+            curAddress.AddressLine2 = request.AddressLine2;
+            curAddress.Town = request.Town;
+            curAddress.PostalCode = request.PostalCode;
+            curAddress.Country = request.Country;
+            await _repository.UpdateAsync(curAddress);
+        }
         return Result<Guid>.Success(address.Id);
     }
 }
