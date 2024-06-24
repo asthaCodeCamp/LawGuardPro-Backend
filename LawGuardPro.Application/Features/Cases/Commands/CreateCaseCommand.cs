@@ -8,5 +8,5 @@ public class CreateCaseCommand : IRequest<IResult<Guid>>
     public string CaseName { get; set; }
     public string CaseType { get; set; }
     public string Description { get; set; }
-    public string Attachment { get; set; }
+    public List<string> Attachment { get; set; }
 }
