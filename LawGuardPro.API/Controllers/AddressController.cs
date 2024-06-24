@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using LawGuardPro.Application.Features.Users.Queries;
 using LawGuardPro.Application.Features.Users.Commands;
+using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Application.Services;
 
 namespace LawGuardPro.API.Controllers;
 
@@ -10,8 +12,12 @@ namespace LawGuardPro.API.Controllers;
 public class AddressController : ControllerBase
 {
     private readonly IMediator _mediator;
-
-    public AddressController(IMediator mediator) => _mediator = mediator;
+    private readonly IUserContext _userContext;
+    public AddressController(IMediator mediator, IUserContext userContext)
+    {
+        _mediator = mediator;
+        _userContext = userContext;
+    }
 
     [HttpPost("create/residence")]
     public async Task<IActionResult> Create([FromBody] CreateAddressResidenceCommand model)
@@ -27,19 +33,19 @@ public class AddressController : ControllerBase
         return result.IsSuccess() ? Ok(result) : BadRequest(result);
     }
 
-    [HttpGet("billing/{userId:Guid}")]
-    public async Task<IActionResult> GetBillingAddressById(Guid userId)
+    [HttpGet("get/billing")]
+    public async Task<IActionResult> GetBillingAddressById()
     {
-        var result = await _mediator.Send(new GetAddressBillingQuery { UserId = userId });
+        var result = await _mediator.Send(new GetAddressBillingQuery { UserId = _userContext.UserId!.Value });
         if (result == null) return NotFound();
         return Ok(result);
 
     }
 
-    [HttpGet("residence/{userId:Guid}")]
-    public async Task<IActionResult> GetResidencAddressById(Guid userId)
+    [HttpGet("get/residence")]
+    public async Task<IActionResult> GetResidencAddressById()
     {
-        var result = await _mediator.Send(new GetAddressResidenceQuery { UserId = userId });
+        var result = await _mediator.Send(new GetAddressResidenceQuery { UserId = _userContext.UserId!.Value });
         if (result == null) return NotFound();
         return Ok(result);
     }
