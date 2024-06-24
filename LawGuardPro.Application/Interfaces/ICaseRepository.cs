@@ -12,4 +12,5 @@ public interface ICaseRepository : IRepository<Case>
     Task<(IEnumerable<CaseDto?> Cases, int TotalCount, int TotalOpenCount, int TotalClosedCount)> GetCasesByUserIdAsync(Guid userId, int pageNumber, int pageSize);
     Task<CaseDetailsDTO?> GetCaseByUserIdAndCaseIdAsync(Guid userId, Guid caseId);
     Task<Case?> GetByIdAsync(Guid caseId);
+    Task<List<Attachment>> GetAttachmentsByCaseIdAsync(Guid caseId, int pageNumber, int pageSize);
 }

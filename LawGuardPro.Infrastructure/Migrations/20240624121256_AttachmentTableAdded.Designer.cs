@@ -3,6 +3,7 @@ using System;
 using LawGuardPro.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LawGuardPro.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240624121256_AttachmentTableAdded")]
+    partial class AttachmentTableAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +59,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresss", (string)null);
+                    b.ToTable("Addresss");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.ApplicationUser", b =>
@@ -176,7 +179,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cases", (string)null);
+                    b.ToTable("Cases");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Email", b =>
@@ -216,7 +219,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Emails", (string)null);
+                    b.ToTable("Emails");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Lawyer", b =>
@@ -236,7 +239,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("LawyerId");
 
-                    b.ToTable("Lawyers", (string)null);
+                    b.ToTable("Lawyers");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Quote", b =>
@@ -289,7 +292,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Quotes", (string)null);
+                    b.ToTable("Quotes");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.UserOTP", b =>
@@ -320,7 +323,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserOTPs", (string)null);
+                    b.ToTable("UserOTPs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
