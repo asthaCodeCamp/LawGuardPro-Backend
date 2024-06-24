@@ -3,6 +3,7 @@ using LawGuardPro.Application.Features.Identity.Commands;
 using LawGuardPro.Application.Features.Settings.Profiles;
 using LawGuardPro.Application.Features.Users.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -51,6 +52,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPatch("updateuserinfo")]
+    [Authorize]
     public async Task<IActionResult> UpdateUserInfo(ProfileEditCommand model)
     {
         if (model == null)
@@ -77,6 +79,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("getuserinfo")]
+    [Authorize]
     public async Task<IActionResult> GetUserInfo([FromQuery] ProfileInfoQuery model)
     {
         if (model == null)
