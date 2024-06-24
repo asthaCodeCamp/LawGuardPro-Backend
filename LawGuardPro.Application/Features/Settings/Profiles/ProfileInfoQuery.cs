@@ -28,6 +28,10 @@ public class ProfileInfoQueryHandler : IRequestHandler<ProfileInfoQuery, IResult
     public async Task<IResult<UserUpdateDTO>> Handle(ProfileInfoQuery request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null )
+        {
+            return Result<UserUpdateDTO>.Failure(new List<Error> { new Error() { Message = "Invalid Email", Code = "InvalidEmail" } });
+        }
         return Result<UserUpdateDTO>.Success(_mapper.Map<UserUpdateDTO>(user));
     }
 }
