@@ -37,7 +37,7 @@ public class CreateAddressResidenceCommandHandler : IRequestHandler<CreateAddres
     {
         var UserId = _userContext.UserId;
         
-        var curAddress = await _repository.GetFirstAsync(address => address.UserId == UserId);
+        var curAddress = await _repository.GetFirstAsync(address => address.UserId == UserId &&   address.AddressType == AddressType.Residence);
 
         var address = new Address
         {
