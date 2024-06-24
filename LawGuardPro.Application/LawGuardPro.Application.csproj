@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Files\Queries\**" />
+    <EmbeddedResource Remove="Features\Files\Queries\**" />
+    <None Remove="Features\Files\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LawGuardPro.Domain\LawGuardPro.Domain.csproj" />
   </ItemGroup>
 
@@ -21,10 +27,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Files\Queries\" />
   </ItemGroup>
 
 </Project>

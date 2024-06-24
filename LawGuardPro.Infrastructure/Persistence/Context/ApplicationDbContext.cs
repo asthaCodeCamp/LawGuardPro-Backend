@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Address> Addresss { get; set; }
     public DbSet<UserOTP> UserOTPs { get; set; }
     public DbSet<Quote> Quotes { get; set; }
+    public DbSet<Attachment> Attachments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,5 +54,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .HasOne(q => q.Case)
             .WithMany(c => c.Quotes)
             .HasForeignKey(q => q.CaseId).IsRequired();
+
+        modelBuilder.Entity<Attachment>()
+            .HasOne(a => a.Case)
+            .WithMany(c => c.Attachments)
+            .HasForeignKey(a => a.CaseId);
     }
 }

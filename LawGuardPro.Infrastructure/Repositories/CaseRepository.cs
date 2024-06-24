@@ -110,4 +110,13 @@ public class CaseRepository : Repository<Case>, ICaseRepository
     {
         return await _context.Cases.FindAsync(caseId);
     }
+    public async Task<List<Attachment>> GetAttachmentsByCaseIdAsync(Guid caseId, int pageNumber, int pageSize)
+    {
+        return await _context.Attachments
+            .Where(a => a.CaseId == caseId)
+            .OrderByDescending(a => a.AddedOn)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
 }
