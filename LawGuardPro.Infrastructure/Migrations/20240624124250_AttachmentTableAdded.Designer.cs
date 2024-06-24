@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LawGuardPro.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240624121256_AttachmentTableAdded")]
+    [Migration("20240624124250_AttachmentTableAdded")]
     partial class AttachmentTableAdded
     {
         /// <inheritdoc />
@@ -137,6 +137,41 @@ namespace LawGuardPro.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("LawGuardPro.Domain.Entities.Attachment", b =>
+                {
+                    b.Property<Guid>("AttachmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("AddedOn")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("CaseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FileURL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UploadedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("AttachmentId");
+
+                    b.HasIndex("CaseId");
+
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
@@ -467,6 +502,17 @@ namespace LawGuardPro.Infrastructure.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("LawGuardPro.Domain.Entities.Attachment", b =>
+                {
+                    b.HasOne("LawGuardPro.Domain.Entities.Case", "Case")
+                        .WithMany("Attachments")
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Case");
+                });
+
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
                 {
                     b.HasOne("LawGuardPro.Domain.Entities.Lawyer", "Lawyer")
@@ -573,6 +619,8 @@ namespace LawGuardPro.Infrastructure.Migrations
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
                 {
+                    b.Navigation("Attachments");
+
                     b.Navigation("Quotes");
                 });
 
