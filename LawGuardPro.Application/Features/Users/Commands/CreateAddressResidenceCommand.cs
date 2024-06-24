@@ -4,6 +4,7 @@ using LawGuardPro.Domain.Entities;
 using LawGuardPro.Application.Common;
 using LawGuardPro.Domain.Common.Enums;
 using LawGuardPro.Application.Interfaces;
+using System.Diagnostics.Metrics;
 
 namespace LawGuardPro.Application.Features.Users.Commands;
 
@@ -35,6 +36,9 @@ public class CreateAddressResidenceCommandHandler : IRequestHandler<CreateAddres
     public async Task<IResult<Guid>> Handle(CreateAddressResidenceCommand request, CancellationToken cancellationToken)
     {
         var UserId = _userContext.UserId;
+        
+        var curAddress = await _repository.GetFirstAsync(address => address.UserId == UserId);
+
         var address = new Address
         {
             AddressType = AddressType.Residence,
@@ -43,11 +47,23 @@ public class CreateAddressResidenceCommandHandler : IRequestHandler<CreateAddres
             Town = request.Town,
             PostalCode = request.PostalCode,
             Country = request.Country,
-            UserId =  (Guid) UserId!,
+            UserId = (Guid)UserId!,
         };
-
-        await _repository.AddAsync(address);
-
+        if (curAddress == null)
+        {
+            await _repository.AddAsync(address);
+        }
+        else
+        {
+            curAddress.AddressLine1 = request.AddressLine1;
+            //curAddress.AddressType = AddressType.Residence;
+            curAddress.AddressLine2 = request.AddressLine2;
+            curAddress.Town = request.Town;
+            curAddress.PostalCode = request.PostalCode;
+            curAddress.Country = request.Country;
+            await _repository.UpdateAsync(curAddress);
+        }
+       
         return Result<Guid>.Success(address.Id);
     }
 }
