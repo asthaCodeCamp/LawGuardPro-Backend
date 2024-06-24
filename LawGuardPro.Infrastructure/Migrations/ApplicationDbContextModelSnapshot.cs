@@ -56,7 +56,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresss", (string)null);
+                    b.ToTable("Addresss");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.ApplicationUser", b =>
@@ -136,6 +136,41 @@ namespace LawGuardPro.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("LawGuardPro.Domain.Entities.Attachment", b =>
+                {
+                    b.Property<Guid>("AttachmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("AddedOn")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("CaseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FileURL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UploadedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("AttachmentId");
+
+                    b.HasIndex("CaseId");
+
+                    b.ToTable("Attachments");
+                });
+
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
                 {
                     b.Property<Guid>("CaseId")
@@ -176,7 +211,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cases", (string)null);
+                    b.ToTable("Cases");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Email", b =>
@@ -216,7 +251,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Emails", (string)null);
+                    b.ToTable("Emails");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Lawyer", b =>
@@ -236,7 +271,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("LawyerId");
 
-                    b.ToTable("Lawyers", (string)null);
+                    b.ToTable("Lawyers");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Quote", b =>
@@ -289,7 +324,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Quotes", (string)null);
+                    b.ToTable("Quotes");
                 });
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.UserOTP", b =>
@@ -320,7 +355,7 @@ namespace LawGuardPro.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserOTPs", (string)null);
+                    b.ToTable("UserOTPs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -464,6 +499,17 @@ namespace LawGuardPro.Infrastructure.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("LawGuardPro.Domain.Entities.Attachment", b =>
+                {
+                    b.HasOne("LawGuardPro.Domain.Entities.Case", "Case")
+                        .WithMany("Attachments")
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Case");
+                });
+
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
                 {
                     b.HasOne("LawGuardPro.Domain.Entities.Lawyer", "Lawyer")
@@ -570,6 +616,8 @@ namespace LawGuardPro.Infrastructure.Migrations
 
             modelBuilder.Entity("LawGuardPro.Domain.Entities.Case", b =>
                 {
+                    b.Navigation("Attachments");
+
                     b.Navigation("Quotes");
                 });
 
