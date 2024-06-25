@@ -1,9 +1,9 @@
-﻿using LawGuardPro.Application.Interfaces;
-using LawGuardPro.Domain.Entities;
-using LawGuardPro.Infrastructure.Settings;
+﻿using MimeKit;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
-using MimeKit;
+using LawGuardPro.Domain.Entities;
+using LawGuardPro.Application.Settings;
+using LawGuardPro.Application.Interfaces;
 
 namespace LawGuardPro.Infrastructure.Services;
 

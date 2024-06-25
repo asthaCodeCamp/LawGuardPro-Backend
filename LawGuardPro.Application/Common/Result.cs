@@ -29,6 +29,11 @@ public class Result : IResult
         return false;
     }
 
+    public static Result Success()
+    {
+        return new Result(200, new List<Error>());
+    }
+
     public static Result Success(int statusCode) { 
         return new Result(statusCode, new List<Error>());
     }
@@ -40,6 +45,11 @@ public class Result : IResult
     public static IResult Failure(List<Error> errors)
     {
         return new Result(StatusCodes.Status404NotFound, new List<Error>());
+    }
+
+    public static IResult Failure(params Error[] errors)
+    {
+        return new Result(StatusCodes.Status404NotFound, new(errors));
     }
 }
 
