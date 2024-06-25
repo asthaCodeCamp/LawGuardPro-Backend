@@ -37,7 +37,7 @@ public class AddressController : ControllerBase
     public async Task<IActionResult> GetBillingAddressById()
     {
         var result = await _mediator.Send(new GetAddressBillingQuery { UserId = _userContext.UserId!.Value });
-        if (result == null) return NotFound();
+        if (result == null) return Ok(new { message = "Billing address not found" });
         return Ok(result);
 
     }
@@ -46,7 +46,7 @@ public class AddressController : ControllerBase
     public async Task<IActionResult> GetResidencAddressById()
     {
         var result = await _mediator.Send(new GetAddressResidenceQuery { UserId = _userContext.UserId!.Value });
-        if (result == null) return NotFound();
+        if (result == null) return Ok(new { message = "Residential address not found" });
         return Ok(result);
     }
 }
