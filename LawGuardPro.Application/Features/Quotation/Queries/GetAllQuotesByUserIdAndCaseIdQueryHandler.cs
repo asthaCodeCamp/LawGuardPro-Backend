@@ -3,6 +3,7 @@ using LawGuardPro.Application.Common;
 using LawGuardPro.Application.DTO;
 using LawGuardPro.Application.Features.Quotation.Queries;
 using LawGuardPro.Application.Interfaces;
+using LawGuardPro.Domain.Common.Enums;
 using MediatR;
 
 namespace LawGuardPro.Application.Features.Quotes.Queries;
@@ -39,7 +40,7 @@ public class GetAllQuotesByUserIdAndCaseIdQueryHandler : IRequestHandler<GetAllQ
         var quoteDTOs = _mapper.Map<IEnumerable<QuoteDTO>>(quotes);
 
         var totalQuoted = quotes.Sum(q => q.TotalValue);
-        var totalPaid = quotes.Sum(q => q.TotalPaid);
+        var totalPaid = quotes.Where(q => q.Status == QuoteStatus.Paid).Sum(q => q.TotalValue);
 
         var quoteListDTO = new QuoteListDTO
         {

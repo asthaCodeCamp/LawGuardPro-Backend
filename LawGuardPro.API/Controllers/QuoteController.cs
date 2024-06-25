@@ -1,5 +1,4 @@
-﻿using LawGuardPro.Application.Features.Cases.Commands;
-using LawGuardPro.Application.Features.Quotation.Queries;
+﻿using LawGuardPro.Application.Features.Quotation.Queries;
 using LawGuardPro.Application.Features.Quotes.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

@@ -18,11 +18,19 @@ public class QuoteRepository : Repository<Quote>, IQuoteRepository
     }
     public async Task<string?> GetMaxQuoteNumberByCaseIdAsync(Guid caseId)
     {
-        return await _context.Quotes
+        var quotes = await _context.Quotes
             .Where(q => q.CaseId == caseId)
+            .ToListAsync();
+
+        return quotes
+            .Select(q => new
+            {
+                Quote = q,
+                QuoteNumber = int.TryParse(q.QuoteNumber.Split(' ').Last(), out var number) ? number : 0
+            })
             .OrderByDescending(q => q.QuoteNumber)
-            .Select(q => q.QuoteNumber)
-            .FirstOrDefaultAsync();
+            .Select(q => q.Quote.QuoteNumber)
+            .FirstOrDefault();
     }
 
     public async Task<List<Quote>> GetQuotesByCaseIdAsync(Guid caseId)
