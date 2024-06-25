@@ -31,6 +31,11 @@ public class ChangeQuoteStatusCommandHandler : IRequestHandler<ChangeQuoteStatus
         }
 
         quoteEntity.Status = request.NewStatus;
+
+        // Update the TotalPaid
+        var quotes = await _unitOfWork.QuoteRepository.GetQuotesByCaseIdAsync(quoteEntity.CaseId ?? Guid.Empty);
+        quoteEntity.TotalPaid = quotes.Where(q => q.Status == QuoteStatus.Paid).Sum(q => q.TotalValue);
+
         await _unitOfWork.QuoteRepository.UpdateAsync(quoteEntity);
         await _unitOfWork.CommitAsync();
 
