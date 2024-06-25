@@ -77,7 +77,7 @@ public class CaseRepository : Repository<Case>, ICaseRepository
                 Status = c.Status,
                 LastUpdated = c.LastUpdated,
                 TotalQuoted = _context.Quotes.Where(q => q.CaseId == c.CaseId).Sum(q => q.TotalValue),
-                TotalPaid = _context.Quotes.Where(q => q.CaseId == c.CaseId).Sum(q => q.TotalPaid)
+                TotalPaid = _context.Quotes.Where(q => q.CaseId == c.CaseId && q.Status == QuoteStatus.Paid).Sum(q => q.TotalValue)
             })
             .ToListAsync();
 
@@ -100,7 +100,7 @@ public class CaseRepository : Repository<Case>, ICaseRepository
                 UserId = userId,
                 LawyerId = c.LawyerId,
                 TotalQuoted = _context.Quotes.Where(q => q.CaseId == c.CaseId).Sum(q => q.TotalValue),
-                TotalPaid = _context.Quotes.Where(q => q.CaseId == c.CaseId).Sum(q => q.TotalPaid)
+                TotalPaid = _context.Quotes.Where(q => q.CaseId == c.CaseId && q.Status == QuoteStatus.Paid).Sum(q => q.TotalValue)
             })
             .FirstOrDefaultAsync();
 

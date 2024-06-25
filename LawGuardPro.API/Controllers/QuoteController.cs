@@ -1,5 +1,4 @@
-﻿using LawGuardPro.Application.Features.Cases.Commands;
-using LawGuardPro.Application.Features.Quotation.Queries;
+﻿using LawGuardPro.Application.Features.Quotation.Queries;
 using LawGuardPro.Application.Features.Quotes.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -49,5 +48,19 @@ public class QuoteController : ControllerBase
 
         var result = await _mediator.Send(command);
         return result.IsSuccess() ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpGet("invoice")]
+    public async Task<IActionResult> DownloadInvoice(Guid quoteId)
+    {
+        var command = new GenerateQuoteInvoiceCommand(quoteId);
+        var result = await _mediator.Send(command);
+
+        if (result.IsSuccess())
+        {
+            return File(result.Data, "application/pdf", "Invoice.pdf");
+        }
+
+        return BadRequest(result.Errors);
     }
 }
