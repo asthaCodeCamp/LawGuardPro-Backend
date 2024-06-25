@@ -61,7 +61,7 @@ public class ForgetPasswordCommandHandler : IRequestHandler<ForgetPasswordComman
                 ToEmail = request.Email,
                 ToName = "LawGuardProUser",
                 Subject = "Password Reset Link Inside",
-                Body = $"{resetPasswordLink}"
+                Body = $"<p>Please <a href=\"{resetPasswordLink}\" style=\"text-decoration: none; color: #0000EE;\">click here</a> to reset your password.</p>"
             };
             await _emailService.AddEmailToQueueAsync(emailMetaData);
             return Result.Success(StatusCodes.Status202Accepted);
