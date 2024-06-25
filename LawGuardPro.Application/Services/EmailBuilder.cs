@@ -1,5 +1,8 @@
-﻿using MimeKit;
-using System;
+﻿using System;
+using System.Text;
+using LawGuardPro.Application.Common;
+using LawGuardPro.Application.DTO;
+using MimeKit;
 
 namespace LawGuardPro.Application.Services;
 
@@ -9,8 +12,13 @@ public class EmailBuilder
     private string _toEmail = string.Empty;
     private string _fromName = string.Empty;
     private string _toName = string.Empty;
-    private MimeEntity? _body;
+    private readonly BodyBuilder _bodyBuilder;
     public string _subject = string.Empty;
+
+    public EmailBuilder()
+    {
+        _bodyBuilder = new BodyBuilder();
+    }
 
     public EmailBuilder SetFromName(string name)
     {
@@ -42,29 +50,33 @@ public class EmailBuilder
         return this;
     }
 
-    public EmailBuilder SetHtmlBody(string htmlBody, bool isResetPassLink, string textBody = "")
+    public EmailBuilder SetHtmlBody(string htmlBody, string textBody = "")
     {
-        var bodyBuilder = new BodyBuilder();
-        if (isResetPassLink)
+        _bodyBuilder.HtmlBody = htmlBody;
+        _bodyBuilder.TextBody = textBody;
+
+        return this;
+    }
+
+    public EmailBuilder AddAttachmentsIfHas(IList<EmailAttachmentDto> attachments)
+    {
+        if (attachments is null || !attachments.Any()) return this;
+
+        foreach (var attachment in attachments)
         {
-            bodyBuilder.HtmlBody = $"<p>Please <a href=\"{htmlBody}\" style=\"text-decoration: none; color: #0000EE;\">click here</a> to reset your password.</p>";
+            _bodyBuilder
+                .Attachments
+                .Add(attachment.FileName,
+                        Encoding.UTF8.GetBytes(attachment.Content),
+                        ContentType.Parse(attachment.ContentType));
         }
-        else 
-        {
-            bodyBuilder.HtmlBody = htmlBody;
-        }
-        bodyBuilder.TextBody = textBody;
-        _body = bodyBuilder.ToMessageBody();
 
         return this;
     }
 
     public EmailBuilder SetTextBody(string textBody = "")
     {
-        var bodyBuilder = new BodyBuilder();
-        bodyBuilder.TextBody = textBody;
-        _body = bodyBuilder.ToMessageBody();
-
+        _bodyBuilder.TextBody = textBody;
         return this;
     }
 
@@ -74,9 +86,8 @@ public class EmailBuilder
         email.From.Add(new MailboxAddress(_fromName, _fromEmail));
         email.To.Add(new MailboxAddress(_toName, _toEmail));
         email.Subject = _subject;
-        email.Body = _body;
+        email.Body = _bodyBuilder.ToMessageBody();
 
         return email;
     }
 }
-
