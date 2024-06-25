@@ -27,8 +27,8 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddScoped<IRequestHandler<SaveAttachmentCommand, IResult<string>>, SaveAttachmentCommandHandler>();
         services.AddScoped<IRequestHandler<GetAttachmentListByCaseIdQuery, IResult<List<AttachmentDto>>>, GetAttachmentListByCaseIdQueryHandler>();
-        services.AddTransient<IPdfService, PdfService>();
-        services.AddTransient<IRequestHandler<GenerateQuoteInvoiceCommand, IResult<byte[]>>, GenerateQuoteInvoiceCommandHandler>();
+        services.AddScoped<IPdfService, PdfService>();
+        services.AddScoped<IRequestHandler<GenerateQuoteInvoiceCommand, IResult<byte[]>>, GenerateQuoteInvoiceCommandHandler>();
 
         return services;
     }

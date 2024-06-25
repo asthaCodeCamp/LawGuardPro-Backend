@@ -18,13 +18,22 @@ public class GenerateQuoteInvoiceCommandHandler : IRequestHandler<GenerateQuoteI
 
     public async Task<IResult<byte[]>> Handle(GenerateQuoteInvoiceCommand request, CancellationToken cancellationToken)
     {
-        var quote = await _unitOfWork.QuoteRepository.GetByIdAsync(request.QuoteId);
-        if (quote == null)
+        try
         {
-            return Result<byte[]>.Failure(new List<Error> { new Error { Message = "Quote not found.", Code = "NotFound" } });
+            var quote = await _unitOfWork.QuoteRepository.GetByIdAsync(request.QuoteId);
+            if (quote == null)
+            {
+                return Result<byte[]>.Failure(new List<Error> { new Error { Message = "Quote not found.", Code = "NotFound" } });
+            }
+
+            var pdfBytes = _pdfService.GenerateQuoteInvoice(quote);
+            return Result<byte[]>.Success(pdfBytes);
         }
 
-        var pdfBytes = _pdfService.GenerateQuoteInvoice(quote);
-        return Result<byte[]>.Success(pdfBytes);
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception occurred in GenerateQuoteInvoiceCommandHandler: {ex.Message}");
+            return Result<byte[]>.Failure(new List<Error> { new Error { Message = "An unexpected error occurred. Please try again later.", Code = "UnexpectedError" } });
+        }
     }
 }
