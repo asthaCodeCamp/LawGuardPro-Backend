@@ -1,4 +1,6 @@
 ﻿using LawGuardPro.Application.Common;
+using LawGuardPro.Application.Features.Attachments.Commands;
+using LawGuardPro.Application.Features.Attachments.Queries;
 using LawGuardPro.Application.Features.Files.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +51,7 @@ public class FileController : ControllerBase
         }
     }
 
-   
+
     //[HttpPost("complete-upload")]
     //public async Task<IActionResult> CompleteFileUpload([FromForm] string fileName)
     //{
@@ -69,5 +71,19 @@ public class FileController : ControllerBase
     //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
     //    }
     //}
-}
 
+    [HttpPost("save-attachments")]
+    public async Task<IActionResult> SaveAttachments([FromBody] SaveAttachmentCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpGet("attachments")]
+    public async Task<IActionResult> GetAttachmentsByCaseId([FromQuery] Guid caseId, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+    {
+        var query = new GetAttachmentListByCaseIdQuery(caseId, pageNumber, pageSize);
+        var result = await _mediator.Send(query);
+        return result.IsSuccess() ? Ok(result) : BadRequest(result);
+    }
+}

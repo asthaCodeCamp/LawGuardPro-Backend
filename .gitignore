@@ -485,3 +485,4 @@ $RECYCLE.BIN/
 *.swp
 LawGuardPro.API/obj
 LawGuardPro.Infrastructure/obj
+LawGuardPro.API/wwwroot
