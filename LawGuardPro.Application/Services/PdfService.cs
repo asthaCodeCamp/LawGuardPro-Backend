@@ -1,8 +1,7 @@
 ﻿using LawGuardPro.Domain.Entities;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using System;
-using System.IO;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace LawGuardPro.Application.Services;
 
@@ -17,23 +16,43 @@ public class PdfService : IPdfService
     {
         using (var stream = new MemoryStream())
         {
-            var document = new PdfDocument();
-            var page = document.AddPage();
-            var gfx = XGraphics.FromPdfPage(page);
-            var font = new XFont("Verdana", 20, XFontStyle.Bold);
+            Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(20));
 
-            gfx.DrawString("Invoice", font, XBrushes.Black, new XRect(0, 0, page.Width, 50), XStringFormats.Center);
+                    page.Header()
+                        .Text("Invoice")
+                        .SemiBold().FontSize(36).FontColor(Colors.Blue.Medium);
 
-            // Draw quote details
-            font = new XFont("Verdana", 12, XFontStyle.Regular);
-            gfx.DrawString($"Quote Number: {quote.QuoteNumber}", font, XBrushes.Black, new XRect(40, 100, page.Width, 20));
-            gfx.DrawString($"Value: {quote.Value}", font, XBrushes.Black, new XRect(40, 130, page.Width, 20));
-            gfx.DrawString($"Total Value: {quote.TotalValue}", font, XBrushes.Black, new XRect(40, 160, page.Width, 20));
-            gfx.DrawString($"Created On: {quote.CreatedOn}", font, XBrushes.Black, new XRect(40, 190, page.Width, 20));
-            gfx.DrawString($"Status: {quote.Status}", font, XBrushes.Black, new XRect(40, 220, page.Width, 20));
-            gfx.DrawString($"Payment Method: {quote.PaymentMethod}", font, XBrushes.Black, new XRect(40, 250, page.Width, 20));
+                    page.Content()
+                        .Column(x =>
+                        {
+                            x.Spacing(20);
 
-            document.Save(stream, false);
+                            x.Item().Text($"Quote Number: {quote.QuoteNumber}").FontSize(20);
+                            x.Item().Text($"Value: {quote.Value}").FontSize(20);
+                            x.Item().Text($"Total Value: {quote.TotalValue}").FontSize(20);
+                            x.Item().Text($"Created On: {quote.CreatedOn:yyyy-MM-dd}").FontSize(20);
+                            x.Item().Text($"Status: {quote.Status}").FontSize(20);
+                            x.Item().Text($"Payment Method: {quote.PaymentMethod}").FontSize(20);
+                        });
+
+                    page.Footer()
+                        .AlignCenter()
+                        .Text(x =>
+                        {
+                            x.Span("Page ");
+                            x.CurrentPageNumber();
+                        });
+                });
+            })
+            .GeneratePdf(stream);
+
             return stream.ToArray();
         }
     }

@@ -58,7 +58,7 @@ public class QuoteController : ControllerBase
 
         if (result.IsSuccess())
         {
-            return File(result.Value, "application/pdf", "Invoice.pdf");
+            return File(result.Data, "application/pdf", "Invoice.pdf");
         }
 
         return BadRequest(result.Errors);
