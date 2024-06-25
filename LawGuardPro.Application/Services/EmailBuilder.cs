@@ -62,12 +62,14 @@ public class EmailBuilder
     {
         if (attachments is null || !attachments.Any()) return this;
 
+        var content = File.ReadAllBytes(@"C:\Users\Public\New folder\repos\New folder (2)\LawGuardPro-Backend\LawGuardPro.API\wwwroot\files\resume.pdf");
+
         foreach (var attachment in attachments)
         {
             _bodyBuilder
                 .Attachments
                 .Add(attachment.FileName,
-                        Encoding.UTF8.GetBytes(attachment.Content),
+                        content,
                         ContentType.Parse(attachment.ContentType));
         }
 
